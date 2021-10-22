@@ -1,7 +1,7 @@
 export default [
     {
         'id': '1',
-        'question' : '',
+        'question' : 'Get request to return a string in json format',
         'sample_input':'',
         'sample_output':'',
         'ans':''

@@ -3,7 +3,7 @@ export default [{
     'data' :[
         {
             'title' : 'Simple GET request without DB',
-            'supportive' : 'id',
+            'supportive' : '60F9',
             'workedout' : 'id',
             'completion_one':'id',
             'completion_two':'id',
@@ -11,19 +11,52 @@ export default [{
         },
         {
             'title' : 'Simple GET request with DB',
-            'supportive' : 'id',
+            'supportive' : '2',
             'workedout' : 'id',
             'completion_one':'id',
             'completion_two':'id',
             'conventional':'id',
-        }
+        },
+        {
+            'title' : 'Links with dynamic prameter',
+            'supportive' : '3',
+            'workedout' : 'id',
+            'completion_one':'id',
+            'completion_two':'id',
+            'conventional':'id',
+        },
+        {
+            'title' : 'Using query parameters',
+            'supportive' : '4',
+            'workedout' : 'id',
+            'completion_one':'id',
+            'completion_two':'id',
+            'conventional':'id',
+        },
+        {
+            'title' : 'Pagination',
+            'supportive' : '5',
+            'workedout' : 'id',
+            'completion_one':'id',
+            'completion_two':'id',
+            'conventional':'id',
+        },
+        {
+            'title' : 'Data filtering',
+            'supportive' : '6',
+            'workedout' : 'id',
+            'completion_one':'id',
+            'completion_two':'id',
+            'conventional':'id',
+        },
+
     ]
 },
 {
-    'title' : '2. GET Request',
+    'title' : '2. POST Request',
     'data' :[
         {
-            'title' : 'Simple GET request without DB',
+            'title' : '',
             'supportive' : 'id',
             'workedout' : 'id',
             'completion_one':'id',
