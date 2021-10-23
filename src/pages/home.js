@@ -1,6 +1,7 @@
 import React,{ useState, useEffect } from 'react'
 import courseList from '../api/mocks/courselist'
 import CourseListItem from '../components/common/courseListItem';
+import '../assets/scss/_home.scss';
 
 export default function Home(){
     const [width, setWidth] = useState(document.body.clientWidth);

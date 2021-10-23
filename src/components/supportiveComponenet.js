@@ -6,7 +6,7 @@ const SupportiveComponent = (props) => {
     return (
         <div className="supportive">
             <h1>{props.value.id}</h1>
-            <h2>{props.value.url}</h2>
+            <h4>{props.value.url}</h4>
         </div>
     )
 }

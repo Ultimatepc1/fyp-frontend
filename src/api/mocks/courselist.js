@@ -18,7 +18,7 @@ export default [{
             'conventional':'id',
         },
         {
-            'title' : 'Links with dynamic prameter',
+            'title' : 'Links with dynamic parameter',
             'supportive' : '3',
             'workedout' : 'id',
             'completion_one':'id',
