@@ -15,7 +15,7 @@ export default function Home(){
     return(
         <main className="home">
           <div>
-            {courseList.map((value, index) => CourseListItem(value))}
+            {courseList.map((value, index) => <CourseListItem value={value} key={index}/>)}
           </div>
           
         </main>

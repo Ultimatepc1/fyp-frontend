@@ -7,21 +7,21 @@ export default function CourseListSubItem (props){
         <div>
             <section className="container">
                 <div className="row">
-                <h2>{props.title}</h2>
+                <h2>{props.value.title}</h2>
                 <section className="featured-posts-container">  
-                    <Link to={`/supportive/${props.supportive}`} > Supportive </Link>
+                    <Link to={`/supportive/${props.value.supportive}`} > Supportive </Link>
                 </section>
                 <section className="featured-posts-container">  
-                    <Link to={`/workedout/${props.workedout}`} > Worked Out </Link>
+                    <Link to={`/workedout/${props.value.workedout}`} > Worked Out </Link>
                 </section>
                 <section className="featured-posts-container">  
-                    <Link to={`/problems/${props.completion_one}`} > Completion 1 </Link>
+                    <Link to={`/problems/${props.value.completion_one}`} > Completion 1 </Link>
                 </section>
                 <section className="featured-posts-container">  
-                    <Link to={`/problems/${props.completion_two}`} > Completion 2 </Link>
+                    <Link to={`/problems/${props.value.completion_two}`} > Completion 2 </Link>
                 </section>
                 <section className="featured-posts-container">  
-                    <Link to={`/problems/${props.conventional}`} > Conventional </Link>
+                    <Link to={`/problems/${props.value.conventional}`} > Conventional </Link>
                 </section>
                 </div>
             </section>

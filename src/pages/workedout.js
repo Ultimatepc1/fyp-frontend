@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from "react";
-import list from '../api/mocks/supportive_60F9';
-import SupportiveComponent from "../components/supportiveComponenet";
+import data from '../api/mocks/workedout_78Y4';
+import WorkedOutComponent from "../components/workedoutComponenet";
 
 
-export default function Supportive(props){
+export default function WorkedOut(props){
 
     const [state,setState]=useState({invalid:true});
 
@@ -12,24 +12,25 @@ export default function Supportive(props){
 
     useEffect(()=>{
         try{
-            console.log(props.id)
+            console.log(props.id);
             // id=props.match.params.id;
-            id = props.id
+            id = props.id;
             console.log(id);
-            if(id==='60F9'){
+            if(id==='78Y4'){
                 setState(prevState=>({...prevState,invalid:false}))
             }
             console.log(state.invalid);
         }catch(e){
-            console.log('supportive page error in useeffect')
+            console.log('workedout page error in useffect')
             console.log(e)
         }
     },[]);
 
     return (
         <>
-            {state.invalid ? <div>Invalid ID</div> : <div>{list.map((value,index)=>
-                <SupportiveComponent value={value} key={index}/>
+            <h2>{data.title}</h2>
+            {state.invalid ? <div>Invalid ID</div> : <div>{data.data.map((value,index)=>
+                <WorkedOutComponent value={value} key={value.id}/>
             )}</div>
             }
         </>

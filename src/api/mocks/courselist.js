@@ -4,7 +4,7 @@ export default [{
         {
             'title' : 'Simple GET request without DB',
             'supportive' : '60F9',
-            'workedout' : 'id',
+            'workedout' : '78Y4',
             'completion_one':'id',
             'completion_two':'id',
             'conventional':'id',

@@ -7,9 +7,9 @@ export default function CourseListItem (props) {
         <div>
             <section className="container">
                 <div className="row">
-                    <h2>{props.title}</h2>
+                    <h2>{props.value.title}</h2>
                     <div>
-                        {props.data.map((value, index) => CourseListSubItem(value))}
+                        {props.value.data.map((value, index) => <CourseListSubItem value={value} key={index}/>)}
                     </div>
                 </div>
             </section>
