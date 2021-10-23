@@ -5,21 +5,21 @@ import SupportiveComponent from "../components/supportiveComponenet";
 
 export default function Supportive(props){
 
-    const [state,setState]=useState({invalid:true});
+    const [state,setState]=useState({invalid:true, id: null});
 
-    // var id=props.match.params.id;
-    let id;
+    const getId =async (id) => {
+        setState(prevState => ({ ...prevState, id: id }))
+        if(id==='60F9'){
+            setState(prevState=>({...prevState,invalid:false}))
+        }
+        console.log(state.invalid);
+    }
 
     useEffect(()=>{
         try{
             console.log(props.id)
             // id=props.match.params.id;
-            id = props.id
-            console.log(id);
-            if(id==='60F9'){
-                setState(prevState=>({...prevState,invalid:false}))
-            }
-            console.log(state.invalid);
+            getId(props.id);
         }catch(e){
             console.log('supportive page error in useeffect')
             console.log(e)

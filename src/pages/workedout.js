@@ -5,21 +5,20 @@ import WorkedOutComponent from "../components/workedoutComponenet";
 
 export default function WorkedOut(props){
 
-    const [state,setState]=useState({invalid:true});
+    const [state,setState]=useState({invalid:true, id: null});
 
-    // var id=props.match.params.id;
-    let id;
+    const getId =async (id) => {
+        setState(prevState => ({ ...prevState, id: id }))
+        if(id==='78Y4'){
+            setState(prevState=>({...prevState,invalid:false}))
+        }
+        console.log(state.invalid);
+    }
 
     useEffect(()=>{
         try{
-            console.log(props.id);
             // id=props.match.params.id;
-            id = props.id;
-            console.log(id);
-            if(id==='78Y4'){
-                setState(prevState=>({...prevState,invalid:false}))
-            }
-            console.log(state.invalid);
+            getId(props.id);
         }catch(e){
             console.log('workedout page error in useffect')
             console.log(e)

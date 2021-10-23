@@ -15,7 +15,7 @@ export default function CourseListSubItem (props){
                     
                     <div className="text-box">
                     <div class="image-box">
-                        <img src={require(`../../assets/images/supportive.png`)} alt="image" />
+                        <img src={require(`../../assets/images/supportive.png`)} alt="supportive info" />
                     </div>
                         <div className="text-container">
                         <Link to={`/supportive/${props.value.supportive}`}  > Supportive </Link>
@@ -25,7 +25,7 @@ export default function CourseListSubItem (props){
                 <div className="col-lg-2 col-md-3 col-sm-6 card-flyer">  
                     <div className="text-box">
                     <div class="image-box">
-                        <img src={require(`../../assets/images/worked_out.png`)} alt="image" />
+                        <img src={require(`../../assets/images/worked_out.png`)} alt="worked out example" />
                     </div>
                         <div className="text-container">
                         <Link to={`/workedout/${props.value.workedout}`} > Worked Out </Link>
@@ -35,7 +35,7 @@ export default function CourseListSubItem (props){
                 <div className="col-lg-2 col-md-3 col-sm-6 card-flyer">  
                     <div className="text-box">
                     <div class="image-box">
-                        <img src={require(`../../assets/images/completion.png`)} alt="image" />
+                        <img src={require(`../../assets/images/completion.png`)} alt="completion task" />
                     </div>
                         <div className="text-container">
                         <Link to={`/problems/${props.value.completion_one}`} > Completion 1 </Link>
@@ -45,7 +45,7 @@ export default function CourseListSubItem (props){
                 <div className="col-lg-2 col-md-3 col-sm-6 card-flyer">  
                     <div className="text-box">
                     <div class="image-box">
-                        <img src={require(`../../assets/images/completion.png`)} alt="image" />
+                        <img src={require(`../../assets/images/completion.png`)} alt="completion task2" />
                     </div>
                         <div className="text-container">
                         <Link to={`/problems/${props.value.completion_two}`} > Completion 2 </Link>
@@ -55,7 +55,7 @@ export default function CourseListSubItem (props){
                 <div className="col-lg-2 col-md-3 col-sm-6 card-flyer">  
                     <div className="text-box">
                     <div class="image-box">
-                        <img src={require(`../../assets/images/conventional.png`)} alt="image" />
+                        <img src={require(`../../assets/images/conventional.png`)} alt="conventional" />
                     </div>
                         <div className="text-container">
                         <Link to={`/problems/${props.value.conventional}`} > Conventional </Link>
