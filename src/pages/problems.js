@@ -1,6 +1,5 @@
 import React,{useEffect,useState} from "react";
 import data from '../api/mocks/completion_one_YFG5';
-import WorkedOutComponent from "../components/workedoutComponenet";
 
 
 export default function Problems(props){
@@ -30,12 +29,13 @@ export default function Problems(props){
             <h2>{data.title}</h2>
             {state.invalid ? <div>Invalid ID</div> : <div>
                 <h2>{data.title}</h2>
-                <iframe src={data.ide}
+                {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
                     title="node-express-rest-template"
                     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
                     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-                ></iframe>
+                ></iframe> */}
+                {/* <iframe frameborder="0" width="100%" height="500px" src="https://replit.com/@PriyangChaurasi/tempognition?embed=true"></iframe> */}
             </div>
             }
         </>
