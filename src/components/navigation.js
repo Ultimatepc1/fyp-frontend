@@ -12,14 +12,14 @@ const navlinks = [
         title: 'Blog',
         path: '/blog'
     },
-    {
-        title: 'Contact Us',
-        path: '/contact-us'
-    },
-    {
-        title: 'Login',
-        path: '/login'
-    }
+    // {
+    //     title: 'Contact Us',
+    //     path: '/contact-us'
+    // },
+    // {
+    //     title: 'Login',
+    //     path: '/login'
+    // }
 ]
 
 export default function Navigation(props){
@@ -35,7 +35,7 @@ export default function Navigation(props){
     }, []);
     return(
         <nav className="site-navigation">
-            <span className="menu-title">My React Blog</span>
+            <span className="menu-title">API Practice Platform</span>
             {width > 900 && <div className={`menu-content-container ${menuActive && 'active'}`} 
                  onMouseLeave = {() => setMenuActive(false)}
                  onMouseEnter = {() => setMenuActive(true)}>
@@ -46,10 +46,10 @@ export default function Navigation(props){
                     </li>
                 ))}
             </ul>
-            <span className="menu-avatar-container">
+            {/* <span className="menu-avatar-container">
                 <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={38}/>
                 <span className="menu-avatar-name">{props.user.firstName} {props.user.lastName}</span>
-            </span>
+            </span> */}
             </div>}
             {
                 width <= 900 && 
@@ -61,10 +61,10 @@ export default function Navigation(props){
                     console.log(menuActive)}}>
                     <ul>
                         <li>
-                            <span className="menu-avatar-container">
+                            {/* <span className="menu-avatar-container">
                                 <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={38}/>
                                 <span className="menu-avatar-name">{props.user.firstName} {props.user.lastName}</span>
-                        </span>
+                        </span> */}
                         </li>
                         {navlinks.map((link,index) => (
                             <li key={index}>

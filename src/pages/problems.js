@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from "react";
 import data from '../api/mocks/completion_one_YFG5';
 import WorkedOutComponent from "../components/workedoutComponenet";
-
+import '../assets/scss/_home.scss';
 
 export default function Problems(props){
 
@@ -28,7 +28,7 @@ export default function Problems(props){
     return (
         <>
             <h2>{data.title}</h2>
-            {state.invalid ? <div>Invalid ID</div> : <div>
+            {state.invalid ? <div>Invalid ID</div> : <div className="home">
                 <h2>{data.title}</h2>
                 <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
