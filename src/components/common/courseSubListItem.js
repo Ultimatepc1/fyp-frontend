@@ -18,7 +18,7 @@ export default function CourseListSubItem (props){
                         <img src={require(`../../assets/images/supportive.png`)} alt="supportive info" />
                     </div>
                         <div className="text-container">
-                        <Link to={`/supportive/${props.value.supportive}`}  > Supportive </Link>
+                        <Link to={`/supportive/${props.value.supportive}`}  > Resources </Link>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ export default function CourseListSubItem (props){
                         <img src={require(`../../assets/images/worked_out.png`)} alt="worked out example" />
                     </div>
                         <div className="text-container">
-                        <Link to={`/workedout/${props.value.workedout}`} > Worked Out </Link>
+                        <Link to={`/workedout/${props.value.workedout}`} > Solved Examples </Link>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@ export default function CourseListSubItem (props){
                         <img src={require(`../../assets/images/completion.png`)} alt="completion task" />
                     </div>
                         <div className="text-container">
-                        <Link to={`/problems/${props.value.completion_one}`} > Completion 1 </Link>
+                        <Link to={`/problems/${props.value.completion_one}`} > Task 1 </Link>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ export default function CourseListSubItem (props){
                         <img src={require(`../../assets/images/completion.png`)} alt="completion task2" />
                     </div>
                         <div className="text-container">
-                        <Link to={`/problems/${props.value.completion_two}`} > Completion 2 </Link>
+                        <Link to={`/problems/${props.value.completion_two}`} > Task 2 </Link>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ export default function CourseListSubItem (props){
                         <img src={require(`../../assets/images/conventional.png`)} alt="conventional" />
                     </div>
                         <div className="text-container">
-                        <Link to={`/problems/${props.value.conventional}`} > Conventional </Link>
+                        <Link to={`/problems/${props.value.conventional}`} > Task 3 </Link>
                         </div>
                     </div>
                 </div>

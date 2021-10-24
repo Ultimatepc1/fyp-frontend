@@ -4,9 +4,11 @@ import '../assets/scss/_supportive.scss'
 
 const SupportiveComponent = (props) => {
     return (
-        <div className="supportive">
+        <div className="supportive" >
             <h1>{props.value.id}</h1>
             <h4>{props.value.url}</h4>
+            <iframe src={props.value.url} title="W3Schools Free Online Web Tutorials" height="400px" width="80%" >
+            </iframe>
         </div>
     )
 }
