@@ -35,7 +35,7 @@ export default function Navigation(props){
     }, []);
     return(
         <nav className="site-navigation">
-            <span className="menu-title">API Practice Platform</span>
+            <span className="menu-title">API Development Learning Platform</span>
             {width > 900 && <div className={`menu-content-container ${menuActive && 'active'}`} 
                  onMouseLeave = {() => setMenuActive(false)}
                  onMouseEnter = {() => setMenuActive(true)}>
