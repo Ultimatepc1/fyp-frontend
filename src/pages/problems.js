@@ -38,22 +38,26 @@ export default function Problems(props) {
     }, []);
 
     const embedIde = () => {
-        try{
-        // sdk.embedGithubProject(
-        //     'problemIDE',
-        //     'gothinkster/angular-realworld-example-app',
-        //     { height: 320 }
-        // )
-        sdk.embedProjectId(
-            'problemIDE',
-            'node-wdhbdf',
-            {
-                openFile: 'index.js',
-                // height: 500,
-                // width: 500
-            }
-        )
-        }catch(e){
+        try {
+            // sdk.embedProjectId(
+            //     'problemIDE',
+            //     'node-wdhbdf',
+            //     {
+            //         openFile: 'index.js',
+            //         // height: 500,
+            //         // width: 500
+            //     }
+            // )
+            sdk.embedGithubProject(
+                'problemIDE',
+                'Ultimatepc1/node-wdhbdf',
+                {
+                    openFile: 'index.js',
+                    height: 600,
+                    hideNavigation: false
+                }
+            );
+        } catch (e) {
             console.log(e)
         }
     }
@@ -89,7 +93,7 @@ export default function Problems(props) {
                     }
                 </div>
                 <button onClick={embedIde} >Code</button>
-                
+
             </div>
             }
         </>
