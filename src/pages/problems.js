@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import data from '../api/mocks/completion_one_YFG5';
 import '../assets/scss/_home.scss';
-
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import sdk from '@stackblitz/sdk'
 
 
@@ -49,7 +50,7 @@ export default function Problems(props) {
             'node-wdhbdf',
             {
                 openFile: 'index.js',
-                // height: 500,
+                height: 500,
                 // width: 500
             }
         )
@@ -88,8 +89,16 @@ export default function Problems(props) {
                         // )
                     }
                 </div>
-                <button onClick={embedIde} >Code</button>
-                
+                {/* <button onClick={embedIde} >Code</button> */}
+                <Button variant="contained" onClick={embedIde}>Code</Button><br/><br/>
+                <TextField
+  hiddenLabel
+  id="filled-hidden-label-small"
+  defaultValue=""
+  variant="filled"
+  size="small"
+  placeholder="Enter Output URL"
+/>
             </div>
             }
         </>
