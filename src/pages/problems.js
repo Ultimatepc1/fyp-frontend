@@ -1,28 +1,62 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import data from '../api/mocks/completion_one_YFG5';
 import '../assets/scss/_home.scss';
 
-export default function Problems(props){
+import sdk from '@stackblitz/sdk'
 
-    const [state,setState]=useState({invalid:true, id: null});
 
-    const getId =async (id) => {
+
+export default function Problems(props) {
+
+    const [state, setState] = useState({ invalid: true, id: null });
+
+    const getId = async (id) => {
         setState(prevState => ({ ...prevState, id: id }))
-        if(id==='YFG5'){
-            setState(prevState=>({...prevState,invalid:false}))
+        if (id === 'YFG5') {
+            setState(prevState => ({ ...prevState, invalid: false }))
         }
         console.log(state.invalid);
     }
 
-    useEffect(()=>{
-        try{
+    useEffect(() => {
+        try {
             // id=props.match.params.id;
             getId(props.id);
-        }catch(e){
+            // sdk.embedProjectId(
+            //     'problemIDE',
+            //     'node-wdhbdf',
+            //     {
+            //         openFile: 'index.js',
+            //         height: 500,
+            //         width: 500
+            //     }
+            // )
+        } catch (e) {
             console.log('workedout page error in useffect')
             console.log(e)
         }
-    },[]);
+    }, []);
+
+    const embedIde = () => {
+        try{
+        // sdk.embedGithubProject(
+        //     'problemIDE',
+        //     'gothinkster/angular-realworld-example-app',
+        //     { height: 320 }
+        // )
+        sdk.embedProjectId(
+            'problemIDE',
+            'node-wdhbdf',
+            {
+                openFile: 'index.js',
+                // height: 500,
+                // width: 500
+            }
+        )
+        }catch(e){
+            console.log(e)
+        }
+    }
 
     return (
         <>
@@ -36,6 +70,26 @@ export default function Problems(props){
                     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
                 ></iframe> */}
                 {/* <iframe frameborder="0" width="100%" height="500px" src="https://replit.com/@PriyangChaurasi/tempognition?embed=true"></iframe> */}
+                <div id="problemIDE">
+                    {
+                        // sdk.embedProjectId(
+                        //     '<div></div>',
+                        //     'node-wdhbdf',
+                        //     {
+                        //         openFile: 'index.js',
+                        //         height: 500,
+                        //         width: 500
+                        //     }
+                        // )
+                        // sdk.embedGithubProject(
+                        //     'problemIDE',
+                        //     'gothinkster/angular-realworld-example-app',
+                        //     { height: 320 }
+                        // )
+                    }
+                </div>
+                <button onClick={embedIde} >Code</button>
+                
             </div>
             }
         </>
