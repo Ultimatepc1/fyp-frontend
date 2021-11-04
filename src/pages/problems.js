@@ -102,7 +102,8 @@ export default function Problems(props) {
                     variant="filled"
                     size="small"
                     placeholder="Enter Output URL"
-                />
+                /><br/><br/>
+                <Button variant="contained">Run Test</Button><br /><br />
             </div>
             }
         </>

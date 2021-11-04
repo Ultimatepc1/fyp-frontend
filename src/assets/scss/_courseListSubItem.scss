@@ -40,7 +40,7 @@
   -moz-transition:all .9s ease; 
   -o-transition:all .9s ease;
   -ms-transition:all .9s ease; 
-  width: 100%;
+  width: 50%;
   height: 10em;
 }
 #cards_landscape_wrap-2 .card-flyer:hover .image-box img{
@@ -107,3 +107,44 @@
     height: 300px;
   }
 }
+
+.subTitle h2 {
+  text-align: center;
+      font-size:30px; font-weight:300; color:#222; letter-spacing:1px;
+      text-transform: uppercase;
+      color:#ff4040;
+      display: grid;
+      grid-template-columns: 1fr max-content 1fr;
+      grid-template-rows: 27px 0;
+      grid-gap: 20px;
+      align-items: center;
+  }
+  
+  .subTitle h2:after,.subTitle h2:before {
+      content: " ";
+      display: block;
+      border-bottom: 1px solid #c50000;
+      border-top: 1px solid #c50000;
+      height: 5px;
+    background-color:#f8f8f8;
+  }
+
+
+  .mainTitle h1 {
+    text-align:center;
+    color:#ff4040;
+    text-transform:uppercase;
+    font-size:26px; letter-spacing:1px;
+    
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 16px 0;
+    grid-gap: 22px;
+  }
+  
+  .mainTitle h1:after,.mainTitle h1:before {
+    content: " ";
+    display: block;
+    border-bottom: 2px solid #ccc;
+    background-color:#f8f8f8;
+  }
