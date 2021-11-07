@@ -4,12 +4,14 @@ import '../assets/scss/_home.scss';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import sdk from '@stackblitz/sdk'
+import axios from 'axios'
 
 
 
 export default function Problems(props) {
 
-    const [state, setState] = useState({ invalid: true, id: null });
+    const [state, setState] = useState({ invalid: true, id: null, outputURL: "" });
+    const [question, setQuestion] = useState(data)
 
     const getId = async (id) => {
         setState(prevState => ({ ...prevState, id: id }))
@@ -38,7 +40,7 @@ export default function Problems(props) {
         }
     }, []);
 
-    const embedIde = () => {
+    const embedIde = (ide) => {
         try {
             // sdk.embedProjectId(
             //     'problemIDE',
@@ -49,9 +51,11 @@ export default function Problems(props) {
             //         // width: 500
             //     }
             // )
+            // console.log(ide)
+            // console.log(question)
             sdk.embedGithubProject(
                 'problemIDE',
-                'Ultimatepc1/node-wdhbdf',
+                ide,
                 {
                     openFile: 'index.js',
                     height: 600,
@@ -63,11 +67,36 @@ export default function Problems(props) {
         }
     }
 
+    const handleOutputURIChange = (event) => {
+        setState({ ...state, outputURL: event.target.value })
+    }
+
+    const getResponseFromApi = () => {
+        console.log(state.outputURL)
+        axios.get(state.outputURL, {
+            headers: {
+                'X-Id-Token': 'abc123abc123',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                "sec-ch-ua": `"Microsoft Edge";v="95", "Chromium";v="95", ";Not A Brand";v="99"`,
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": `"Windows"`,
+                "upgrade-insecure-requests": "1"
+            }
+        }).then(response => {
+            console.log(response)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+
+
     return (
         <>
             <h2>{data.title}</h2>
             {state.invalid ? <div>Invalid ID</div> : <div className="home">
-                <h2>{data.title}</h2>
+                <h2>{question.title}</h2>
                 {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
                     title="node-express-rest-template"
@@ -94,16 +123,17 @@ export default function Problems(props) {
                     }
                 </div>
                 {/* <button onClick={embedIde} >Code</button> */}
-                <Button variant="contained" onClick={embedIde}>Code</Button><br /><br />
+                <Button variant="contained" onClick={() => embedIde(question.ide)}>Code</Button><br /><br />
                 <TextField
                     hiddenLabel
                     id="filled-hidden-label-small"
-                    defaultValue=""
                     variant="filled"
                     size="small"
                     placeholder="Enter Output URL"
-                /><br/><br/>
-                <Button variant="contained">Run Test</Button><br /><br />
+                    value={state.outputURL}
+                    onChange={handleOutputURIChange}
+                /><br /><br />
+                <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button><br /><br />
             </div>
             }
         </>
