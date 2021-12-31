@@ -59,7 +59,8 @@ export default function Problems(props) {
                 {
                     openFile: 'index.js',
                     height: 600,
-                    hideNavigation: false
+                    hideNavigation: false,
+
                 }
             );
         } catch (e) {
@@ -73,17 +74,31 @@ export default function Problems(props) {
 
     const getResponseFromApi = () => {
         console.log(state.outputURL)
-        axios.get(state.outputURL, {
-            headers: {
-                'X-Id-Token': 'abc123abc123',
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                "sec-ch-ua": `"Microsoft Edge";v="95", "Chromium";v="95", ";Not A Brand";v="99"`,
-                "sec-ch-ua-mobile": "?0",
-                "sec-ch-ua-platform": `"Windows"`,
-                "upgrade-insecure-requests": "1"
+        axios.get(state.outputURL
+            // , {
+            //     headers: {
+            //         'X-Id-Token': 'abc123abc123',
+            //         'Content-Type': 'application/json',
+            //         'Access-Control-Allow-Origin': '*',
+            //         "sec-ch-ua": `"Microsoft Edge";v="95", "Chromium";v="95", ";Not A Brand";v="99"`,
+            //         "sec-ch-ua-mobile": "?0",
+            //         "sec-ch-ua-platform": `"Windows"`,
+            //         "upgrade-insecure-requests": "1",
+            //         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.44"
+            //     }
+            // }
+            , {
+                mode: 'no-cors'
+                // ,headers: {
+                //     "sec-ch-ua": "\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
+                //     "sec-ch-ua-mobile": "?0",
+                //     "sec-ch-ua-platform": "\"Windows\"",
+                //     "upgrade-insecure-requests": "1",
+                //     "Referer": "https://stackblitz.com/",
+                //     "Referrer-Policy": "strict-origin-when-cross-origin"
+                // }
             }
-        }).then(response => {
+        ).then(response => {
             console.log(response)
         }).catch(err => {
             console.log(err)
