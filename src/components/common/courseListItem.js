@@ -11,7 +11,7 @@ export default function CourseListItem (props) {
         AOS.init();
         AOS.refresh();
       }, []);
-
+ 
     return (
         <div>
             <section className="container">
@@ -23,6 +23,7 @@ export default function CourseListItem (props) {
                         {props.value.data.map((value, index) => <CourseListSubItem value={value} key={index}/>)}
                     </div>
                 </div>
+                
             </section> 
         </div>
     )

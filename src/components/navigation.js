@@ -12,6 +12,10 @@ const navlinks = [
         title: 'Blog',
         path: '/blog'
     },
+    {
+        title: 'Dashboard',
+        path: '/dashboard'
+    },
     // {
     //     title: 'Contact Us',
     //     path: '/contact-us'

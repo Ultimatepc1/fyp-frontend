@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Navigation from './components/navigation'
 import PageRenderer from './page-renderer'
 import PageRendererWithId from './page-renderer-with-id';
+import Dashboard from './pages/dashboard';
 
 function App() {
   const user = {
@@ -14,9 +15,11 @@ function App() {
     <div className="App">
       <Navigation user = {user}/>
         <Switch>
+        {/* <Route path="/dashboard" component={Dashboard}></Route> */}
           <Route path="/:page/:id" component={PageRendererWithId}></Route>
           <Route path="/:page" component={PageRenderer}></Route>
           <Route path="/" render={() => <Redirect to="/home"></Redirect>}></Route>
+          
           <Route component={() => 404}></Route>
         </Switch>
     </div>

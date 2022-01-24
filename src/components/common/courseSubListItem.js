@@ -71,7 +71,7 @@ export default function CourseListSubItem(props) {
                             </Card>
                             </Link>
                         </Grid>
-                    
+                     
                     
                         <Grid item xs={12} md={4} lg={2}>
                         <Link to={`/problems/${props.value.completion_one}`}>
