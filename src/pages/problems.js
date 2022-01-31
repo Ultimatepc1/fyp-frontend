@@ -51,7 +51,7 @@ export default function Problems(props) {
             // )
             sdk.embedGithubProject(
                 'problemIDE',
-                'Ultimatepc1/node-wdhbdf',
+                'fypgeneral/get-w-db-c-1',
                 {
                     openFile: 'index.js',
                     height: 600,
