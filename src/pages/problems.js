@@ -6,25 +6,38 @@ import TextField from '@mui/material/TextField';
 import sdk from '@stackblitz/sdk'
 import axios from 'axios'
 
+import { getProblemData } from '../api/problem'
 
 
 export default function Problems(props) {
 
-    const [state, setState] = useState({ invalid: true, id: null, outputURL: "" });
-    const [question, setQuestion] = useState(data)
+    const [state, setState] = useState({ outputURL: "", loading: false, error: false, success: false });
+    const [question, setQuestion] = useState()
 
-    const getId = async (id) => {
-        setState(prevState => ({ ...prevState, id: id }))
-        if (id === 'YFG5') {
-            setState(prevState => ({ ...prevState, invalid: false }))
+    // const getId = async (id) => {
+    //     setState(prevState => ({ ...prevState, id: id }))
+    //     if (id === 'YFG5') {
+    //         setState(prevState => ({ ...prevState, invalid: false }))
+    //     }
+    //     console.log(state.invalid);
+    // }
+    const getProblemApiData = async (id) => {
+        setState(prevState => ({ ...prevState, loading: true}))
+        var apiData = await getProblemData(id)
+        console.log(apiData)
+        if(apiData.error){
+            await setState(prevState => ({ ...prevState, loading: false, error: true}))
+        }else if(apiData.result){
+            await setQuestion(apiData.result);
+            setState(prevState => ({ ...prevState, loading: false, success: true}))
         }
-        console.log(state.invalid);
     }
 
     useEffect(() => {
         try {
             // id=props.match.params.id;
-            getId(props.id);
+            // getId(props.id);
+            getProblemApiData(props.id);
             // sdk.embedProjectId(
             //     'problemIDE',
             //     'node-wdhbdf',
@@ -35,7 +48,7 @@ export default function Problems(props) {
             //     }
             // )
         } catch (e) {
-            console.log('workedout page error in useffect')
+            console.log('problems page error in useffect')
             console.log(e)
         }
     }, []);
@@ -109,9 +122,10 @@ export default function Problems(props) {
 
     return (
         <>
-            <h2>{data.title}</h2>
-            {state.invalid ? <div>Invalid ID</div> : <div className="home">
+            {state.error && <h1>Invalid ID</h1>}
+            {state.success && <div className="home">
                 <h2>{question.title}</h2>
+                <div dangerouslySetInnerHTML={{ __html:  question.question }}></div>
                 {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
                     title="node-express-rest-template"

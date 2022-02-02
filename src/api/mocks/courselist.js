@@ -5,9 +5,9 @@ export default [{
             'title' : 'Simple GET request without DB',
             'supportive' : '60F9',
             'workedout' : '78Y4',
-            'completion_one':'YFG5',
-            'completion_two':'id',
-            'conventional':'id',
+            'completion_one':'61f79c01732e939bf6d7baf0',
+            'completion_two':'61f7b9d1732e939bf6d7bb10',
+            'conventional':'61f90720da33014aee14287b',
         },
         {
             'title' : 'Simple GET request with DB',
