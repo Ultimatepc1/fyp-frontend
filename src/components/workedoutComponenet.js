@@ -10,7 +10,7 @@ const WorkedOutComponent = (props) => {
             <h2>{props.value.sample_input}</h2>
             {/* <p>{props.value.sample_output}</p> */}
             <h4 style={{color:'tomato'}}>Expected output :</h4>
-            <div dangerouslySetInnerHTML={{ __html:  props.value.sample_output }} style={{color:'tomato'}}></div>
+            <div dangerouslySetInnerHTML={{ __html:  props.value.sample_output }}></div>
             {props.value.ans && <iframe src={props.value.ans}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
                     title="node-express-rest-template"
