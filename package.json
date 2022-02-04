@@ -12,7 +12,6 @@
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "antd": "^4.17.2",
     "aos": "^2.3.4",
     "axios": "^0.24.0",
     "moment": "^2.29.0",

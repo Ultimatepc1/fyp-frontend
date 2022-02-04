@@ -1,36 +1,47 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import list from '../api/mocks/supportive_60F9';
 import SupportiveComponent from "../components/supportiveComponenet";
+import { getSupportiveData } from '../api/supportive'
 
 
-export default function Supportive(props){
+export default function Supportive(props) {
+    const [state, setState] = useState({ loading: false, error: false, success: false });
+    const [supportiveData, setSupportiveData] = useState([])
 
-    const [state,setState]=useState({invalid:true, id: null});
-
-    const getId =async (id) => {
-        setState(prevState => ({ ...prevState, id: id }))
-        if(id==='60F9'){
-            setState(prevState=>({...prevState,invalid:false}))
+    const getSupportiveApiData = async (id) => {
+        setState(prevState => ({ ...prevState, loading: true }))
+        var apiData = await getSupportiveData(id)
+        console.log(apiData)
+        if (apiData.error) {
+            await setState(prevState => ({ ...prevState, loading: false, error: true }))
+        } else if (apiData.result) {
+            if (apiData.result.data) {
+                await setSupportiveData(apiData.result);
+                setState(prevState => ({ ...prevState, loading: false, success: true }))
+            } else {
+                setState(prevState => ({ ...prevState, loading: false, success: false, error: true }))
+            }
         }
-        console.log(state.invalid);
     }
 
-    useEffect(()=>{
-        try{
+    useEffect(() => {
+        try {
             console.log(props.id)
             // id=props.match.params.id;
-            getId(props.id);
-        }catch(e){
+            getSupportiveApiData(props.id)
+        } catch (e) {
             console.log('supportive page error in useeffect')
             console.log(e)
         }
-    },[]);
+    }, []);
 
     return (
         <>
-            {state.invalid ? <div>Invalid ID</div> : <div>{list.map((value,index)=>
-                <SupportiveComponent value={value} key={index}/>
-            )}</div>
+            {state.error && <div>Invalid ID</div>}
+            {state.success &&
+                <div>{supportiveData.data.map((value) =>
+                    <SupportiveComponent value={value} key={value._id} />
+                )}</div>
             }
         </>
     )
