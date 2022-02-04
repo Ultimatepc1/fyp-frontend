@@ -2,7 +2,8 @@ import React,{ useState, useEffect } from 'react'
 import courseList from '../api/mocks/courselist'
 import CourseListItem from '../components/common/courseListItem';
 import '../assets/scss/_home.scss';
-import CircularProgress from '@mui/material/CircularProgress';
+import '../components/common/loader';
+import Loader from '../components/common/loader';
 
 
 export default function Home(){
@@ -38,7 +39,7 @@ export default function Home(){
     return(
         <main className="home">
           <div>
-            {state.loading && <CircularProgress color="secondary" />}
+            {state.loading && <Loader/>}
             {courseList.map((value, index) => <CourseListItem value={value} key={index}/>)}
             
           </div>

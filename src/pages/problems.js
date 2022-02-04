@@ -5,14 +5,21 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import sdk from '@stackblitz/sdk'
 import axios from 'axios'
+import Loader from '../components/common/loader';
+
 
 import { getProblemData } from '../api/problem'
-
+import MuiErrorModal from "../components/common/muiErrorModal";
+import Sampleio from "../components/sampleio";
+import IOMapping from "../components/ioMapping";
 
 export default function Problems(props) {
 
     const [state, setState] = useState({ outputURL: "", loading: false, error: false, success: false });
     const [question, setQuestion] = useState()
+
+    const [error,setError] = useState();
+    
 
     // const getId = async (id) => {
     //     setState(prevState => ({ ...prevState, id: id }))
@@ -26,6 +33,14 @@ export default function Problems(props) {
         var apiData = await getProblemData(id)
         console.log(apiData)
         if(apiData.error){
+            console.log("----")
+            console.log(apiData.error.response.data);
+            try{
+                await setError(apiData.error.response.data);
+            }
+            catch(e){
+                await setError({"message":"Some error occured","data":apiData.error});
+            }
             await setState(prevState => ({ ...prevState, loading: false, error: true}))
         }else if(apiData.result){
             await setQuestion(apiData.result);
@@ -119,13 +134,26 @@ export default function Problems(props) {
     }
 
 
+    
 
     return (
         <>
-            {state.error && <h1>Invalid ID</h1>}
+            {state.loading &&  <Loader/>}
+            {state.error && 
+            <MuiErrorModal open={true} message={error.message} data={error.data}/>
+            
+            }
             {state.success && <div className="home">
                 <h2>{question.title}</h2>
                 <div dangerouslySetInnerHTML={{ __html:  question.question }}></div>
+                {/* <div>
+                    {question.example.map((value,index)=>
+                        <Sampleio data={value} key={value._id}/>
+                    )}
+                </div> */}
+                <div>
+                    <IOMapping data={question.example}/>
+                </div>
                 {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
                     title="node-express-rest-template"
