@@ -12,6 +12,7 @@ import { getProblemData } from '../api/problem'
 import MuiErrorModal from "../components/common/muiErrorModal";
 import Sampleio from "../components/sampleio";
 import IOMapping from "../components/ioMapping";
+import { Card, CardContent } from "@mui/material";
 
 export default function Problems(props) {
 
@@ -144,8 +145,12 @@ export default function Problems(props) {
             
             }
             {state.success && <div className="home">
-                <h2>{question.title}</h2>
-                <div dangerouslySetInnerHTML={{ __html:  question.question }}></div>
+                <h2 data-aos="flip-up">{question.title}</h2>
+                <Card data-aos="flip-up">
+                    <CardContent>
+                    <div dangerouslySetInnerHTML={{ __html:  question.question }}></div>
+                    </CardContent>
+                </Card>
                 {/* <div>
                     {question.example.map((value,index)=>
                         <Sampleio data={value} key={value._id}/>

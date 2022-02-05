@@ -39,8 +39,8 @@ export default function Supportive(props) {
         <>
             {state.error && <div>Invalid ID</div>}
             {state.success &&
-                <div>{supportiveData.data.map((value) =>
-                    <SupportiveComponent value={value} key={value._id} />
+                <div data-aos="flip-down">{supportiveData.data.map((value) =>
+                    <SupportiveComponent value={value} key={value._id} data-aos="flip-up"/>
                 )}</div>
             }
         </>

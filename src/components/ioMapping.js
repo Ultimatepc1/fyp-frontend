@@ -45,6 +45,10 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Sampleio from './sampleio';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Fade from '@mui/material/Fade'
 
 export default function IOMapping(props) {
   const [page, setPage] = React.useState(1);
@@ -58,8 +62,18 @@ export default function IOMapping(props) {
   return (
     <Stack spacing={2}>
       {/* <Typography>Page: {page}</Typography> */}
-      <Pagination count={io.length} page={page} onChange={handleChange} />
-      <Sampleio data={io[page-1]}/>
+      <br/>
+      <Card data-aos="zoom-in">
+        <CardContent>
+        <Pagination count={io.length} page={page} onChange={handleChange} />
+        {/* </CardContent>
+      </Card>
+        <Card variant="outlined">
+          <CardContent> */}
+          <Sampleio data={io[page-1]}/>
+          </CardContent>
+        </Card>
+        <br/>
       
     </Stack>
   );

@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
+import { Card, CardContent } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -21,10 +22,20 @@ export default function Sampleio(props) {
 
   return (
     <div>
-        <h2>Sample Input</h2>
-        <div dangerouslySetInnerHTML={{ __html:  props.data.sample_input }}></div>
-        <h2>Sample Output</h2>
-        <div dangerouslySetInnerHTML={{ __html:  props.data.sample_output }}></div>
+        <br/>
+        <Card style={{backgroundColor:"#F3F7F7"}} data-aos="fade-right">
+          <CardContent>
+            <h3>Sample Input</h3>
+            <div dangerouslySetInnerHTML={{ __html:  props.data.sample_input }}></div>
+          </CardContent>
+        </Card>
+        <br/>
+        <Card style={{backgroundColor:"#F3F7F7"}} data-aos="fade-left">
+          <CardContent>
+            <h3>Sample Output</h3>
+            <div dangerouslySetInnerHTML={{ __html:  props.data.sample_output }}></div>
+          </CardContent>
+        </Card>
     </div>
   );
 }
