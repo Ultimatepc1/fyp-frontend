@@ -55,7 +55,7 @@ export default function Problems(props) {
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             await setQuestion(apiData.result);
-            setState(prevState => ({ ...prevState, loading: true, success: false }))
+            setState(prevState => ({ ...prevState, loading: false, success: true }))
         }
     }
 
