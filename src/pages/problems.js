@@ -55,7 +55,7 @@ export default function Problems(props) {
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             await setQuestion(apiData.result);
-            setState(prevState => ({ ...prevState, loading: false, success: true }))
+            setState(prevState => ({ ...prevState, loading: true, success: false }))
         }
     }
 
@@ -170,7 +170,7 @@ export default function Problems(props) {
                                     <Tab label="Solution" value="soln" sx={{fontSize:15}} />
                                 </TabList>
                             </Box>
-                            <TabPanel value="question" sx={{margin:-3}}>
+                            <TabPanel value="question" sx={{margin:-3}} >
                                 {/* <div className="home"> */}
                                 <h2>{question.title}</h2>
                                 <Card>
@@ -184,7 +184,7 @@ export default function Problems(props) {
                     )}
                 </div> */}
                                 <div>
-                                    <IOMapping data={question.example} />
+                                    <IOMapping data={question.example}  />
                                 </div>
                                 {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
