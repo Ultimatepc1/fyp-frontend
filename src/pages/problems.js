@@ -197,7 +197,7 @@ export default function Problems(props) {
                                     </Fade>
                                 </Slide>
                                 <div>
-                                    <IOMapping data={question.example} />
+                                    <IOMapping data={question.example}  />
                                 </div>
                                 {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
