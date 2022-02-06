@@ -146,7 +146,6 @@ export default function Problems(props) {
 
 
 
-
     return (
         <>
             {state.loading && <Loader />}
@@ -156,9 +155,10 @@ export default function Problems(props) {
             }
             {state.success &&
                 <div className="home">
-                    <Box sx={{ width: '100%', typography: 'body' }}>
+                    <Box sx={{ width: '100%', typography: 'body', padding:2 }}>
                         <TabContext value={tab}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+
                                 <TabList
                                     onChange={handleTabChange}
                                     aria-label="lab API tabs example"
@@ -166,11 +166,11 @@ export default function Problems(props) {
                                     textColor="primary"
                                     indicatorColor="primary"
                                 >
-                                    <Tab label="Problem" value="question" />
-                                    <Tab label="Solution" value="soln" />
+                                    <Tab label="Problem" value="question" sx={{fontSize:15,}} />
+                                    <Tab label="Solution" value="soln" sx={{fontSize:15}} />
                                 </TabList>
                             </Box>
-                            <TabPanel value="question">
+                            <TabPanel value="question" sx={{margin:-3}}>
                                 {/* <div className="home"> */}
                                 <h2>{question.title}</h2>
                                 <Card>
@@ -225,7 +225,8 @@ export default function Problems(props) {
                                 <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button><br /><br />
                                 {/* </div> */}
                             </TabPanel>
-                            <TabPanel value="soln">
+                            <TabPanel value="soln" sx={{margin:-3}}>
+                                <br/>
                                 <Solution data={question.soln} />
                             </TabPanel>
                         </TabContext>
