@@ -42,52 +42,28 @@
 
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import Sampleio from './sampleio';
 import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import ProbSoln from './probSoln';
 import Fade from '@mui/material/Fade'
 
-export default function IOMapping(props) {
-  const [page, setPage] = React.useState(1);
-  const [io, setIO] = React.useState(props.data);
-  const handleChange = (event, value) => {
-    setPage(value);
-  };
+export default function Solution(props) {
 
+    return (
+        <Stack spacing={2}>
+            {/* <Typography>Page: {page}</Typography> */}
+            <Card>
+                {props.data.map((value) =>
+                    <CardContent key={value._id}>
+                        <h3>{value.file_name}</h3>
+                        <ProbSoln content={value.content} key={value._id} />
+                    </CardContent>
+                )}
+            </Card>
+            <br />
 
-
-  return (
-    <Stack spacing={2}>
-      {/* <Typography>Page: {page}</Typography> */}
-      <br />
-      <Card>
-        <CardContent>
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Pagination
-              count={io.length}
-              page={page}
-              onChange={handleChange}
-              size="large"
-            />
-          </Box>
-          {/* </CardContent>
-      </Card>
-        <Card variant="outlined">
-          <CardContent> */}
-          <Sampleio data={io[page - 1]} />
-        </CardContent>
-      </Card>
-      <br />
-
-    </Stack>
-  );
+        </Stack>
+    );
 }

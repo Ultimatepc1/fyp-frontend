@@ -13,14 +13,21 @@ import MuiErrorModal from "../components/common/muiErrorModal";
 import Sampleio from "../components/sampleio";
 import IOMapping from "../components/ioMapping";
 import { Card, CardContent } from "@mui/material";
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Solution from "../components/solution";
 
 export default function Problems(props) {
 
     const [state, setState] = useState({ outputURL: "", loading: false, error: false, success: false });
     const [question, setQuestion] = useState()
+    const [tab, setTab] = useState('question')
 
-    const [error,setError] = useState();
-    
+    const [error, setError] = useState();
+
 
     // const getId = async (id) => {
     //     setState(prevState => ({ ...prevState, id: id }))
@@ -29,23 +36,26 @@ export default function Problems(props) {
     //     }
     //     console.log(state.invalid);
     // }
+    const handleTabChange = (event, newValue) => {
+        setTab(newValue);
+    };
     const getProblemApiData = async (id) => {
-        setState(prevState => ({ ...prevState, loading: true}))
+        setState(prevState => ({ ...prevState, loading: true }))
         var apiData = await getProblemData(id)
         console.log(apiData)
-        if(apiData.error){
+        if (apiData.error) {
             console.log("----")
             console.log(apiData.error.response.data);
-            try{
+            try {
                 await setError(apiData.error.response.data);
             }
-            catch(e){
-                await setError({"message":"Some error occured","data":apiData.error});
+            catch (e) {
+                await setError({ "message": "Some error occured", "data": apiData.error });
             }
-            await setState(prevState => ({ ...prevState, loading: false, error: true}))
-        }else if(apiData.result){
+            await setState(prevState => ({ ...prevState, loading: false, error: true }))
+        } else if (apiData.result) {
             await setQuestion(apiData.result);
-            setState(prevState => ({ ...prevState, loading: false, success: true}))
+            setState(prevState => ({ ...prevState, loading: false, success: true }))
         }
     }
 
@@ -135,68 +145,92 @@ export default function Problems(props) {
     }
 
 
-    
+
 
     return (
         <>
-            {state.loading &&  <Loader/>}
-            {state.error && 
-            <MuiErrorModal open={true} message={error.message} data={error.data}/>
-            
+            {state.loading && <Loader />}
+            {state.error &&
+                <MuiErrorModal open={true} message={error.message} data={error.data} />
+
             }
-            {state.success && <div className="home">
-                <h2 data-aos="flip-up">{question.title}</h2>
-                <Card data-aos="flip-up">
-                    <CardContent>
-                    <div dangerouslySetInnerHTML={{ __html:  question.question }}></div>
-                    </CardContent>
-                </Card>
-                {/* <div>
+            {state.success &&
+                <div className="home">
+                    <Box sx={{ width: '100%', typography: 'body' }}>
+                        <TabContext value={tab}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                <TabList
+                                    onChange={handleTabChange}
+                                    aria-label="lab API tabs example"
+                                    variant="fullWidth"
+                                    textColor="primary"
+                                    indicatorColor="primary"
+                                >
+                                    <Tab label="Problem" value="question" />
+                                    <Tab label="Solution" value="soln" />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="question">
+                                {/* <div className="home"> */}
+                                <h2>{question.title}</h2>
+                                <Card>
+                                    <CardContent>
+                                        <div dangerouslySetInnerHTML={{ __html: question.question }}></div>
+                                    </CardContent>
+                                </Card>
+                                {/* <div>
                     {question.example.map((value,index)=>
                         <Sampleio data={value} key={value._id}/>
                     )}
                 </div> */}
-                <div>
-                    <IOMapping data={question.example}/>
-                </div>
-                {/* <iframe src={data.ide}
+                                <div>
+                                    <IOMapping data={question.example} />
+                                </div>
+                                {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
                     title="node-express-rest-template"
                     allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
                     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
                 ></iframe> */}
-                {/* <iframe frameborder="0" width="100%" height="500px" src="https://replit.com/@PriyangChaurasi/tempognition?embed=true"></iframe> */}
-                <div id="problemIDE">
-                    {
-                        // sdk.embedProjectId(
-                        //     '<div></div>',
-                        //     'node-wdhbdf',
-                        //     {
-                        //         openFile: 'index.js',
-                        //         height: 500,
-                        //         width: 500
-                        //     }
-                        // )
-                        // sdk.embedGithubProject(
-                        //     'problemIDE',
-                        //     'gothinkster/angular-realworld-example-app',
-                        //     { height: 320 }
-                        // )
-                    }
+                                {/* <iframe frameborder="0" width="100%" height="500px" src="https://replit.com/@PriyangChaurasi/tempognition?embed=true"></iframe> */}
+                                <div id="problemIDE">
+                                    {
+                                        // sdk.embedProjectId(
+                                        //     '<div></div>',
+                                        //     'node-wdhbdf',
+                                        //     {
+                                        //         openFile: 'index.js',
+                                        //         height: 500,
+                                        //         width: 500
+                                        //     }
+                                        // )
+                                        // sdk.embedGithubProject(
+                                        //     'problemIDE',
+                                        //     'gothinkster/angular-realworld-example-app',
+                                        //     { height: 320 }
+                                        // )
+                                    }
+                                </div>
+                                {/* <button onClick={embedIde} >Code</button> */}
+                                <Button variant="contained" onClick={() => embedIde(question.ide)}>Code</Button><br /><br />
+                                <TextField
+                                    hiddenLabel
+                                    id="filled-hidden-label-small"
+                                    variant="filled"
+                                    size="small"
+                                    placeholder="Enter Output URL"
+                                    value={state.outputURL}
+                                    onChange={handleOutputURIChange}
+                                /><br /><br />
+                                <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button><br /><br />
+                                {/* </div> */}
+                            </TabPanel>
+                            <TabPanel value="soln">
+                                <Solution data={question.soln} />
+                            </TabPanel>
+                        </TabContext>
+                    </Box>
                 </div>
-                {/* <button onClick={embedIde} >Code</button> */}
-                <Button variant="contained" onClick={() => embedIde(question.ide)}>Code</Button><br /><br />
-                <TextField
-                    hiddenLabel
-                    id="filled-hidden-label-small"
-                    variant="filled"
-                    size="small"
-                    placeholder="Enter Output URL"
-                    value={state.outputURL}
-                    onChange={handleOutputURIChange}
-                /><br /><br />
-                <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button><br /><br />
-            </div>
             }
         </>
     )

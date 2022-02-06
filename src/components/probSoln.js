@@ -18,22 +18,14 @@ const style = {
   p: 4,
 };
 
-export default function Sampleio(props) {
+export default function ProbSoln(props) {
 
   return (
     <div>
         <br/>
         <Card style={{backgroundColor:"#F3F7F7"}}>
           <CardContent>
-            <h3>Sample Input</h3>
-            <div dangerouslySetInnerHTML={{ __html:  props.data.sample_input }}></div>
-          </CardContent>
-        </Card>
-        <br/>
-        <Card style={{backgroundColor:"#F3F7F7"}}>
-          <CardContent>
-            <h3>Sample Output</h3>
-            <div dangerouslySetInnerHTML={{ __html:  props.data.sample_output }}></div>
+            <div dangerouslySetInnerHTML={{ __html:  props.content }}></div>
           </CardContent>
         </Card>
     </div>
