@@ -65,7 +65,7 @@ export default function WorkedOut(props) {
             <MuiErrorModal open={true} message={error.message} data={error.data}/>
             
             }
-            {state.success && <div data-aos="flip-up">
+            {state.success && <div>
                 <h2>{workedOutData.title}</h2>
                 <div>{workedOutData.data.map((value, index) =>
                 <WorkedOutComponent value={value} key={value._id} />

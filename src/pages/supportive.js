@@ -55,8 +55,8 @@ export default function Supportive(props) {
             <MuiErrorModal open={true} message={error.message} data={error.data}/>
             }
             {state.success &&
-                <div data-aos="flip-down">{supportiveData.data.map((value) =>
-                    <SupportiveComponent value={value} key={value._id} data-aos="flip-up"/>
+                <div>{supportiveData.data.map((value) =>
+                    <SupportiveComponent value={value} key={value._id}/>
                 )}</div>
             }
         </>

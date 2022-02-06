@@ -7,7 +7,7 @@ const WorkedOutComponent = (props) => {
     return (
         <div className="supportive">
             {/* <h4>{props.value.eg_no}</h4> */}
-            <h1 style={{color:'brown'}}>Question : {props.value.eg_no}. {props.value.question}</h1>
+            <h1 style={{color:'brown'}}>Question : {props.value.eg_no}. <span dangerouslySetInnerHTML={{ __html:  props.value.question }}></span></h1>
             <h2>{props.value.sample_input}</h2>
             {/* <p>{props.value.sample_output}</p> */}
             <h4 style={{color:'tomato'}}>Expected output :</h4>
