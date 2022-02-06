@@ -49,7 +49,7 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Fade from '@mui/material/Fade'
+import { Fade, Slide } from '@mui/material'
 
 export default function IOMapping(props) {
   const [page, setPage] = React.useState(1);
@@ -64,28 +64,46 @@ export default function IOMapping(props) {
     <Stack spacing={2}>
       {/* <Typography>Page: {page}</Typography> */}
       <br />
-      <Card>
-        <CardContent>
-          <Box sx={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Pagination
-              count={io.length}
-              page={page}
-              onChange={handleChange}
-              size="large"
-            />
-          </Box>
-          {/* </CardContent>
+      {/* fade-up */}
+      <Slide
+        direction="up"
+        in={true}
+        appear={true}
+        style={{ transitionDelay: '800ms' }}
+        easing={{
+          // enter: "cubic-bezier(0, 1.5, .8, 1)",
+          enter: "cubic-bezier(0,.02,1,.94)",
+          exit: "linear"
+        }}>
+        <Fade
+          in={true}
+          appear={true}
+          style={{ transitionDelay: '800ms' }}
+        >
+          <Card>
+            <CardContent>
+              <Box sx={{
+                display: 'flex',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Pagination
+                  count={io.length}
+                  page={page}
+                  onChange={handleChange}
+                  size="large"
+                />
+              </Box>
+              {/* </CardContent>
       </Card>
         <Card variant="outlined">
           <CardContent> */}
-          <Sampleio data={io[page - 1]} />
-        </CardContent>
-      </Card>
+              <Sampleio data={io[page - 1]} />
+            </CardContent>
+          </Card>
+        </Fade>
+      </Slide>
       <br />
 
     </Stack>

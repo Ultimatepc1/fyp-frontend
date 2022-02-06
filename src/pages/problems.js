@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import data from '../api/mocks/completion_one_YFG5';
+// import data from '../api/mocks/completion_one_YFG5';
 import '../assets/scss/_home.scss';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,7 +10,6 @@ import Loader from '../components/common/loader';
 
 import { getProblemData } from '../api/problem'
 import MuiErrorModal from "../components/common/muiErrorModal";
-import Sampleio from "../components/sampleio";
 import IOMapping from "../components/ioMapping";
 import { Card, CardContent } from "@mui/material";
 import Box from '@mui/material/Box';
@@ -19,6 +18,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Solution from "../components/solution";
+import { Zoom, Slide, Fade } from '@mui/material';
 
 export default function Problems(props) {
 
@@ -171,18 +171,31 @@ export default function Problems(props) {
                                 </TabList>
                             </Box>
                             <TabPanel value="question">
-                                {/* <div className="home"> */}
-                                <h2>{question.title}</h2>
-                                <Card>
-                                    <CardContent>
-                                        <div dangerouslySetInnerHTML={{ __html: question.question }}></div>
-                                    </CardContent>
-                                </Card>
-                                {/* <div>
-                    {question.example.map((value,index)=>
-                        <Sampleio data={value} key={value._id}/>
-                    )}
-                </div> */}
+                                {/* zoom out */}
+                                <Zoom in={true} style={{ transitionDelay: '700ms' }}>
+                                    <h2>{question.title}</h2>
+                                </Zoom>
+                                {/* zoom-left */}
+                                <Slide
+                                    direction="left"
+                                    in={true}
+                                    style={{ transitionDelay: '800ms' }}
+                                    easing={{
+                                        // enter: "cubic-bezier(0, 1.5, .8, 1)",
+                                        enter: "cubic-bezier(0,.02,1,.94)",
+                                        exit: "linear"
+                                    }}>
+                                    <Fade
+                                        in={true}
+                                        style={{ transitionDelay: '800ms' }}
+                                    >
+                                        <Card>
+                                            <CardContent>
+                                                <div dangerouslySetInnerHTML={{ __html: question.question }}></div>
+                                            </CardContent>
+                                        </Card>
+                                    </Fade>
+                                </Slide>
                                 <div>
                                     <IOMapping data={question.example} />
                                 </div>
