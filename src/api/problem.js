@@ -21,6 +21,27 @@ export const getProblemData = (problem_id) => {
     })
 }
 
+export const saveSubmission = (problem_id,user_id,data) => {
+    return axios
+    .post(`http://localhost:8080/problem/createSubmission/`, {
+        user_id: user_id,
+        problem_id: problem_id,
+        data: data
+    })
+    .then(res => {
+        console.log(res)
+        if(res.status != 201){
+            const error = new Error('Status code not 201, some error occured');
+            throw error
+        }
+        return res.data
+    })
+    .catch(err=> {
+        console.log("save submission error "+err)
+        return {error: err}
+    })
+}
+
 // export const register = newUser=>{
 //     return axios
 //     .post('users/register', {
