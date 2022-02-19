@@ -22,7 +22,7 @@ import { Zoom, Slide, Fade } from '@mui/material';
 
 export default function Problems(props) {
 
-    const [state, setState] = useState({ outputURL: "", loading: false, error: false, success: false });
+    const [state, setState] = useState({ vm: null,outputURL: "", loading: false, error: false, success: false });
     const [question, setQuestion] = useState()
     const [tab, setTab] = useState('question')
 
@@ -101,7 +101,12 @@ export default function Problems(props) {
                     hideNavigation: false,
 
                 }
-            );
+            ).then(vm => {
+                // console.log(vm);
+                // var temp = vm.getFsSnapshot();
+                // console.log(temp)
+                setState(prevState => ({ ...prevState, vm: vm }))
+            });
         } catch (e) {
             console.log(e)
         }
@@ -144,7 +149,10 @@ export default function Problems(props) {
         })
     }
 
-
+    const submitCode = async () => {
+        var temp =await state.vm.getFsSnapshot();
+        console.log(temp);
+    }
 
     return (
         <>
@@ -236,6 +244,7 @@ export default function Problems(props) {
                                     onChange={handleOutputURIChange}
                                 /><br /><br />
                                 <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button><br /><br />
+                                <Button variant="contained" onClick={() => submitCode()}>Submit</Button>
                                 {/* </div> */}
                             </TabPanel>
                             <TabPanel value="soln" sx={{ margin: -3 }}>
