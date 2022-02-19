@@ -18,6 +18,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Solution from "../components/solution";
+import Submission from "../components/submission";
 import { Zoom, Slide, Fade } from '@mui/material';
 
 export default function Problems(props) {
@@ -41,8 +42,8 @@ export default function Problems(props) {
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
-            console.log(apiData.error.response.data);
             try {
+                console.log(apiData.error.response.data);
                 await setError(apiData.error.response.data);
             }
             catch (e) {
@@ -139,8 +140,8 @@ export default function Problems(props) {
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
-            console.log(apiData.error.response.data);
             try {
+                console.log(apiData.error.response.data);
                 await setError(apiData.error.response.data);
             }
             catch (e) {
@@ -173,6 +174,7 @@ export default function Problems(props) {
                                     indicatorColor="primary"
                                 >
                                     <Tab label="Problem" value="question" sx={{ fontSize: 15, }} />
+                                    <Tab label="Submissions" value="submission" sx={{ fontSize: 15 }} />
                                     <Tab label="Solution" value="soln" sx={{ fontSize: 15 }} />
                                 </TabList>
                             </Box>
@@ -244,6 +246,10 @@ export default function Problems(props) {
                                 {ide.open && <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button>}<br /><br />
                                 {ide.open && <Button variant="contained" onClick={() => submitCode()}>Submit</Button>}
                                 {/* </div> */}
+                            </TabPanel>
+                            <TabPanel value="submission" sx={{ margin: -3 }}>
+                                <br />
+                                <Submission problem_id={props.id} user_id={props.id} />
                             </TabPanel>
                             <TabPanel value="soln" sx={{ margin: -3 }}>
                                 <br />
