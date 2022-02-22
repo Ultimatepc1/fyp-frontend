@@ -5,6 +5,8 @@ import '../assets/scss/_home.scss';
 import { CardSlide } from 'react-card-slide/dist';
 import QuesDone from '../api/mocks/doneQues';
 import doneQues from '../api/mocks/doneQues';
+import ResumeCourse from '../components/resumecourse';
+
 
 export default function Dashboard() {
     const [width, setWidth] = useState(document.body.clientWidth);
@@ -20,10 +22,11 @@ export default function Dashboard() {
         <main className="home">
             <div>
                 {/* {courseList.map((value, index) => <CourseListItem value={value} key={index}/>)} */}
-                <h1>Welcome to Dashboard !</h1>
-                <CardSlide items={
+                <h1>Welcome to Dashboard !</h1><br />
+                {/* <CardSlide items={
                     doneQues
-                } />
+                } /> */}
+                <ResumeCourse/>
 
 
             </div>
