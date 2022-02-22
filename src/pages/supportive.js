@@ -8,7 +8,7 @@ import MuiErrorModal from "../components/common/muiErrorModal";
 export default function Supportive(props) {
     const [state, setState] = useState({ loading: false, error: false, success: false });
     const [supportiveData, setSupportiveData] = useState([])
-    const [error,setError] = useState();
+    const [error, setError] = useState();
 
     const getSupportiveApiData = async (id) => {
         setState(prevState => ({ ...prevState, loading: true }))
@@ -17,12 +17,19 @@ export default function Supportive(props) {
         if (apiData.error) {
             // set Error
             console.log("----")
-            console.log(apiData.error.response.data);
-            try{
-                await setError(apiData.error.response.data);
-            }
-            catch(e){
-                await setError({"message":"Some error occured","data":apiData.error});
+            
+            if(apiData.error.response){
+                if(apiData.error.response.data){
+                    await setError(apiData.error.response.data);
+                }else{
+                    if(apiData.error.message){
+                        await setError({ "message": apiData.error.message, "data": "Error" });
+                    }
+                }
+            }else if(apiData.error.message){
+                await setError({ "message": apiData.error.message, "data": "Error" });
+            }else{
+                await setError({ "message": "Some error occured", "data": "Error"});
             }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
@@ -31,7 +38,7 @@ export default function Supportive(props) {
                 setState(prevState => ({ ...prevState, loading: false, success: true }))
             } else {
                 // set Error no worked out examples for this
-                await setError({"message":"Not found","data":"No worked out examples for this"});
+                await setError({ "message": "Not found", "data": "No worked out examples for this" });
                 setState(prevState => ({ ...prevState, loading: false, success: false, error: true }))
             }
         }
@@ -50,13 +57,13 @@ export default function Supportive(props) {
 
     return (
         <>
-            {state.loading &&  <Loader/>}
-            {state.error && 
-            <MuiErrorModal open={true} message={error.message} data={error.data}/>
+            {state.loading && <Loader />}
+            {state.error &&
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true}/>
             }
             {state.success &&
                 <div>{supportiveData.data.map((value) =>
-                    <SupportiveComponent value={value} key={value._id}/>
+                    <SupportiveComponent value={value} key={value._id} />
                 )}</div>
             }
         </>

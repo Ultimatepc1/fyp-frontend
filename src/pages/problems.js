@@ -23,7 +23,13 @@ import { Zoom, Slide, Fade } from '@mui/material';
 
 export default function Problems(props) {
 
-    const [state, setState] = useState({ loading: false, error: false, success: false });
+    const [state, setState] = useState({
+        loading: false,
+        error: false,
+        success: false,
+        submitError: false,
+        submitSuccess: false
+    });
     const [question, setQuestion] = useState()
     const [ide, setIde] = useState({ open: false, vm: null, outputURL: "" })
     const [tab, setTab] = useState('question')
@@ -31,8 +37,8 @@ export default function Problems(props) {
     const [error, setError] = useState();
 
     const handleTabChange = async (event, newValue) => {
-        if(tab === 'question'){
-            await setIde({...ide, open: false})
+        if (tab === 'question') {
+            await setIde({ ...ide, open: false })
         }
         setTab(newValue);
     };
@@ -43,11 +49,24 @@ export default function Problems(props) {
         if (apiData.error) {
             console.log("----")
             try {
-                console.log(apiData.error.response.data);
-                await setError(apiData.error.response.data);
+                // console.log(apiData.error.response.data);
+                if(apiData.error.response){
+                    if(apiData.error.response.data){
+                        await setError(apiData.error.response.data);
+                    }else{
+                        if(apiData.error.message){
+                            await setError({ "message": apiData.error.message, "data": "Error" });
+                        }
+                    }
+                }else if(apiData.error.message){
+                    await setError({ "message": apiData.error.message, "data": "Error" });
+                }else{
+                    await setError({ "message": "Some error occured", "data": "Error"});
+                }
+                
             }
             catch (e) {
-                await setError({ "message": "Some error occured", "data": apiData.error });
+                await setError({ "message": "Some error occured", "data": "Error"});
             }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
@@ -127,8 +146,14 @@ export default function Problems(props) {
         })
     }
 
+    const submitErrorFunc = () => {
+        setState(prevState => ({ ...prevState, loading: false, submitError: false }))
+    }
+    const submitSuccessFunc = () => {
+        setState(prevState => ({ ...prevState, loading: false, submitSuccess: false }))
+    }
     const submitCode = async () => {
-        if(!ide.open){
+        if (!ide.open) {
             return;
         }
 
@@ -136,20 +161,26 @@ export default function Problems(props) {
         console.log(temp);
 
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await saveSubmission(/*problem_id*/props.id,/*user_id*/props.id,temp)
+        var apiData = await saveSubmission(/*problem_id*/props.id,/*user_id*/props.id, temp)
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
-            try {
-                console.log(apiData.error.response.data);
-                await setError(apiData.error.response.data);
+            if(apiData.error.response){
+                if(apiData.error.response.data){
+                    await setError(apiData.error.response.data);
+                }else{
+                    if(apiData.error.message){
+                        await setError({ "message": apiData.error.message, "data": "Error" });
+                    }
+                }
+            }else if(apiData.error.message){
+                await setError({ "message": apiData.error.message, "data": "Error" });
+            }else{
+                await setError({ "message": "Some error occured", "data": "Error"});
             }
-            catch (e) {
-                await setError({ "message": "Some error occured", "data": apiData.error });
-            }
-            await setState(prevState => ({ ...prevState, loading: false, error: true }))
+            await setState(prevState => ({ ...prevState, loading: false, submitError: true }))
         } else if (apiData.result) {
-            setState(prevState => ({ ...prevState, loading: false, success: true }))
+            setState(prevState => ({ ...prevState, loading: false, submitSuccess: true }))
         }
     }
 
@@ -157,8 +188,20 @@ export default function Problems(props) {
         <>
             {state.loading && <Loader />}
             {state.error &&
-                <MuiErrorModal open={true} message={error.message} data={error.data} />
-
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true} />
+            }
+            {state.submitError &&
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={true} ok={true} okFunc={submitErrorFunc}/>
+            }
+            {state.submitSuccess &&
+                <MuiErrorModal
+                    open={true}
+                    message={"Your submission was saved successfully"}
+                    data={"Success"}
+                    dissmisible={true}
+                    ok={true}
+                    okFunc={submitSuccessFunc}
+                />
             }
             {state.success &&
                 <div className="home">

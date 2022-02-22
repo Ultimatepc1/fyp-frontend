@@ -9,7 +9,7 @@ export default function WorkedOut(props) {
 
     const [state, setState] = useState({ loading: false, error: false, success: false });
     const [workedOutData, setWorkedOutData] = useState([])
-    const [error,setError] = useState();
+    const [error, setError] = useState();
 
     // const getId =async (id) => {
     //     setState(prevState => ({ ...prevState, id: id }))
@@ -26,13 +26,19 @@ export default function WorkedOut(props) {
         if (apiData.error) {
             // set Error
             console.log("----")
-            console.log(apiData.error.response.data);
-            try{
-                await setError(apiData.error.response.data);
-            }
-            catch(e){
-                await setError({"message":"Some error occured","data":apiData.error});
-            }
+            if(apiData.error.response){
+                    if(apiData.error.response.data){
+                        await setError(apiData.error.response.data);
+                    }else{
+                        if(apiData.error.message){
+                            await setError({ "message": apiData.error.message, "data": "Error" });
+                        }
+                    }
+                }else if(apiData.error.message){
+                    await setError({ "message": apiData.error.message, "data": "Error" });
+                }else{
+                    await setError({ "message": "Some error occured", "data": "Error"});
+                }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             if (apiData.result.data) {
@@ -40,8 +46,8 @@ export default function WorkedOut(props) {
                 setState(prevState => ({ ...prevState, loading: false, success: true }))
             } else {
                 // set Error no worked out examples for this
-                await setError({"message":"Not found","data":"No worked out examples for this"});
-                
+                await setError({ "message": "Not found", "data": "No worked out examples for this" });
+
                 setState(prevState => ({ ...prevState, loading: false, success: false, error: true }))
             }
         }
@@ -60,16 +66,15 @@ export default function WorkedOut(props) {
 
     return (
         <>
-            {state.loading &&  <Loader/>}
-            {state.error && 
-            <MuiErrorModal open={true} message={error.message} data={error.data}/>
-            
+            {state.loading && <Loader />}
+            {state.error &&
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true} />
             }
             {state.success && <div>
                 <h2>{workedOutData.title}</h2>
                 <div>{workedOutData.data.map((value, index) =>
-                <WorkedOutComponent value={value} key={value._id} />
-            )}</div></div>
+                    <WorkedOutComponent value={value} key={value._id} />
+                )}</div></div>
             }
         </>
     )
