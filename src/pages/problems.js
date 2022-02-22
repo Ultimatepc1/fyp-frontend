@@ -8,7 +8,7 @@ import axios from 'axios'
 import Loader from '../components/common/loader';
 
 
-import { getProblemData } from '../api/problem'
+import { getProblemData, saveSubmission } from '../api/problem'
 import MuiErrorModal from "../components/common/muiErrorModal";
 import IOMapping from "../components/ioMapping";
 import { Card, CardContent } from "@mui/material";
@@ -18,25 +18,22 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Solution from "../components/solution";
+import Submission from "../components/submission";
 import { Zoom, Slide, Fade } from '@mui/material';
 
 export default function Problems(props) {
 
-    const [state, setState] = useState({ outputURL: "", loading: false, error: false, success: false });
+    const [state, setState] = useState({ loading: false, error: false, success: false });
     const [question, setQuestion] = useState()
+    const [ide, setIde] = useState({ open: false, vm: null, outputURL: "" })
     const [tab, setTab] = useState('question')
 
     const [error, setError] = useState();
 
-
-    // const getId = async (id) => {
-    //     setState(prevState => ({ ...prevState, id: id }))
-    //     if (id === 'YFG5') {
-    //         setState(prevState => ({ ...prevState, invalid: false }))
-    //     }
-    //     console.log(state.invalid);
-    // }
-    const handleTabChange = (event, newValue) => {
+    const handleTabChange = async (event, newValue) => {
+        if(tab === 'question'){
+            await setIde({...ide, open: false})
+        }
         setTab(newValue);
     };
     const getProblemApiData = async (id) => {
@@ -45,8 +42,8 @@ export default function Problems(props) {
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
-            console.log(apiData.error.response.data);
             try {
+                console.log(apiData.error.response.data);
                 await setError(apiData.error.response.data);
             }
             catch (e) {
@@ -61,59 +58,45 @@ export default function Problems(props) {
 
     useEffect(() => {
         try {
-            // id=props.match.params.id;
-            // getId(props.id);
             getProblemApiData(props.id);
-            // sdk.embedProjectId(
-            //     'problemIDE',
-            //     'node-wdhbdf',
-            //     {
-            //         openFile: 'index.js',
-            //         height: 500,
-            //         width: 500
-            //     }
-            // )
         } catch (e) {
             console.log('problems page error in useffect')
             console.log(e)
         }
     }, []);
 
-    const embedIde = (ide) => {
-        try {
-            // sdk.embedProjectId(
-            //     'problemIDE',
-            //     'node-wdhbdf',
-            //     {
-            //         openFile: 'index.js',
-            //         // height: 500,
-            //         // width: 500
-            //     }
-            // )
-            // console.log(ide)
-            // console.log(question)
-            sdk.embedGithubProject(
-                'problemIDE',
-                ide,
-                {
-                    openFile: 'index.js',
-                    height: 600,
-                    hideNavigation: false,
+    const embedIde = async (ide) => {
+        if (!ide.open) {
+            await setIde({ ...ide, open: true })
+            try {
+                sdk.embedGithubProject(
+                    'problemIDE',
+                    ide,
+                    {
+                        openFile: 'index.js',
+                        height: 600,
+                        hideNavigation: false,
 
-                }
-            );
-        } catch (e) {
-            console.log(e)
+                    }
+                ).then(vm => {
+                    // console.log(vm);
+                    // var temp = vm.getFsSnapshot();
+                    // console.log(temp)
+                    setState(prevState => ({ ...prevState, vm: vm }))
+                });
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 
     const handleOutputURIChange = (event) => {
-        setState({ ...state, outputURL: event.target.value })
+        setIde({ ...ide, outputURL: event.target.value })
     }
 
     const getResponseFromApi = () => {
-        console.log(state.outputURL)
-        axios.get(state.outputURL
+        console.log(ide.outputURL)
+        axios.get(ide.outputURL
             // , {
             //     headers: {
             //         'X-Id-Token': 'abc123abc123',
@@ -144,7 +127,31 @@ export default function Problems(props) {
         })
     }
 
+    const submitCode = async () => {
+        if(!ide.open){
+            return;
+        }
 
+        var temp = await state.vm.getFsSnapshot();
+        console.log(temp);
+
+        setState(prevState => ({ ...prevState, loading: true }))
+        var apiData = await saveSubmission(/*problem_id*/props.id,/*user_id*/props.id,temp)
+        console.log(apiData)
+        if (apiData.error) {
+            console.log("----")
+            try {
+                console.log(apiData.error.response.data);
+                await setError(apiData.error.response.data);
+            }
+            catch (e) {
+                await setError({ "message": "Some error occured", "data": apiData.error });
+            }
+            await setState(prevState => ({ ...prevState, loading: false, error: true }))
+        } else if (apiData.result) {
+            setState(prevState => ({ ...prevState, loading: false, success: true }))
+        }
+    }
 
     return (
         <>
@@ -167,6 +174,7 @@ export default function Problems(props) {
                                     indicatorColor="primary"
                                 >
                                     <Tab label="Problem" value="question" sx={{ fontSize: 15, }} />
+                                    <Tab label="Submissions" value="submission" sx={{ fontSize: 15 }} />
                                     <Tab label="Solution" value="soln" sx={{ fontSize: 15 }} />
                                 </TabList>
                             </Box>
@@ -197,7 +205,7 @@ export default function Problems(props) {
                                     </Fade>
                                 </Slide>
                                 <div>
-                                    <IOMapping data={question.example}  />
+                                    <IOMapping data={question.example} />
                                 </div>
                                 {/* <iframe src={data.ide}
                     style={{width:'100%', height:'500px', border:'0', borderRadius: '4px', overflow:'hidden'}}
@@ -206,7 +214,7 @@ export default function Problems(props) {
                     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
                 ></iframe> */}
                                 {/* <iframe frameborder="0" width="100%" height="500px" src="https://replit.com/@PriyangChaurasi/tempognition?embed=true"></iframe> */}
-                                <div id="problemIDE">
+                                {ide.open && <div id="problemIDE">
                                     {
                                         // sdk.embedProjectId(
                                         //     '<div></div>',
@@ -223,20 +231,25 @@ export default function Problems(props) {
                                         //     { height: 320 }
                                         // )
                                     }
-                                </div>
+                                </div>}
                                 {/* <button onClick={embedIde} >Code</button> */}
-                                <Button variant="contained" onClick={() => embedIde(question.ide)}>Code</Button><br /><br />
-                                <TextField
+                                {!ide.open && <Button variant="contained" onClick={() => embedIde(question.ide)}>Code</Button>}<br /><br />
+                                {ide.open && <TextField
                                     hiddenLabel
                                     id="filled-hidden-label-small"
                                     variant="filled"
                                     size="small"
                                     placeholder="Enter Output URL"
-                                    value={state.outputURL}
+                                    value={ide.outputURL}
                                     onChange={handleOutputURIChange}
-                                /><br /><br />
-                                <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button><br /><br />
+                                />}<br /><br />
+                                {ide.open && <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button>}<br /><br />
+                                {ide.open && <Button variant="contained" onClick={() => submitCode()}>Submit</Button>}
                                 {/* </div> */}
+                            </TabPanel>
+                            <TabPanel value="submission" sx={{ margin: -3 }}>
+                                <br />
+                                <Submission problem_id={props.id} user_id={props.id} />
                             </TabPanel>
                             <TabPanel value="soln" sx={{ margin: -3 }}>
                                 <br />

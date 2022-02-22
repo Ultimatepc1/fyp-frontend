@@ -65,7 +65,9 @@ export default function Solution(props) {
                             // enter: "cubic-bezier(0, 1.5, .8, 1)",
                             enter: "cubic-bezier(0,.02,1,.94)",
                             exit: "linear"
-                        }}>
+                        }}
+                        key={value._id}
+                        >
                         <Fade
                             in={true}
                             appear={true}
