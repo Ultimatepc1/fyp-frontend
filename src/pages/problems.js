@@ -65,13 +65,18 @@ export default function Problems(props) {
         }
     }, []);
 
-    const embedIde = async (ide) => {
+    const embedIde = async (id) => {
+
+        if(ide.open){
+            //function to close IDE
+            
+        }
         if (!ide.open) {
             await setIde({ ...ide, open: true })
             try {
                 sdk.embedGithubProject(
                     'problemIDE',
-                    ide,
+                    id,
                     {
                         openFile: 'index.js',
                         height: 600,
