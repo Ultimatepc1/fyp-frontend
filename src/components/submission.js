@@ -8,6 +8,8 @@ import { Button, Fade, Slide } from '@mui/material'
 
 import { getSubmissions } from '../api/problem'
 import SubmissionComponent from './submissionComponent';
+import MuiErrorModal from './common/muiErrorModal';
+import Loader from './common/loader';
 
 export default function Submission(props) {
 
@@ -24,15 +26,21 @@ export default function Submission(props) {
         var apiData = await getSubmissions(props.user_id, props.problem_id)
         console.log(apiData)
         if (apiData.error) {
+            // set Error
             console.log("----")
-
-            try {
-                console.log(apiData.error.response.data);
-                await setError(apiData.error.response.data);
-            }
-            catch (e) {
-                await setError({ "message": "Some error occured", "data": apiData.error });
-            }
+            if(apiData.error.response){
+                    if(apiData.error.response.data){
+                        await setError(apiData.error.response.data);
+                    }else{
+                        if(apiData.error.message){
+                            await setError({ "message": apiData.error.message, "data": "Error" });
+                        }
+                    }
+                }else if(apiData.error.message){
+                    await setError({ "message": apiData.error.message, "data": "Error" });
+                }else{
+                    await setError({ "message": "Some error occured", "data": "Error"});
+                }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             await setSubmissions(apiData.result);
@@ -58,8 +66,16 @@ export default function Submission(props) {
     return (
         <div>
 
-            <h1>All Submissions</h1>
+            
 
+            {state.loading && <Loader/>}
+            {state.error &&
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true} />
+            }
+
+            {state.success &&
+            <div>
+            <h1>All Submissions</h1>
             <div>{submissions.map(
                 (value, i) =>
 
@@ -96,6 +112,14 @@ export default function Submission(props) {
                     </p>
 
                 </div>}
+                
+            </div>
+
+            
+            }
+
+
+            
         </div>
     );
 }
