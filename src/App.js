@@ -9,22 +9,22 @@ ReactGA.initialize('UA-000000-01');
 
 function App() {
   const user = {
-    firstName : 'Miguel',
-    lastName : 'Coder',
+    firstName: 'Miguel',
+    lastName: 'Coder',
   }
   return (
     <Router>
-    <div className="App">
-      <Navigation user = {user}/>
+      <div className="App">
+        <Navigation user={user} />
         <Switch>
-        {/* <Route path="/dashboard" component={Dashboard}></Route> */}
+          {/* <Route path="/dashboard" component={Dashboard}></Route> */}
           <Route path="/:page/:id" component={PageRendererWithId}></Route>
           <Route path="/:page" component={PageRenderer}></Route>
           <Route path="/" render={() => <Redirect to="/home"></Redirect>}></Route>
-          
+
           <Route component={() => 404}></Route>
         </Switch>
-    </div>
+      </div>
     </Router>
   );
 }
