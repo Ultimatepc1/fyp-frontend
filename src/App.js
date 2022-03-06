@@ -4,6 +4,8 @@ import Navigation from './components/navigation'
 import PageRenderer from './page-renderer'
 import PageRendererWithId from './page-renderer-with-id';
 import Dashboard from './pages/dashboard';
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-000000-01');
 
 function App() {
   const user = {
