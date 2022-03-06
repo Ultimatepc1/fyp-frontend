@@ -22,6 +22,19 @@ export default function MuiErrorModal(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const history = useHistory();
+
+  const getData = () => {
+    if (props.data) {
+      let temp = props.data
+      if (typeof temp == "string") {
+        return temp;
+      } else if (temp instanceof Array) {
+        return "Validation Error"
+      }
+    }
+
+    return "Error";
+  }
   return (
     <div>
       <Modal
@@ -38,7 +51,7 @@ export default function MuiErrorModal(props) {
         <Fade in={open} timeout={2000}>
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h4" component="h1">
-              {props.data || "Error"}
+              {getData()}
             </Typography>
             <Divider /><br />
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -51,7 +64,9 @@ export default function MuiErrorModal(props) {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    props.okFunc();
+                    if(typeof(props.okFunc) === 'function') {
+                      props.okFunc();
+                    }
                     handleClose();
                   }
                   }>
