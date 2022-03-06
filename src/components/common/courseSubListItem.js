@@ -15,7 +15,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Chip from '@mui/material/Chip';
-
+import gtag, { install } from 'ga-gtag';
+install('G-NPTP41JQB3');
 
 export default function CourseListSubItem(props) {
 
@@ -35,7 +36,9 @@ export default function CourseListSubItem(props) {
                     }}>
 
                         <Grid item xs={12} md={4} lg={2} >
-                            <Link to={`/supportive/${props.value.supportive}`} >
+                            <Link to={`/supportive/${props.value.supportive}`} onClick={() => gtag('event', 'supportive_clicked', {
+                                supportive: 'supportive clicked',
+                            })}>
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-right" >
                                     <CardActionArea>
                                         <CardMedia
