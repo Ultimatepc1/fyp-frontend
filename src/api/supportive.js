@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export const getSupportiveData = (supportive_id) => {
+export const getSupportiveData = (supportive_id, token) => {
     return axios
     .get(`http://localhost:8080/supportive/getSupp/${supportive_id}`, {
-        // headers: {
-        // 'Authorization': `Bearer ${token}`
-        // }
+        headers: {
+        'Authorization': `Bearer ${token}`
+        }
     })
     .then(res => {
         console.log(res)

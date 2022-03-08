@@ -4,15 +4,17 @@ import SupportiveComponent from "../components/supportiveComponenet";
 import { getSupportiveData } from '../api/supportive'
 import Loader from "../components/common/loader";
 import MuiErrorModal from "../components/common/muiErrorModal";
+import { useHistory } from "react-router-dom";
 
 export default function Supportive(props) {
     const [state, setState] = useState({ loading: false, error: false, success: false });
     const [supportiveData, setSupportiveData] = useState([])
     const [error, setError] = useState();
+    const history = useHistory();
 
-    const getSupportiveApiData = async (id) => {
+    const getSupportiveApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await getSupportiveData(id)
+        var apiData = await getSupportiveData(id, token)
         console.log(apiData)
         if (apiData.error) {
             // set Error
@@ -48,7 +50,21 @@ export default function Supportive(props) {
         try {
             console.log(props.id)
             // id=props.match.params.id;
-            getSupportiveApiData(props.id)
+            let temp = localStorage.getItem('isLoggedIn')
+            let token = localStorage.getItem('token')
+            if (temp != "true") {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            if (!token) {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            getSupportiveApiData(props.id, token)
         } catch (e) {
             console.log('supportive page error in useeffect')
             console.log(e)

@@ -4,12 +4,14 @@ import WorkedOutComponent from "../components/workedoutComponenet";
 import { getWorkedOutData } from "../api/workedout"
 import Loader from '../components/common/loader';
 import MuiErrorModal from "../components/common/muiErrorModal";
+import { useHistory } from "react-router-dom";
 
 export default function WorkedOut(props) {
 
     const [state, setState] = useState({ loading: false, error: false, success: false });
     const [workedOutData, setWorkedOutData] = useState([])
     const [error, setError] = useState();
+    const history = useHistory();
 
     // const getId =async (id) => {
     //     setState(prevState => ({ ...prevState, id: id }))
@@ -19,9 +21,9 @@ export default function WorkedOut(props) {
     //     console.log(state.invalid);
     // }
 
-    const getWorkedOutApiData = async (id) => {
+    const getWorkedOutApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await getWorkedOutData(id)
+        var apiData = await getWorkedOutData(id, token)
         console.log(apiData)
         if (apiData.error) {
             // set Error
@@ -57,7 +59,21 @@ export default function WorkedOut(props) {
         try {
             // id=props.match.params.id;
             // getId(props.id);
-            getWorkedOutApiData(props.id);
+            let temp = localStorage.getItem('isLoggedIn')
+            let token = localStorage.getItem('token')
+            if (temp != "true") {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            if (!token) {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            getWorkedOutApiData(props.id, token);
         } catch (e) {
             console.log('workedout page error in useffect')
             console.log(e)

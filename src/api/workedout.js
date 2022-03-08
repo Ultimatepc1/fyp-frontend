@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export const getWorkedOutData = (workedout_id) => {
+export const getWorkedOutData = (workedout_id, token) => {
     return axios
     .get(`http://localhost:8080/workedout/getWorked/${workedout_id}`, {
-        // headers: {
-        // 'Authorization': `Bearer ${token}`
-        // }
+        headers: {
+        'Authorization': `Bearer ${token}`
+        }
     })
     .then(res => {
         console.log(res)
