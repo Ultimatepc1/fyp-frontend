@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getWorkedOutData = (workedout_id, token) => {
     return axios
-    .get(`http://localhost:8080/workedout/getWorked/${workedout_id}`, {
+    .get(`https://teach-apidev-backend.herokuapp.com/workedout/getWorked/${workedout_id}`, {
         headers: {
         'Authorization': `Bearer ${token}`
         }

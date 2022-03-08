@@ -1,7 +1,7 @@
 import axios from "axios";
 export const signUp = (name,email,password) => {
     return axios
-    .put(`http://localhost:8080/auth/signup`, {
+    .put(`https://teach-apidev-backend.herokuapp.com/auth/signup`, {
         email: email,
         password: password,
         name: name
@@ -22,7 +22,7 @@ export const signUp = (name,email,password) => {
 
 export const loginApi = (email,password,remember) => {
     return axios
-    .post(`http://localhost:8080/auth/login`, {
+    .post(`https://teach-apidev-backend.herokuapp.com/auth/login`, {
         email: email,
         password: password,
         remember: remember

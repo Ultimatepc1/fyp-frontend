@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getProblemData = (problem_id, token) => {
     return axios
-    .get(`http://localhost:8080/problem/getProblem/${problem_id}`, {
+    .get(`https://teach-apidev-backend.herokuapp.com/problem/getProblem/${problem_id}`, {
         headers: {
         'Authorization': `Bearer ${token}`
         }
@@ -23,7 +23,7 @@ export const getProblemData = (problem_id, token) => {
 
 export const saveSubmission = (problem_id,token,data) => {
     return axios
-    .post(`http://localhost:8080/problem/createSubmission/`, {
+    .post(`https://teach-apidev-backend.herokuapp.com/problem/createSubmission/`, {
         problem_id: problem_id,
         data: data
     },{
@@ -47,7 +47,7 @@ export const saveSubmission = (problem_id,token,data) => {
 
 export const getSubmissions = (token,problem_id) => {
     return axios
-    .post(`http://localhost:8080/problem/getSubmissions/`, {
+    .post(`https://teach-apidev-backend.herokuapp.com/problem/getSubmissions/`, {
         problem_id: problem_id,
     },{
         headers: {

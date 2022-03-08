@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getSupportiveData = (supportive_id, token) => {
     return axios
-    .get(`http://localhost:8080/supportive/getSupp/${supportive_id}`, {
+    .get(`https://teach-apidev-backend.herokuapp.com/supportive/getSupp/${supportive_id}`, {
         headers: {
         'Authorization': `Bearer ${token}`
         }
