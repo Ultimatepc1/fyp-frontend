@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export const getProblemData = (problem_id) => {
+export const getProblemData = (problem_id, token) => {
     return axios
     .get(`http://localhost:8080/problem/getProblem/${problem_id}`, {
-        // headers: {
-        // 'Authorization': `Bearer ${token}`
-        // }
+        headers: {
+        'Authorization': `Bearer ${token}`
+        }
     })
     .then(res => {
         console.log(res)
@@ -21,12 +21,15 @@ export const getProblemData = (problem_id) => {
     })
 }
 
-export const saveSubmission = (problem_id,user_id,data) => {
+export const saveSubmission = (problem_id,token,data) => {
     return axios
     .post(`http://localhost:8080/problem/createSubmission/`, {
-        user_id: user_id,
         problem_id: problem_id,
         data: data
+    },{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     })
     .then(res => {
         console.log(res)
@@ -42,11 +45,14 @@ export const saveSubmission = (problem_id,user_id,data) => {
     })
 }
 
-export const getSubmissions = (user_id,problem_id) => {
+export const getSubmissions = (token,problem_id) => {
     return axios
     .post(`http://localhost:8080/problem/getSubmissions/`, {
-        user_id: user_id,
         problem_id: problem_id,
+    },{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
     })
     .then(res => {
         console.log(res)

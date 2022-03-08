@@ -73,6 +73,7 @@ export default function SignIn(props) {
               localStorage.setItem('token', result.token)
             }
             if(result.userId && result.token){
+              localStorage.setItem('isLoggedIn', true)
               await setState(prevState => ({ ...prevState, loading: false, success: true }))
               history.push({
                 pathname: '/'

@@ -4,17 +4,31 @@ import CourseListItem from '../components/common/courseListItem';
 import '../assets/scss/_home.scss';
 import '../components/common/loader';
 import Loader from '../components/common/loader';
-
+import { useHistory } from "react-router-dom";
 
 export default function Home(){
     const [width, setWidth] = useState(document.body.clientWidth);
 
     const [state, setState] = useState({loading:false,error:false});
-
+    const history = useHistory();
 
     useEffect(() => {
         const handleWindowResize = () => setWidth(document.body.clientWidth)
         window.addEventListener("resize", handleWindowResize);
+        let temp = localStorage.getItem('isLoggedIn')
+        let token = localStorage.getItem('token')
+        if(temp != "true"){
+          localStorage.clear();
+          history.replace({ 
+            pathname: 'login'
+          });
+        }
+        if(!token){
+          localStorage.clear();
+          history.replace({ 
+            pathname: 'login'
+          });
+        }
         
         // Return a function from the effect that removes the event listener
         return () => window.removeEventListener("resize", handleWindowResize);

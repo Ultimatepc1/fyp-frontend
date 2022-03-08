@@ -5,6 +5,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Button, Fade, Slide } from '@mui/material'
+import { useHistory } from "react-router-dom";
 
 import { getSubmissions } from '../api/problem'
 import SubmissionComponent from './submissionComponent';
@@ -16,14 +17,15 @@ export default function Submission(props) {
     const [state, setState] = React.useState({ loading: false, error: false, success: false });
     const [submissions, setSubmissions] = React.useState([])
     const [curCode, setCurCode] = React.useState(null)
+    const history = useHistory();
     /* {"index":0,"data":result[0]} */
 
 
     const [error, setError] = React.useState();
 
-    const getSubmissionsApiData = async () => {
+    const getSubmissionsApiData = async (token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await getSubmissions(props.user_id, props.problem_id)
+        var apiData = await getSubmissions(token, props.problem_id)
         console.log(apiData)
         if (apiData.error) {
             // set Error
@@ -56,7 +58,21 @@ export default function Submission(props) {
 
     React.useEffect(() => {
         try {
-            getSubmissionsApiData();
+            let temp = localStorage.getItem('isLoggedIn')
+            let token = localStorage.getItem('token')
+            if (temp != "true") {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            if (!token) {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            getSubmissionsApiData(token);
         } catch (e) {
             console.log('problems page submission component error in useffect')
             console.log(e)

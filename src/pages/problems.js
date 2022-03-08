@@ -20,9 +20,11 @@ import TabPanel from '@mui/lab/TabPanel';
 import Solution from "../components/solution";
 import Submission from "../components/submission";
 import { Zoom, Slide, Fade } from '@mui/material';
+import { useHistory } from "react-router-dom";
 
 export default function Problems(props) {
 
+    const history = useHistory();
     const [state, setState] = useState({
         loading: false,
         error: false,
@@ -42,31 +44,31 @@ export default function Problems(props) {
         }
         setTab(newValue);
     };
-    const getProblemApiData = async (id) => {
+    const getProblemApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await getProblemData(id)
+        var apiData = await getProblemData(id, token)
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
             try {
                 // console.log(apiData.error.response.data);
-                if(apiData.error.response){
-                    if(apiData.error.response.data){
+                if (apiData.error.response) {
+                    if (apiData.error.response.data) {
                         await setError(apiData.error.response.data);
-                    }else{
-                        if(apiData.error.message){
+                    } else {
+                        if (apiData.error.message) {
                             await setError({ "message": apiData.error.message, "data": "Error" });
                         }
                     }
-                }else if(apiData.error.message){
+                } else if (apiData.error.message) {
                     await setError({ "message": apiData.error.message, "data": "Error" });
-                }else{
-                    await setError({ "message": "Some error occured", "data": "Error"});
+                } else {
+                    await setError({ "message": "Some error occured", "data": "Error" });
                 }
-                
+
             }
             catch (e) {
-                await setError({ "message": "Some error occured", "data": "Error"});
+                await setError({ "message": "Some error occured", "data": "Error" });
             }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
@@ -77,7 +79,21 @@ export default function Problems(props) {
 
     useEffect(() => {
         try {
-            getProblemApiData(props.id);
+            let temp = localStorage.getItem('isLoggedIn')
+            let token = localStorage.getItem('token')
+            if (temp != "true") {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            if (!token) {
+                localStorage.clear();
+                history.replace({
+                    pathname: 'login'
+                });
+            }
+            getProblemApiData(props.id, token);
         } catch (e) {
             console.log('problems page error in useffect')
             console.log(e)
@@ -86,9 +102,9 @@ export default function Problems(props) {
 
     const embedIde = async (id) => {
 
-        if(ide.open){
+        if (ide.open) {
             //function to close IDE
-            
+
         }
         if (!ide.open) {
             await setIde({ ...ide, open: true })
@@ -161,27 +177,41 @@ export default function Problems(props) {
         if (!ide.open) {
             return;
         }
+        let isLoggedIn = localStorage.getItem('isLoggedIn')
+        let token = localStorage.getItem('token')
+        if (isLoggedIn != "true") {
+            localStorage.clear();
+            history.replace({
+                pathname: 'login'
+            });
+        }
+        if (!token) {
+            localStorage.clear();
+            history.replace({
+                pathname: 'login'
+            });
+        }
 
         var temp = await state.vm.getFsSnapshot();
         console.log(temp);
 
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await saveSubmission(/*problem_id*/props.id,/*user_id*/props.id, temp)
+        var apiData = await saveSubmission(props.id,token, temp)
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
-            if(apiData.error.response){
-                if(apiData.error.response.data){
+            if (apiData.error.response) {
+                if (apiData.error.response.data) {
                     await setError(apiData.error.response.data);
-                }else{
-                    if(apiData.error.message){
+                } else {
+                    if (apiData.error.message) {
                         await setError({ "message": apiData.error.message, "data": "Error" });
                     }
                 }
-            }else if(apiData.error.message){
+            } else if (apiData.error.message) {
                 await setError({ "message": apiData.error.message, "data": "Error" });
-            }else{
-                await setError({ "message": "Some error occured", "data": "Error"});
+            } else {
+                await setError({ "message": "Some error occured", "data": "Error" });
             }
             await setState(prevState => ({ ...prevState, loading: false, submitError: true }))
         } else if (apiData.result) {
@@ -196,7 +226,7 @@ export default function Problems(props) {
                 <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true} />
             }
             {state.submitError &&
-                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={true} ok={true} okFunc={submitErrorFunc}/>
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={true} ok={true} okFunc={submitErrorFunc} />
             }
             {state.submitSuccess &&
                 <MuiErrorModal
