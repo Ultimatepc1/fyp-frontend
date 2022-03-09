@@ -5,6 +5,8 @@ import { getWorkedOutData } from "../api/workedout"
 import Loader from '../components/common/loader';
 import MuiErrorModal from "../components/common/muiErrorModal";
 import { useHistory } from "react-router-dom";
+import { checkLogin } from "../api/auth";
+import ReactGA from 'react-ga';
 
 export default function WorkedOut(props) {
 
@@ -28,19 +30,19 @@ export default function WorkedOut(props) {
         if (apiData.error) {
             // set Error
             console.log("----")
-            if(apiData.error.response){
-                    if(apiData.error.response.data){
-                        await setError(apiData.error.response.data);
-                    }else{
-                        if(apiData.error.message){
-                            await setError({ "message": apiData.error.message, "data": "Error" });
-                        }
+            if (apiData.error.response) {
+                if (apiData.error.response.data) {
+                    await setError(apiData.error.response.data);
+                } else {
+                    if (apiData.error.message) {
+                        await setError({ "message": apiData.error.message, "data": "Error" });
                     }
-                }else if(apiData.error.message){
-                    await setError({ "message": apiData.error.message, "data": "Error" });
-                }else{
-                    await setError({ "message": "Some error occured", "data": "Error"});
                 }
+            } else if (apiData.error.message) {
+                await setError({ "message": apiData.error.message, "data": "Error" });
+            } else {
+                await setError({ "message": "Some error occured", "data": "Error" });
+            }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             if (apiData.result.data) {
@@ -56,24 +58,23 @@ export default function WorkedOut(props) {
     }
 
     useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+            userId: localStorage.getItem('userId')
+          } });
+        ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             // id=props.match.params.id;
             // getId(props.id);
-            let temp = localStorage.getItem('isLoggedIn')
-            let token = localStorage.getItem('token')
-            if (temp != "true") {
-                localStorage.clear();
+            let temp = checkLogin();
+            if (!temp) {
+                localStorage.clear()
                 history.replace({
                     pathname: 'login'
                 });
+            }else{
+                let token = localStorage.getItem(token)
+                getWorkedOutApiData(props.id, token);
             }
-            if (!token) {
-                localStorage.clear();
-                history.replace({
-                    pathname: 'login'
-                });
-            }
-            getWorkedOutApiData(props.id, token);
         } catch (e) {
             console.log('workedout page error in useffect')
             console.log(e)

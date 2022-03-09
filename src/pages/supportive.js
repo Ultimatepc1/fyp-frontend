@@ -6,6 +6,7 @@ import Loader from "../components/common/loader";
 import MuiErrorModal from "../components/common/muiErrorModal";
 import { useHistory } from "react-router-dom";
 import ReactGA from 'react-ga';
+import { checkLogin } from "../api/auth";
 
 export default function Supportive(props) {
     const [state, setState] = useState({ loading: false, error: false, success: false });
@@ -56,21 +57,16 @@ export default function Supportive(props) {
         try {
             console.log(props.id)
             // id=props.match.params.id;
-            let temp = localStorage.getItem('isLoggedIn')
-            let token = localStorage.getItem('token')
-            if (temp != "true") {
-                localStorage.clear();
+            let temp = checkLogin();
+            if (!temp) {
+                localStorage.clear()
                 history.replace({
                     pathname: 'login'
                 });
+            }else{
+                let token = localStorage.getItem(token)
+                getSupportiveApiData(props.id, token)
             }
-            if (!token) {
-                localStorage.clear();
-                history.replace({
-                    pathname: 'login'
-                });
-            }
-            getSupportiveApiData(props.id, token)
         } catch (e) {
             console.log('supportive page error in useeffect')
             console.log(e)
