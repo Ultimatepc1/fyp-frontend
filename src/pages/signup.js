@@ -13,19 +13,7 @@ import { signUp } from '../api/auth';
 import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
 import { useHistory } from "react-router-dom";
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                mywebfyp.com
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Copyright from '../components/common/copyright';
 
 const theme = createTheme();
 

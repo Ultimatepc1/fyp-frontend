@@ -21,6 +21,7 @@ import Solution from "../components/solution";
 import Submission from "../components/submission";
 import { Zoom, Slide, Fade } from '@mui/material';
 import { useHistory } from "react-router-dom";
+import { checkLogin } from "../api/auth";
 
 export default function Problems(props) {
 
@@ -79,21 +80,16 @@ export default function Problems(props) {
 
     useEffect(() => {
         try {
-            let temp = localStorage.getItem('isLoggedIn')
-            let token = localStorage.getItem('token')
-            if (temp != "true") {
-                localStorage.clear();
+            let temp = checkLogin();
+            if (!temp) {
+                localStorage.clear()
                 history.replace({
                     pathname: 'login'
                 });
+            } else {
+                let token = localStorage.getItem(token)
+                getProblemApiData(props.id, token);
             }
-            if (!token) {
-                localStorage.clear();
-                history.replace({
-                    pathname: 'login'
-                });
-            }
-            getProblemApiData(props.id, token);
         } catch (e) {
             console.log('problems page error in useffect')
             console.log(e)
@@ -177,26 +173,21 @@ export default function Problems(props) {
         if (!ide.open) {
             return;
         }
-        let isLoggedIn = localStorage.getItem('isLoggedIn')
-        let token = localStorage.getItem('token')
-        if (isLoggedIn != "true") {
-            localStorage.clear();
+        let temp2 = checkLogin();
+        if (!temp2) {
+            localStorage.clear()
             history.replace({
                 pathname: 'login'
             });
-        }
-        if (!token) {
-            localStorage.clear();
-            history.replace({
-                pathname: 'login'
-            });
+            return;
         }
 
+        let token = localStorage.getItem('token')
         var temp = await state.vm.getFsSnapshot();
         console.log(temp);
 
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await saveSubmission(props.id,token, temp)
+        var apiData = await saveSubmission(props.id, token, temp)
         console.log(apiData)
         if (apiData.error) {
             console.log("----")

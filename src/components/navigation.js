@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Drawer from "react-motion-drawer";
+import { checkLogin } from '../api/auth'
 
-const navlinks = [
+const navlinks = checkLogin ? [
+
     {
         title: 'Home',
-        path: '/'
+        path: '/home'
+    }, {
+        title: 'About',
+        path: '/landing'
     },
     {
-        title: 'Blog',
-        path: '/blog'
+        title: 'Log Out',
+        path: '/login'
+    }
+] : [
+    {
+        title: 'About',
+        path: '/landing'
     },
     {
-        title: 'Dashboard',
-        path: '/dashboard'
+        title: 'Log In',
+        path: '/login'
     },
-    // {
-    //     title: 'Contact Us',
-    //     path: '/contact-us'
-    // },
-    // {
-    //     title: 'Login',
-    //     path: '/login'
-    // }
+    {
+        title: 'Sign Up',
+        path: '/signup'
+    }
 ]
 
 export default function Navigation(props) {
@@ -43,11 +49,24 @@ export default function Navigation(props) {
                 onMouseLeave={() => setMenuActive(false)}
                 onMouseEnter={() => setMenuActive(true)}>
                 <ul>
-                    {navlinks.map((link, index) => (
-                        <li key={index}>
-                            <Link to={link.path} onClick={() => setMenuActive(!menuActive)}>{link.title}</Link>
-                        </li>
-                    ))}
+                    {navlinks.map((link, index) => {
+
+                        if (link.title == "Log Out") {
+                            return (
+                                <li key={index}>
+                                    <Link to={link.path} onClick={() => {
+                                        localStorage.clear();
+                                        setMenuActive(!menuActive)
+                                    }}>{link.title}</Link>
+                                </li>
+                            )
+                        }
+                        return (
+                            <li key={index}>
+                                <Link to={link.path} onClick={() => setMenuActive(!menuActive)}>{link.title}</Link>
+                            </li>
+                        )
+                    })}
                 </ul>
                 {/* <span className="menu-avatar-container">
                 <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" size={38}/>
