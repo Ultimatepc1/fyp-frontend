@@ -124,14 +124,14 @@ export default function Submission(props) {
                             <h1>Submission {curCode} </h1><br />
                             <p>
                                 {/* {submissions[curCode - 1].data['index.js']} */}
-                                {Object.keys(submissions[curCode - 1].data).map(function (key, index) {
+                                {Object.keys(submissions[submissions.length-curCode].data).map(function (key, index) {
 
                                     if (key != "package-lock.json") {
 
                                         return <div>
                                             <h1>{key}</h1>
                                             <p>
-                                                {submissions[curCode - 1].data[key]}
+                                                {submissions[submissions.length-curCode].data[key]}
                                             </p>
                                         </div>
                                     }
