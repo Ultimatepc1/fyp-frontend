@@ -15,8 +15,18 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Chip from '@mui/material/Chip';
-import gtag, { install } from 'ga-gtag';
-install('G-NPTP41JQB3');
+// import gtag, { install } from 'ga-gtag';
+// install('G-NPTP41JQB3');
+import ReactGA from 'react-ga';
+// ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
+//     userId: localStorage.getItem('userId')
+//   } });
+// ReactGA.pageview(window.location.pathname + window.location.search);
+// gtag('config', 'G-NPTP41JQB3', {
+//     'page_title' : 'courseSubListItem',
+//     'page_path': 'fyp-frontend\src\components\common\courseSubListItem.js'
+//   });
+
 
 export default function CourseListSubItem(props) {
 
@@ -36,9 +46,18 @@ export default function CourseListSubItem(props) {
                     }}>
 
                         <Grid item xs={12} md={4} lg={2} >
-                            <Link to={`/supportive/${props.value.supportive}`} onClick={() => gtag('event', 'supportive_clicked', {
-                                supportive: 'supportive clicked',
-                            })}>
+                            <Link to={`/supportive/${props.value.supportive}`}
+                                // onClick={() => gtag('event', 'supportive_clicked', {
+                                //     supportive: 'supportive clicked',
+                                // })}
+                                onClick={() => 
+                                ReactGA.event({
+                                    category: 'User',
+                                    action: 'supportive button clicked',
+                                    value:1
+                                })}
+
+                            >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-right" >
                                     <CardActionArea>
                                         <CardMedia
@@ -60,7 +79,17 @@ export default function CourseListSubItem(props) {
 
 
                         <Grid item xs={12} md={4} lg={2}>
-                            <Link to={`/workedout/${props.value.workedout}`}>
+                            <Link to={`/workedout/${props.value.workedout}`}
+                            // onClick={() => gtag('event', 'workedout_clicked', {
+                            //         workedout: 'workedout clicked',
+                            //     })}
+                            onClick={() => 
+                                ReactGA.event({
+                                    category: 'User',
+                                    action: 'workedout button clicked',
+                                    value:1
+                                })}
+                            >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-right">
                                     <CardActionArea>
                                         <CardMedia
@@ -82,7 +111,14 @@ export default function CourseListSubItem(props) {
 
 
                         <Grid item xs={12} md={4} lg={2}>
-                            <Link to={`/problems/${props.value.completion_one}`}>
+                            <Link to={`/problems/${props.value.completion_one}`}
+                            onClick={() => 
+                                ReactGA.event({
+                                    category: 'User',
+                                    action: 'completion one button clicked',
+                                    value:1
+                                })}
+                            >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-out-up">
                                     <CardActionArea>
                                         <CardMedia
@@ -104,7 +140,15 @@ export default function CourseListSubItem(props) {
 
 
                         <Grid item xs={12} md={4} lg={2}>
-                            <Link to={`/problems/${props.value.completion_two}`}>
+                            <Link to={`/problems/${props.value.completion_two}`}
+                            onClick={() => 
+                                ReactGA.event({
+                                    category: 'User',
+                                    action: 'completion two button clicked',
+                                    value:1
+                                })}
+
+                            >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-left">
                                     <CardActionArea>
                                         <CardMedia
@@ -126,7 +170,15 @@ export default function CourseListSubItem(props) {
 
 
                         <Grid item xs={12} md={4} lg={2}>
-                            <Link to={`/problems/${props.value.conventional}`}>
+                            <Link to={`/problems/${props.value.conventional}`}
+                            onClick={() => 
+                                ReactGA.event({
+                                    category: 'User',
+                                    action: 'conventional button clicked',
+                                    value:1
+                                })}
+
+                            >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-left">
                                     <CardActionArea>
                                         <CardMedia

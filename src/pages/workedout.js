@@ -6,6 +6,7 @@ import Loader from '../components/common/loader';
 import MuiErrorModal from "../components/common/muiErrorModal";
 import { useHistory } from "react-router-dom";
 import { checkLogin } from "../api/auth";
+import ReactGA from 'react-ga';
 
 export default function WorkedOut(props) {
 
@@ -57,6 +58,10 @@ export default function WorkedOut(props) {
     }
 
     useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
+            userId: localStorage.getItem('userId')
+          } });
+        ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             // id=props.match.params.id;
             // getId(props.id);

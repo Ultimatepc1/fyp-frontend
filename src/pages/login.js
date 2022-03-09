@@ -17,6 +17,21 @@ import { useLocation } from "react-router-dom";
 import { loginApi } from "../api/auth";
 import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
+import ReactGA from 'react-ga';
+
+
+// function Copyright(props) {
+//   return (
+//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://mui.com/">
+//         mywebfyp.com
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 import Copyright from '../components/common/copyright';
 
 const theme = createTheme();
@@ -102,9 +117,13 @@ export default function SignIn(props) {
     setState(prevState => ({ ...prevState, loading: false, error: false }))
   }
 
-  React.useEffect(() => {
-    // do stuff here...
-    setFromSignUp();
+    React.useEffect(()=>{
+      ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+        userId: localStorage.getItem('userId')
+      } });
+      ReactGA.pageview(window.location.pathname + window.location.search);
+      // do stuff here...
+      setFromSignUp();
 
   }, [])
   return (

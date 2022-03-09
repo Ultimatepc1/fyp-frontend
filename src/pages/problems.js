@@ -22,6 +22,7 @@ import Submission from "../components/submission";
 import { Zoom, Slide, Fade } from '@mui/material';
 import { useHistory } from "react-router-dom";
 import { checkLogin } from "../api/auth";
+import ReactGA from 'react-ga';
 
 export default function Problems(props) {
 
@@ -40,6 +41,11 @@ export default function Problems(props) {
     const [error, setError] = useState();
 
     const handleTabChange = async (event, newValue) => {
+        
+            ReactGA.event({
+                category: 'User',
+                action: `${newValue} component clicked`,
+                value:1})
         if (tab === 'question') {
             await setIde({ ...ide, open: false })
         }
@@ -79,6 +85,10 @@ export default function Problems(props) {
     }
 
     useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
+            userId: localStorage.getItem('userId')
+          } });
+        ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             let temp = checkLogin();
             if (!temp) {
@@ -303,7 +313,7 @@ export default function Problems(props) {
                                 </div>}
                                 {/* <button onClick={embedIde} >Code</button> */}
                                 {!ide.open && <Button variant="contained" onClick={() => embedIde(question.ide)}>Code</Button>}<br /><br />
-                                {ide.open && <TextField
+                                {/* {ide.open && <TextField
                                     hiddenLabel
                                     id="filled-hidden-label-small"
                                     variant="filled"
@@ -311,8 +321,8 @@ export default function Problems(props) {
                                     placeholder="Enter Output URL"
                                     value={ide.outputURL}
                                     onChange={handleOutputURIChange}
-                                />}<br /><br />
-                                {ide.open && <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button>}<br /><br />
+                                />}<br /><br /> */}
+                                {/* {ide.open && <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button>}<br /><br /> */}
                                 {ide.open && <Button variant="contained" onClick={() => submitCode()}>Submit</Button>}
                                 {/* </div> */}
                             </TabPanel>

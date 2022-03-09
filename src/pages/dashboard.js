@@ -6,12 +6,16 @@ import { CardSlide } from 'react-card-slide/dist';
 import QuesDone from '../api/mocks/doneQues';
 import doneQues from '../api/mocks/doneQues';
 import ResumeCourse from '../components/resumecourse';
-
+import ReactGA from 'react-ga';
 
 export default function Dashboard() {
     const [width, setWidth] = useState(document.body.clientWidth);
 
     useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+            userId: localStorage.getItem('userId')
+          } });
+        ReactGA.pageview(window.location.pathname + window.location.search);
         const handleWindowResize = () => setWidth(document.body.clientWidth)
         window.addEventListener("resize", handleWindowResize);
 

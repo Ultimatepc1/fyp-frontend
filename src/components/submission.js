@@ -11,6 +11,7 @@ import { getSubmissions } from '../api/problem'
 import SubmissionComponent from './submissionComponent';
 import MuiErrorModal from './common/muiErrorModal';
 import Loader from './common/loader';
+import ReactGA from 'react-ga';
 
 export default function Submission(props) {
 
@@ -30,19 +31,19 @@ export default function Submission(props) {
         if (apiData.error) {
             // set Error
             console.log("----")
-            if(apiData.error.response){
-                    if(apiData.error.response.data){
-                        await setError(apiData.error.response.data);
-                    }else{
-                        if(apiData.error.message){
-                            await setError({ "message": apiData.error.message, "data": "Error" });
-                        }
+            if (apiData.error.response) {
+                if (apiData.error.response.data) {
+                    await setError(apiData.error.response.data);
+                } else {
+                    if (apiData.error.message) {
+                        await setError({ "message": apiData.error.message, "data": "Error" });
                     }
-                }else if(apiData.error.message){
-                    await setError({ "message": apiData.error.message, "data": "Error" });
-                }else{
-                    await setError({ "message": "Some error occured", "data": "Error"});
                 }
+            } else if (apiData.error.message) {
+                await setError({ "message": apiData.error.message, "data": "Error" });
+            } else {
+                await setError({ "message": "Some error occured", "data": "Error" });
+            }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             await setSubmissions(apiData.result);
@@ -82,60 +83,71 @@ export default function Submission(props) {
     return (
         <div>
 
-            
 
-            {state.loading && <Loader/>}
+
+            {state.loading && <Loader />}
             {state.error &&
                 <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true} />
             }
 
             {state.success &&
-            <div>
-            <h1>All Submissions</h1>
-            <div>{submissions.map(
-                (value, i) =>
-
-                    <div key={value._id}>
-                        <Button onClick={() => setCurCode(submissions.length - i)} sx={{
-                            display: 'flex',
-                            width: '100%',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}>
-                            <SubmissionComponent value={value} id={submissions.length - i} />
-                        </Button><br />
-                    </div>
-            )
-            }</div>
-            {curCode &&
                 <div>
-                    <h1>Submission {curCode} </h1><br />
-                    <p>
-                        {/* {submissions[curCode - 1].data['index.js']} */}
-                        {Object.keys(submissions[curCode - 1].data).map(function (key, index) {
+                    {submissions.length > 0 && <h1>All submissions</h1>}
+                    {submissions.length == 0 && <h1>No submissions</h1>}
+                    <div>{submissions.map(
+                        (value, i) =>
 
-                            if (key != "package-lock.json") {
+                            <div key={value._id}>
+                                <Button onClick={() => {
+                                    setCurCode(submissions.length - i)
 
-                                return <div>
-                                    <h1>{key}</h1>
-                                    <p>
-                                        {submissions[curCode - 1].data[key]}
-                                    </p>
-                                </div>
-                            }
-                        })}
+                                    ReactGA.event({
+                                        category: 'User',
+                                        action: `Submission ${value._id} clicked by user ${value.user_id} of problem ${value.problem_id}`,
+                                        value: 1
+                                    })
+                                }
+                                }
+                                    sx={{
+                                        display: 'flex',
+                                        width: '100%',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                    <SubmissionComponent value={value} id={submissions.length - i} />
+                                </Button><br />
+                            </div>
+                    )
+                    }</div>
+                    {curCode &&
+                        <div>
+                            <h1>Submission {curCode} </h1><br />
+                            <p>
+                                {/* {submissions[curCode - 1].data['index.js']} */}
+                                {Object.keys(submissions[curCode - 1].data).map(function (key, index) {
 
-                    </p>
+                                    if (key != "package-lock.json") {
 
-                </div>}
-                
-            </div>
+                                        return <div>
+                                            <h1>{key}</h1>
+                                            <p>
+                                                {submissions[curCode - 1].data[key]}
+                                            </p>
+                                        </div>
+                                    }
+                                })}
 
-            
+                            </p>
+
+                        </div>}
+
+                </div>
+
+
             }
 
 
-            
+
         </div>
     );
 }
