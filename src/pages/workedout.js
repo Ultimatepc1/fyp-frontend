@@ -58,7 +58,7 @@ export default function WorkedOut(props) {
     }
 
     useEffect(() => {
-        ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+        ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
             userId: localStorage.getItem('userId')
           } });
         ReactGA.pageview(window.location.pathname + window.location.search);

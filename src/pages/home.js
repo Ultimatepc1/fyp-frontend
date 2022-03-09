@@ -6,6 +6,7 @@ import '../components/common/loader';
 import Loader from '../components/common/loader';
 import { useHistory } from "react-router-dom";
 import { checkLogin } from '../api/auth';
+import ReactGA from 'react-ga';
 
 export default function Home(){
     const [width, setWidth] = useState(document.body.clientWidth);
@@ -14,6 +15,10 @@ export default function Home(){
     const history = useHistory();
 
     useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
+            userId: localStorage.getItem('userId')
+          } });
+        ReactGA.pageview(window.location.pathname + window.location.search);
         const handleWindowResize = () => setWidth(document.body.clientWidth)
         window.addEventListener("resize", handleWindowResize);
         let temp = checkLogin();

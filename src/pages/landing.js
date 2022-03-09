@@ -8,19 +8,26 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import { Divider } from '@mui/material';
+import { Divider, Button } from '@mui/material';
 import Copyright from '../components/common/copyright';
 import { checkLogin } from '../api/auth';
+import ReactGA from 'react-ga';
 
 const theme = createTheme();
 
 function Landing(props) {
 
     React.useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', {
+            debug: false, gaOptions: {
+                userId: localStorage.getItem('userId')
+            }
+        });
+        ReactGA.pageview(window.location.pathname + window.location.search);
         let temp = checkLogin();
         console.log('temp in landing')
         console.log(temp);
-    },[])
+    }, [])
 
     return (
         <ThemeProvider theme={theme}>
@@ -76,14 +83,32 @@ function Landing(props) {
                                         }}
                                     >
                                         <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-                                            {"Api Development Learning Platform"}
+                                            {"API Development Learning Platform"}
                                         </Typography>
                                         <Typography variant="h5" color="inherit" paragraph>
                                             {"Our Platform aims for user to learn api development via learning by doing approach"}
-                                        </Typography>
-                                        {/* <Link variant="subtitle1" href="#">
-                            {post.linkText}
-                        </Link> */}
+                                        </Typography><br />
+                                        {!checkLogin() && <Grid container spacing={2}>
+                                            <Grid item>
+                                                <Link href="/signup">
+                                                    <Button variant="contained" sx={{borderRadius:'10px'}}>Sign Up</Button>
+                                                </Link>
+                                            </Grid>
+                                            <Grid item>
+                                                <Link href="/login">
+                                                    <Button variant="contained" sx={{borderRadius:'10px'}}>Log In</Button>
+                                                </Link>
+                                            </Grid>
+                                        </Grid>}
+
+                                        {checkLogin() && <Grid container spacing={2}>
+                                            <Grid item>
+                                                <Link href="/home">
+                                                    <Button variant="contained" sx={{borderRadius:'10px'}}>Home</Button>
+                                                </Link>
+                                            </Grid>
+                                        </Grid>}
+
                                     </Box>
                                     <Box
                                         sx={{
