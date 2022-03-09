@@ -5,6 +5,7 @@ import { getSupportiveData } from '../api/supportive'
 import Loader from "../components/common/loader";
 import MuiErrorModal from "../components/common/muiErrorModal";
 import { useHistory } from "react-router-dom";
+import ReactGA from 'react-ga';
 
 export default function Supportive(props) {
     const [state, setState] = useState({ loading: false, error: false, success: false });
@@ -47,6 +48,11 @@ export default function Supportive(props) {
     }
 
     useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+            userId: localStorage.getItem('userId')
+          } });
+        ReactGA.pageview(window.location.pathname + window.location.search);
+        
         try {
             console.log(props.id)
             // id=props.match.params.id;

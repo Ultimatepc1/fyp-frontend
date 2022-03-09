@@ -17,6 +17,8 @@ import { useLocation } from "react-router-dom";
 import { loginApi } from "../api/auth";
 import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
+import ReactGA from 'react-ga';
+
 
 function Copyright(props) {
   return (
@@ -115,6 +117,10 @@ export default function SignIn(props) {
 }
 
     React.useEffect(()=>{
+      ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+        userId: localStorage.getItem('userId')
+      } });
+      ReactGA.pageview(window.location.pathname + window.location.search);
       // do stuff here...
       setFromSignUp();
 

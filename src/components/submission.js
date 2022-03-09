@@ -91,7 +91,8 @@ export default function Submission(props) {
 
             {state.success &&
             <div>
-            <h1>All Submissions</h1>
+            {submissions.length>0 && <h1>All submissions</h1>}
+            {submissions.length==0 && <h1>No submissions</h1>}
             <div>{submissions.map(
                 (value, i) =>
 

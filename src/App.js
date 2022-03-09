@@ -5,7 +5,17 @@ import PageRenderer from './page-renderer'
 import PageRendererWithId from './page-renderer-with-id';
 import Dashboard from './pages/dashboard';
 import ReactGA from 'react-ga';
-ReactGA.initialize('UA-000000-01');
+// ReactGA.initialize('G-NPTP41JQB3',{
+//   debug: true,
+//   titleCase: false,
+//   gaOptions: {
+//     userId: localStorage.getItem('userId')
+//   }
+// });
+// ReactGA.initialize('G-NPTP41JQB3', { debug: true, gaOptions: {
+//   userId: localStorage.getItem('userId')
+// } });
+// ReactGA.pageview(window.location.pathname + window.location.search);
 
 function App() {
   const user = {
