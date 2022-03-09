@@ -87,7 +87,7 @@ export default function Problems(props) {
                     pathname: 'login'
                 });
             } else {
-                let token = localStorage.getItem(token)
+                let token = localStorage.getItem('token')
                 getProblemApiData(props.id, token);
             }
         } catch (e) {

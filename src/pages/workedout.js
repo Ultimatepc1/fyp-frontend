@@ -67,7 +67,7 @@ export default function WorkedOut(props) {
                     pathname: 'login'
                 });
             }else{
-                let token = localStorage.getItem(token)
+                let token = localStorage.getItem('token')
                 getWorkedOutApiData(props.id, token);
             }
         } catch (e) {

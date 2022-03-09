@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Drawer from "react-motion-drawer";
 import { checkLogin } from '../api/auth'
 
-const navlinks = checkLogin ? [
+const navlinksLoggedIn = [
 
     {
         title: 'Home',
@@ -16,7 +16,8 @@ const navlinks = checkLogin ? [
         title: 'Log Out',
         path: '/login'
     }
-] : [
+]
+const navlinksLoggedOut = [
     {
         title: 'About',
         path: '/landing'
@@ -49,7 +50,25 @@ export default function Navigation(props) {
                 onMouseLeave={() => setMenuActive(false)}
                 onMouseEnter={() => setMenuActive(true)}>
                 <ul>
-                    {navlinks.map((link, index) => {
+                    {checkLogin() && navlinksLoggedIn.map((link, index) => {
+
+                        if (link.title == "Log Out") {
+                            return (
+                                <li key={index}>
+                                    <Link to={link.path} onClick={() => {
+                                        localStorage.clear();
+                                        setMenuActive(!menuActive)
+                                    }}>{link.title}</Link>
+                                </li>
+                            )
+                        }
+                        return (
+                            <li key={index}>
+                                <Link to={link.path} onClick={() => setMenuActive(!menuActive)}>{link.title}</Link>
+                            </li>
+                        )
+                    })}
+                    {!checkLogin() && navlinksLoggedOut.map((link, index) => {
 
                         if (link.title == "Log Out") {
                             return (
@@ -90,11 +109,42 @@ export default function Navigation(props) {
                                 <span className="menu-avatar-name">{props.user.firstName} {props.user.lastName}</span>
                         </span> */}
                         </li>
-                        {navlinks.map((link, index) => (
-                            <li key={index}>
-                                <Link to={link.path} onClick={() => setMenuActive(!menuActive)}>{link.title}</Link>
-                            </li>
-                        ))}
+                        {checkLogin() && navlinksLoggedIn.map((link, index) => {
+
+                            if (link.title == "Log Out") {
+                                return (
+                                    <li key={index}>
+                                        <Link to={link.path} onClick={() => {
+                                            localStorage.clear();
+                                            setMenuActive(!menuActive)
+                                        }}>{link.title}</Link>
+                                    </li>
+                                )
+                            }
+                            return (
+                                <li key={index}>
+                                    <Link to={link.path} onClick={() => setMenuActive(!menuActive)}>{link.title}</Link>
+                                </li>
+                            )
+                        })}
+                        {!checkLogin() && navlinksLoggedOut.map((link, index) => {
+
+                            if (link.title == "Log Out") {
+                                return (
+                                    <li key={index}>
+                                        <Link to={link.path} onClick={() => {
+                                            localStorage.clear();
+                                            setMenuActive(!menuActive)
+                                        }}>{link.title}</Link>
+                                    </li>
+                                )
+                            }
+                            return (
+                                <li key={index}>
+                                    <Link to={link.path} onClick={() => setMenuActive(!menuActive)}>{link.title}</Link>
+                                </li>
+                            )
+                        })}
                     </ul>
                 </Drawer>
             }

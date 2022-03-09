@@ -71,9 +71,10 @@ export const checkLogin = () => {
     const expiration = new Date(payload.exp);
     const now = new Date();
 
+    console.log(payload)
     console.log(expiration.getTime())
     console.log(now.getTime())
-    if (expiration.getTime() < now.getTime()) {
+    if ((expiration.getTime()*1000) < now.getTime()) {
         console.log("JWT has expired");
         return false
     } else {
