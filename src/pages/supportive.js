@@ -64,7 +64,7 @@ export default function Supportive(props) {
                     pathname: 'login'
                 });
             }else{
-                let token = localStorage.getItem(token)
+                let token = localStorage.getItem('token')
                 getSupportiveApiData(props.id, token)
             }
         } catch (e) {

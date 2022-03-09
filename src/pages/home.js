@@ -17,6 +17,7 @@ export default function Home(){
         const handleWindowResize = () => setWidth(document.body.clientWidth)
         window.addEventListener("resize", handleWindowResize);
         let temp = checkLogin();
+        console.log('home checklogin ', temp)
         if(!temp){
           localStorage.clear()
           history.replace({
