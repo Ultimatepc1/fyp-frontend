@@ -18,7 +18,7 @@ function Landing(props) {
 
     React.useEffect(() => {
         let temp = checkLogin();
-        console.log('temp in landing')
+        console.log('temp in ')
         console.log(temp);
     },[])
 
