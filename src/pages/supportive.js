@@ -21,19 +21,19 @@ export default function Supportive(props) {
         if (apiData.error) {
             // set Error
             console.log("----")
-            
-            if(apiData.error.response){
-                if(apiData.error.response.data){
+
+            if (apiData.error.response) {
+                if (apiData.error.response.data) {
                     await setError(apiData.error.response.data);
-                }else{
-                    if(apiData.error.message){
+                } else {
+                    if (apiData.error.message) {
                         await setError({ "message": apiData.error.message, "data": "Error" });
                     }
                 }
-            }else if(apiData.error.message){
+            } else if (apiData.error.message) {
                 await setError({ "message": apiData.error.message, "data": "Error" });
-            }else{
-                await setError({ "message": "Some error occured", "data": "Error"});
+            } else {
+                await setError({ "message": "Some error occured", "data": "Error" });
             }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
@@ -49,11 +49,13 @@ export default function Supportive(props) {
     }
 
     useEffect(() => {
-        ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
-            userId: localStorage.getItem('userId')
-          } });
+        ReactGA.initialize('UA-222140218-1', {
+            debug: false, gaOptions: {
+                userId: localStorage.getItem('userId')
+            }
+        });
         ReactGA.pageview(window.location.pathname + window.location.search);
-        
+
         try {
             console.log(props.id)
             // id=props.match.params.id;
@@ -63,7 +65,7 @@ export default function Supportive(props) {
                 history.replace({
                     pathname: 'login'
                 });
-            }else{
+            } else {
                 let token = localStorage.getItem('token')
                 getSupportiveApiData(props.id, token)
             }
@@ -77,7 +79,7 @@ export default function Supportive(props) {
         <>
             {state.loading && <Loader />}
             {state.error &&
-                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true}/>
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={false} back={true} />
             }
             {state.success &&
                 <div>{supportiveData.data.map((value) =>

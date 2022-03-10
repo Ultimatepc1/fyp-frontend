@@ -41,11 +41,12 @@ export default function Problems(props) {
     const [error, setError] = useState();
 
     const handleTabChange = async (event, newValue) => {
-        
-            ReactGA.event({
-                category: 'User',
-                action: `${newValue} component clicked`,
-                value:1})
+
+        ReactGA.event({
+            category: 'User',
+            action: `${newValue} component clicked`,
+            value: 1
+        })
         if (tab === 'question') {
             await setIde({ ...ide, open: false })
         }
@@ -85,9 +86,11 @@ export default function Problems(props) {
     }
 
     useEffect(() => {
-        ReactGA.initialize('UA-222140218-1', { debug: false, gaOptions: {
-            userId: localStorage.getItem('userId')
-          } });
+        ReactGA.initialize('UA-222140218-1', {
+            debug: false, gaOptions: {
+                userId: localStorage.getItem('userId')
+            }
+        });
         ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             let temp = checkLogin();

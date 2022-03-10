@@ -2,10 +2,10 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import { GroupAdd } from '@mui/icons-material';
+import { GroupAdd, Visibility, VisibilityOff } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -20,14 +20,17 @@ const theme = createTheme();
 export default function SignUp(props) {
 
     const history = useHistory();
-    const [login, setLogin] = React.useState({ email: "", password: "", name: "" });
+    const [signup, setSignup] = React.useState({ email: "", password: "", name: "" });
     const [state, setState] = React.useState({ loading: false, error: false, success: false });
     const [error, setError] = React.useState();
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
     const handleSubmit = async (event) => {
         // console.log('submit called')
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await signUp(login.name, login.email, login.password)
+        var apiData = await signUp(signup.name, signup.email, signup.password)
         console.log(apiData)
         if (apiData.error) {
             // set Error
@@ -50,11 +53,11 @@ export default function SignUp(props) {
         } else if (apiData.userId) {
             console.log(apiData.userId);
             await setState(prevState => ({ ...prevState, loading: false, success: true }))
-            history.replace({ 
-                pathname: 'login', 
-                state:{
-                    email: login.email,
-                    password: login.password
+            history.replace({
+                pathname: 'login',
+                state: {
+                    email: signup.email,
+                    password: signup.password
                 }
             });
         }
@@ -66,21 +69,21 @@ export default function SignUp(props) {
 
     const handleEmailChange = (event) => {
         const data = event.target.value;
-        setLogin(prevState => ({ ...prevState, email: data }));
+        setSignup(prevState => ({ ...prevState, email: data }));
     };
     const handlePasswordChange = (event) => {
         const data = event.target.value;
-        setLogin(prevState => ({ ...prevState, password: data }));
+        setSignup(prevState => ({ ...prevState, password: data }));
     };
     const handleNameChange = (event) => {
         const data = event.target.value;
-        setLogin(prevState => ({ ...prevState, name: data }));
+        setSignup(prevState => ({ ...prevState, name: data }));
     };
 
     return (
         <div>
             {state.error &&
-                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={true} ok={true} okFunc={submitErrorFunc}/>
+                <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={true} ok={true} okFunc={submitErrorFunc} />
             }
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
@@ -111,7 +114,7 @@ export default function SignUp(props) {
                                     autoComplete="name"
                                     autoFocus
                                     onChange={handleNameChange}
-                                    value={login.name}
+                                    value={signup.name}
                                 />
                                 <TextField
                                     margin="normal"
@@ -123,7 +126,7 @@ export default function SignUp(props) {
                                     autoComplete="email"
                                     autoFocus
                                     onChange={handleEmailChange}
-                                    value={login.email}
+                                    value={signup.email}
                                 />
                                 <TextField
                                     margin="normal"
@@ -131,11 +134,24 @@ export default function SignUp(props) {
                                     fullWidth
                                     name="password"
                                     label="Password"
-                                    type="password"
                                     id="password"
                                     autoComplete="current-password"
                                     onChange={handlePasswordChange}
-                                    value={login.password}
+                                    value={signup.password}
+                                    type={showPassword ? "text" : "password"}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        )
+                                    }}
                                 />
                                 <Button
                                     fullWidth
@@ -151,7 +167,7 @@ export default function SignUp(props) {
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
-                                    <Link href="/login" variant="body2">
+                                    <Link href="/signup" variant="body2">
                                         {"Already have an account? Log In"}
                                     </Link>
                                 </Box>

@@ -71,7 +71,7 @@ export const checkLogin = () => {
     const expiration = new Date(payload.exp);
     const now = new Date();
 
-    console.log(payload)
+    // console.log(payload)
     console.log(expiration.getTime())
     console.log(now.getTime())
     if ((expiration.getTime()*1000) < now.getTime()) {
@@ -81,4 +81,49 @@ export const checkLogin = () => {
         console.log("JWT is valid");
         return true;
     }
+}
+
+export const profileApi = (token) => {
+    return axios
+        .get(`https://teach-apidev-backend.herokuapp.com/auth/profile`, {
+            headers: {
+            'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => {
+            console.log(res)
+            if (res.status != 200) {
+                const error = new Error('Status code not 200, some error occured');
+                throw error
+            }
+            return res.data
+        })
+        .catch(err => {
+            console.log("profile api error in api folder " + err)
+            return { error: err }
+        })
+}
+
+export const editPasswordApi = (oldPassword, newPassword, token) => {
+    return axios
+    .patch(`https://teach-apidev-backend.herokuapp.com/auth/editPassword`, {
+        oldPassword: oldPassword,
+        newPassword: newPassword
+    },{
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(res => {
+        console.log(res)
+        if(res.status != 200){
+            const error = new Error('Status code not 200, some error occured');
+            throw error
+        }
+        return res.data
+    })
+    .catch(err=> {
+        console.log("edit password error "+err)
+        return {error: err}
+    })
 }

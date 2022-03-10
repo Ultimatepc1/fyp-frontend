@@ -2,13 +2,14 @@ import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -19,19 +20,6 @@ import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
 import ReactGA from 'react-ga';
 
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         mywebfyp.com
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
 import Copyright from '../components/common/copyright';
 
 const theme = createTheme();
@@ -43,6 +31,9 @@ export default function SignIn(props) {
   const [login, setLogin] = React.useState({ email: "", password: "", remember: true });
   const [state, setState] = React.useState({ loading: false, error: false, success: false });
   const [error, setError] = React.useState();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (event) => {
     setState(prevState => ({ ...prevState, loading: true }))
@@ -117,13 +108,15 @@ export default function SignIn(props) {
     setState(prevState => ({ ...prevState, loading: false, error: false }))
   }
 
-    React.useEffect(()=>{
-      ReactGA.initialize('UA-222140218-1', { debug: true, gaOptions: {
+  React.useEffect(() => {
+    ReactGA.initialize('UA-222140218-1', {
+      debug: true, gaOptions: {
         userId: localStorage.getItem('userId')
-      } });
-      ReactGA.pageview(window.location.pathname + window.location.search);
-      // do stuff here...
-      setFromSignUp();
+      }
+    });
+    ReactGA.pageview(window.location.pathname + window.location.search);
+    // do stuff here...
+    setFromSignUp();
 
   }, [])
   return (
@@ -168,11 +161,24 @@ export default function SignIn(props) {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
                   id="password"
                   autoComplete="current-password"
                   onChange={handlePasswordChange}
                   value={login.password}
+                  type={showPassword ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
                 <FormControlLabel
                   control={
