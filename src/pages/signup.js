@@ -29,38 +29,48 @@ export default function SignUp(props) {
 
     const handleSubmit = async (event) => {
         // console.log('submit called')
-        setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await signUp(signup.name, signup.email, signup.password)
-        console.log(apiData)
-        if (apiData.error) {
-            // set Error
-            console.log("----")
+        event.preventDefault()
+        const data = new FormData(event.currentTarget);
+        console.log(data);
+        console.log(data.get('email'));
+        console.log(data.get('password'));
+        console.log(data.get('name'));
+        console.log('state -----')
+        console.log(signup.email);
+        console.log(signup.password);
+        console.log(signup.name);
+        // setState(prevState => ({ ...prevState, loading: true }))
+        // var apiData = await signUp(signup.name, signup.email, signup.password)
+        // console.log(apiData)
+        // if (apiData.error) {
+        //     // set Error
+        //     console.log("----")
 
-            if (apiData.error.response) {
-                if (apiData.error.response.data) {
-                    await setError(apiData.error.response.data);
-                } else {
-                    if (apiData.error.message) {
-                        await setError({ "message": apiData.error.message, "data": "Error" });
-                    }
-                }
-            } else if (apiData.error.message) {
-                await setError({ "message": apiData.error.message, "data": "Error" });
-            } else {
-                await setError({ "message": "Some error occured", "data": "Error" });
-            }
-            await setState(prevState => ({ ...prevState, loading: false, error: true }))
-        } else if (apiData.userId) {
-            console.log(apiData.userId);
-            await setState(prevState => ({ ...prevState, loading: false, success: true }))
-            history.replace({
-                pathname: 'login',
-                state: {
-                    email: signup.email,
-                    password: signup.password
-                }
-            });
-        }
+        //     if (apiData.error.response) {
+        //         if (apiData.error.response.data) {
+        //             await setError(apiData.error.response.data);
+        //         } else {
+        //             if (apiData.error.message) {
+        //                 await setError({ "message": apiData.error.message, "data": "Error" });
+        //             }
+        //         }
+        //     } else if (apiData.error.message) {
+        //         await setError({ "message": apiData.error.message, "data": "Error" });
+        //     } else {
+        //         await setError({ "message": "Some error occured", "data": "Error" });
+        //     }
+        //     await setState(prevState => ({ ...prevState, loading: false, error: true }))
+        // } else if (apiData.userId) {
+        //     console.log(apiData.userId);
+        //     await setState(prevState => ({ ...prevState, loading: false, success: true }))
+        //     history.replace({
+        //         pathname: 'login',
+        //         state: {
+        //             email: signup.email,
+        //             password: signup.password
+        //         }
+        //     });
+        // }
     };
 
     const submitErrorFunc = () => {
@@ -103,14 +113,14 @@ export default function SignUp(props) {
                             <Typography component="h1" variant="h5">
                                 Sign Up
                             </Typography>
-                            <Box component="form" noValidate sx={{ mt: 1 }}>
+                            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                                 <TextField
                                     margin="normal"
                                     required
                                     fullWidth
                                     id="name"
                                     label="Full Name"
-                                    name="ename"
+                                    name="name"
                                     autoComplete="name"
                                     autoFocus
                                     onChange={handleNameChange}
@@ -157,7 +167,8 @@ export default function SignUp(props) {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                    onClick={() => handleSubmit()}
+                                    type="submit"
+                                    // onClick={() => handleSubmit()}
                                 >
                                     Sign Up
                                 </Button>

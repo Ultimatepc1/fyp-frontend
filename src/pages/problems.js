@@ -6,6 +6,11 @@ import TextField from '@mui/material/TextField';
 import sdk from '@stackblitz/sdk'
 import axios from 'axios'
 import Loader from '../components/common/loader';
+import Fab from '@mui/material/Fab';
+import SaveIcon from '@mui/icons-material/Save';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { green } from '@mui/material/colors';
 
 
 import { getProblemData, saveSubmission } from '../api/problem'
@@ -13,6 +18,7 @@ import MuiErrorModal from "../components/common/muiErrorModal";
 import IOMapping from "../components/ioMapping";
 import { Card, CardContent } from "@mui/material";
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -31,9 +37,19 @@ export default function Problems(props) {
         loading: false,
         error: false,
         success: false,
+        submitLoading: false,
         submitError: false,
         submitSuccess: false
     });
+
+    // const buttonSx = {
+    //     ...(state.submitLoading && {
+    //         bgcolor: green[500],
+    //         '&:hover': {
+    //             bgcolor: green[700],
+    //         },
+    //     }),
+    // };
     const [question, setQuestion] = useState()
     const [ide, setIde] = useState({ open: false, vm: null, outputURL: "" })
     const [tab, setTab] = useState('question')
@@ -199,7 +215,7 @@ export default function Problems(props) {
         var temp = await state.vm.getFsSnapshot();
         console.log(temp);
 
-        setState(prevState => ({ ...prevState, loading: true }))
+        setState(prevState => ({ ...prevState, submitLoading: true }))
         var apiData = await saveSubmission(props.id, token, temp)
         console.log(apiData)
         if (apiData.error) {
@@ -217,9 +233,9 @@ export default function Problems(props) {
             } else {
                 await setError({ "message": "Some error occured", "data": "Error" });
             }
-            await setState(prevState => ({ ...prevState, loading: false, submitError: true }))
+            await setState(prevState => ({ ...prevState, submitLoading: false, submitError: true }))
         } else if (apiData.result) {
-            setState(prevState => ({ ...prevState, loading: false, submitSuccess: true }))
+            setState(prevState => ({ ...prevState, submitLoading: false, submitSuccess: true }))
         }
     }
 
@@ -232,7 +248,7 @@ export default function Problems(props) {
             {state.submitError &&
                 <MuiErrorModal open={true} message={error.message} data={error.data} dissmisible={true} ok={true} okFunc={submitErrorFunc} />
             }
-            {state.submitSuccess &&
+            {/* {state.submitSuccess &&
                 <MuiErrorModal
                     open={true}
                     message={"Your submission was saved successfully"}
@@ -241,7 +257,12 @@ export default function Problems(props) {
                     ok={true}
                     okFunc={submitSuccessFunc}
                 />
-            }
+            } */}
+            <Snackbar open={state.submitSuccess} autoHideDuration={6000} onClose={submitSuccessFunc}>
+                <MuiAlert onClose={submitSuccessFunc} severity="success" sx={{ width: '100%' }}>
+                    Your submission was saved successfully
+                </MuiAlert>
+            </Snackbar>
             {state.success &&
                 <div className="home">
                     <Box sx={{ width: '100%', typography: 'body', padding: 2 }}>
@@ -326,7 +347,58 @@ export default function Problems(props) {
                                     onChange={handleOutputURIChange}
                                 />}<br /><br /> */}
                                 {/* {ide.open && <Button variant="contained" onClick={() => getResponseFromApi()}>Run Test</Button>}<br /><br /> */}
-                                {ide.open && <Button variant="contained" onClick={() => submitCode()}>Submit</Button>}
+                                {ide.open &&
+                                    // <Button variant="contained" onClick={() => submitCode()}>Submit</Button>
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Box sx={{ m: 1, position: 'relative' }}>
+                                            <Fab
+                                                aria-label="save"
+                                                color="primary"
+                                                // sx={buttonSx}
+                                                onClick={() => submitCode()}
+                                            >
+                                                <SaveIcon />
+                                            </Fab>
+                                            {state.submitLoading && (
+                                                <CircularProgress
+                                                    size={68}
+                                                    color = "secondary"
+                                                    sx={{
+                                                        // color: green[500],
+                                                        position: 'absolute',
+                                                        top: -6,
+                                                        left: -6,
+                                                        zIndex: 1,
+                                                    }}
+                                                />
+                                            )}
+                                        </Box>
+                                        <Box sx={{ m: 1, position: 'relative' }}>
+                                            <Button
+                                                variant="contained"
+                                                // sx={buttonSx}
+                                                disabled={state.submitLoading}
+                                                onClick={() => submitCode()}
+                                            >
+                                                Submit
+                                            </Button>
+                                            {state.submitLoading && (
+                                                <CircularProgress
+                                                    size={24}
+                                                    color = "secondary"
+                                                    sx={{
+                                                        // color: green[500],
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        marginTop: '-12px',
+                                                        marginLeft: '-12px',
+                                                    }}
+                                                />
+                                            )}
+                                        </Box>
+                                    </Box>
+                                }
                                 {/* </div> */}
                             </TabPanel>
                             <TabPanel value="submission" sx={{ margin: -3 }}>
