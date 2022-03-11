@@ -15,7 +15,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { loginApi } from "../api/auth";
+import { checkLogin, loginApi } from "../api/auth";
 import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
 import ReactGA from 'react-ga';
@@ -118,15 +118,28 @@ export default function SignIn(props) {
 
   React.useEffect(() => {
     ReactGA.initialize('UA-222140218-1', {
-      debug: true, gaOptions: {
-        userId: localStorage.getItem('userId')
-      }
+      debug: true
     });
     ReactGA.pageview(window.location.pathname + window.location.search);
+    try {
+      let temp = checkLogin();
+      if (!temp) {
+        props.changeLogin(false)
+        localStorage.clear()
+      } else {
+        props.changeLogin(true)
+        history.replace({
+          pathname: 'home'
+        });;
+      }
+    } catch (e) {
+      console.log('login page error in useffect')
+      console.log(e)
+    }
     // do stuff here...
     setFromSignUp();
-
   }, [])
+  
   return (
     <div>
       {state.error &&
@@ -204,7 +217,7 @@ export default function SignIn(props) {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                   type="submit"
-                  // onClick={() => handleSubmit()}
+                // onClick={() => handleSubmit()}
                 >
                   Log In
                 </Button>

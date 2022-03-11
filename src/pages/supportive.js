@@ -62,10 +62,12 @@ export default function Supportive(props) {
             let temp = checkLogin();
             if (!temp) {
                 localStorage.clear()
+                props.changeLogin(false)
                 history.replace({
                     pathname: 'login'
                 });
             } else {
+                props.changeLogin(true)
                 let token = localStorage.getItem('token')
                 getSupportiveApiData(props.id, token)
             }

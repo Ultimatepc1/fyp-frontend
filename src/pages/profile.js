@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import ReactGA from 'react-ga';
 import { checkLogin } from "../api/auth";
 
-export default function Profile(){
+export default function Profile(props){
     const [state, setState] = useState({ loading: false, error: false, success: false });
     const [profileData, setProfileData] = useState([])
     const [error, setError] = useState();
@@ -55,11 +55,13 @@ export default function Profile(){
         try {
             let temp = checkLogin();
             if (!temp) {
+                props.changeLogin(false)
                 localStorage.clear()
                 history.replace({
                     pathname: 'login'
                 });
             } else {
+                props.changeLogin(true)
                 let token = localStorage.getItem('token')
                 getProfileApiData(token);
             }

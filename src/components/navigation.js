@@ -8,6 +8,9 @@ const navlinksLoggedIn = [
     {
         title: 'Home',
         path: '/home'
+    },{
+        title: 'Profile',
+        path: '/profile'
     }, {
         title: 'About',
         path: '/landing'
@@ -50,7 +53,7 @@ export default function Navigation(props) {
                 onMouseLeave={() => setMenuActive(false)}
                 onMouseEnter={() => setMenuActive(true)}>
                 <ul>
-                    {checkLogin() && navlinksLoggedIn.map((link, index) => {
+                    {props.isLoggedIn && navlinksLoggedIn.map((link, index) => {
 
                         if (link.title == "Log Out") {
                             return (
@@ -58,6 +61,7 @@ export default function Navigation(props) {
                                     <Link to={link.path} onClick={() => {
                                         localStorage.clear();
                                         setMenuActive(!menuActive)
+                                        props.changeLogin(false)
                                     }}>{link.title}</Link>
                                 </li>
                             )
@@ -68,7 +72,7 @@ export default function Navigation(props) {
                             </li>
                         )
                     })}
-                    {!checkLogin() && navlinksLoggedOut.map((link, index) => {
+                    {!props.isLoggedIn && navlinksLoggedOut.map((link, index) => {
 
                         if (link.title == "Log Out") {
                             return (
@@ -76,6 +80,7 @@ export default function Navigation(props) {
                                     <Link to={link.path} onClick={() => {
                                         localStorage.clear();
                                         setMenuActive(!menuActive)
+                                        props.changeLogin(false)
                                     }}>{link.title}</Link>
                                 </li>
                             )
@@ -109,7 +114,7 @@ export default function Navigation(props) {
                                 <span className="menu-avatar-name">{props.user.firstName} {props.user.lastName}</span>
                         </span> */}
                         </li>
-                        {checkLogin() && navlinksLoggedIn.map((link, index) => {
+                        {props.isLoggedIn && navlinksLoggedIn.map((link, index) => {
 
                             if (link.title == "Log Out") {
                                 return (
@@ -117,6 +122,7 @@ export default function Navigation(props) {
                                         <Link to={link.path} onClick={() => {
                                             localStorage.clear();
                                             setMenuActive(!menuActive)
+                                            props.changeLogin(false)
                                         }}>{link.title}</Link>
                                     </li>
                                 )
@@ -127,7 +133,7 @@ export default function Navigation(props) {
                                 </li>
                             )
                         })}
-                        {!checkLogin() && navlinksLoggedOut.map((link, index) => {
+                        {!props.isLoggedIn && navlinksLoggedOut.map((link, index) => {
 
                             if (link.title == "Log Out") {
                                 return (
@@ -135,6 +141,7 @@ export default function Navigation(props) {
                                         <Link to={link.path} onClick={() => {
                                             localStorage.clear();
                                             setMenuActive(!menuActive)
+                                            props.changeLogin(false)
                                         }}>{link.title}</Link>
                                     </li>
                                 )

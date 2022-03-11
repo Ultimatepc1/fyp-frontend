@@ -9,11 +9,12 @@ import { GroupAdd, Visibility, VisibilityOff } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { signUp } from '../api/auth';
+import { checkLogin, signUp } from '../api/auth';
 import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
 import { useHistory } from "react-router-dom";
 import Copyright from '../components/common/copyright';
+import ReactGA from 'react-ga';
 
 const theme = createTheme();
 
@@ -72,6 +73,29 @@ export default function SignUp(props) {
             });
         }
     };
+
+    React.useEffect(() => {
+        ReactGA.initialize('UA-222140218-1', {
+            debug: true
+        });
+        ReactGA.pageview(window.location.pathname + window.location.search);
+        try {
+            let temp = checkLogin();
+            if (!temp) {
+                props.changeLogin(false)
+                localStorage.clear()
+            } else {
+                props.changeLogin(true)
+                history.replace({
+                    pathname: 'home'
+                });;
+            }
+        } catch (e) {
+            console.log('signup page error in useffect')
+            console.log(e)
+        }
+
+    }, [])
 
     const submitErrorFunc = () => {
         setState(prevState => ({ ...prevState, loading: false, error: false }))
@@ -168,7 +192,7 @@ export default function SignUp(props) {
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
                                     type="submit"
-                                    // onClick={() => handleSubmit()}
+                                // onClick={() => handleSubmit()}
                                 >
                                     Sign Up
                                 </Button>

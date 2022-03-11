@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import { checkLogin } from '../api/auth';
 import ReactGA from 'react-ga';
 
-export default function Home(){
+export default function Home(props){
     const [width, setWidth] = useState(document.body.clientWidth);
 
     const [state, setState] = useState({loading:false,error:false});
@@ -25,9 +25,12 @@ export default function Home(){
         console.log('home checklogin ', temp)
         if(!temp){
           localStorage.clear()
+          props.changeLogin(false)
           history.replace({
                 pathname: 'login'
             });
+        }else{
+          props.changeLogin(true)
         }
         // Return a function from the effect that removes the event listener
         return () => window.removeEventListener("resize", handleWindowResize);

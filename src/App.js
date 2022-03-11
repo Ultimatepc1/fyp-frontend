@@ -22,16 +22,43 @@ function App() {
     firstName: 'Miguel',
     lastName: 'Coder',
   }
+
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+  const changeLogin = (i) => {
+    setIsLoggedIn(i);
+  }
   return (
     <Router>
       <div className="App">
-        <Navigation user={user} />
+        <Navigation
+          user={user}
+          isLoggedIn={isLoggedIn}
+          changeLogin={changeLogin}
+        />
         <Switch>
-          {/* <Route path="/dashboard" component={Dashboard}></Route> */}
-          <Route path="/:page/:id" component={PageRendererWithId}></Route>
-          <Route path="/:page" component={PageRenderer}></Route>
-          <Route path="/" render={() => <Redirect to="/home"></Redirect>}></Route>
-
+          <Route
+            path="/:page/:id"
+          // component={PageRendererWithId}
+          >
+            <PageRendererWithId
+              isLoggedIn={isLoggedIn}
+              changeLogin={changeLogin}
+            />
+          </Route>
+          <Route
+            path="/:page"
+          // component={PageRenderer}
+          >
+            <PageRenderer
+              isLoggedIn={isLoggedIn}
+              changeLogin={changeLogin}
+            />
+          </Route>
+          <Route
+            path="/"
+            render={() => <Redirect to="/home"></Redirect>}
+          >
+          </Route>
           <Route component={() => 404}></Route>
         </Switch>
       </div>

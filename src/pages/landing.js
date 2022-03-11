@@ -25,8 +25,11 @@ function Landing(props) {
         });
         ReactGA.pageview(window.location.pathname + window.location.search);
         let temp = checkLogin();
-        console.log('temp in ')
-        console.log(temp);
+        if(!temp){
+            props.changeLogin(false)
+        }else{
+            props.changeLogin(true)
+        }
     }, [])
 
     return (
@@ -88,7 +91,7 @@ function Landing(props) {
                                         <Typography variant="h5" color="inherit" paragraph>
                                             {"Our Platform aims for user to learn api development via learning by doing approach"}
                                         </Typography><br />
-                                        {!checkLogin() && <Grid container spacing={2}>
+                                        {!props.isLoggedIn && <Grid container spacing={2}>
                                             <Grid item>
                                                 <Link href="/signup">
                                                     <Button variant="contained" sx={{borderRadius:'10px'}}>Sign Up</Button>
@@ -101,10 +104,15 @@ function Landing(props) {
                                             </Grid>
                                         </Grid>}
 
-                                        {checkLogin() && <Grid container spacing={2}>
+                                        {props.isLoggedIn && <Grid container spacing={2}>
                                             <Grid item>
                                                 <Link href="/home">
                                                     <Button variant="contained" sx={{borderRadius:'10px'}}>Home</Button>
+                                                </Link>
+                                            </Grid>
+                                            <Grid item>
+                                                <Link href="/profile">
+                                                    <Button variant="contained" sx={{borderRadius:'10px'}}>Profile</Button>
                                                 </Link>
                                             </Grid>
                                         </Grid>}

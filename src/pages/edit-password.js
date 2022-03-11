@@ -55,10 +55,13 @@ export default function EditPassword(props) {
         try {
             let temp = checkLogin();
             if (!temp) {
+                props.changeLogin(false)
                 localStorage.clear()
                 history.replace({
                     pathname: 'login'
                 });
+            }else{
+                props.changeLogin(true)
             }
         } catch (e) {
             console.log('edit password page error in useffect')

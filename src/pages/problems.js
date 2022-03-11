@@ -111,11 +111,13 @@ export default function Problems(props) {
         try {
             let temp = checkLogin();
             if (!temp) {
+                props.changeLogin(false)
                 localStorage.clear()
                 history.replace({
                     pathname: 'login'
                 });
             } else {
+                props.changeLogin(true)
                 let token = localStorage.getItem('token')
                 getProblemApiData(props.id, token);
             }
@@ -205,10 +207,13 @@ export default function Problems(props) {
         let temp2 = checkLogin();
         if (!temp2) {
             localStorage.clear()
+            props.changeLogin(false)
             history.replace({
                 pathname: 'login'
             });
             return;
+        }else{
+            props.changeLogin(true)
         }
 
         let token = localStorage.getItem('token')
