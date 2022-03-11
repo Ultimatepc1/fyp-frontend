@@ -39,38 +39,38 @@ export default function SignUp(props) {
         console.log(signup.email);
         console.log(signup.password);
         console.log(signup.name);
-        // setState(prevState => ({ ...prevState, loading: true }))
-        // var apiData = await signUp(signup.name, signup.email, signup.password)
-        // console.log(apiData)
-        // if (apiData.error) {
-        //     // set Error
-        //     console.log("----")
+        setState(prevState => ({ ...prevState, loading: true }))
+        var apiData = await signUp(signup.name, signup.email, signup.password)
+        console.log(apiData)
+        if (apiData.error) {
+            // set Error
+            console.log("----")
 
-        //     if (apiData.error.response) {
-        //         if (apiData.error.response.data) {
-        //             await setError(apiData.error.response.data);
-        //         } else {
-        //             if (apiData.error.message) {
-        //                 await setError({ "message": apiData.error.message, "data": "Error" });
-        //             }
-        //         }
-        //     } else if (apiData.error.message) {
-        //         await setError({ "message": apiData.error.message, "data": "Error" });
-        //     } else {
-        //         await setError({ "message": "Some error occured", "data": "Error" });
-        //     }
-        //     await setState(prevState => ({ ...prevState, loading: false, error: true }))
-        // } else if (apiData.userId) {
-        //     console.log(apiData.userId);
-        //     await setState(prevState => ({ ...prevState, loading: false, success: true }))
-        //     history.replace({
-        //         pathname: 'login',
-        //         state: {
-        //             email: signup.email,
-        //             password: signup.password
-        //         }
-        //     });
-        // }
+            if (apiData.error.response) {
+                if (apiData.error.response.data) {
+                    await setError(apiData.error.response.data);
+                } else {
+                    if (apiData.error.message) {
+                        await setError({ "message": apiData.error.message, "data": "Error" });
+                    }
+                }
+            } else if (apiData.error.message) {
+                await setError({ "message": apiData.error.message, "data": "Error" });
+            } else {
+                await setError({ "message": "Some error occured", "data": "Error" });
+            }
+            await setState(prevState => ({ ...prevState, loading: false, error: true }))
+        } else if (apiData.userId) {
+            console.log(apiData.userId);
+            await setState(prevState => ({ ...prevState, loading: false, success: true }))
+            history.replace({
+                pathname: 'login',
+                state: {
+                    email: signup.email,
+                    password: signup.password
+                }
+            });
+        }
     };
 
     const submitErrorFunc = () => {

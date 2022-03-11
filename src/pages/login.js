@@ -36,6 +36,14 @@ export default function SignIn(props) {
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (event) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget);
+    console.log(data);
+    console.log(data.get('email'));
+    console.log(data.get('password'));
+    console.log('state -----')
+    console.log(login.email);
+    console.log(login.password);
     setState(prevState => ({ ...prevState, loading: true }))
     var apiData = await loginApi(login.email, login.password, login.remember)
     console.log(apiData)
@@ -142,7 +150,7 @@ export default function SignIn(props) {
               <Typography component="h1" variant="h5">
                 Log in
               </Typography>
-              <Box component="form" noValidate sx={{ mt: 1 }}>
+              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"
                   required
@@ -195,7 +203,8 @@ export default function SignIn(props) {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  onClick={() => handleSubmit()}
+                  type="submit"
+                  // onClick={() => handleSubmit()}
                 >
                   Log In
                 </Button>

@@ -68,6 +68,16 @@ export default function EditPassword(props) {
 
     const handleSubmit = async (event) => {
         // console.log('submit called')
+        event.preventDefault()
+        const data = new FormData(event.currentTarget);
+        console.log(data);
+        console.log(data.get('oldPassword'));
+        console.log(data.get('newPassword'));
+        console.log(data.get('confirmPassword'));
+        console.log('state -----')
+        console.log(editPassword.oldPassword);
+        console.log(editPassword.newPassword);
+        console.log(editPassword.confirmPassword);
         setState(prevState => ({ ...prevState, loading: true }))
         let temp = checkLogin();
         if (!temp) {
@@ -162,7 +172,7 @@ export default function EditPassword(props) {
                             <Typography component="h1" variant="h5">
                                 Edit Password
                             </Typography>
-                            <Box component="form" noValidate sx={{ mt: 1 }}>
+                            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
                                 <TextField
                                     margin="normal"
@@ -243,7 +253,8 @@ export default function EditPassword(props) {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                    onClick={() => handleSubmit()}
+                                    type="submit"
+                                    // onClick={() => handleSubmit()}
                                 >
                                     Change Password
                                 </Button>
