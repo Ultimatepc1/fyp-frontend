@@ -93,12 +93,12 @@ function Landing(props) {
                                         </Typography><br />
                                         {!props.isLoggedIn && <Grid container spacing={2}>
                                             <Grid item>
-                                                <Link href="/signup">
+                                                <Link href="/signup" underline="none">
                                                     <Button variant="contained" sx={{borderRadius:'10px'}}>Sign Up</Button>
                                                 </Link>
                                             </Grid>
                                             <Grid item>
-                                                <Link href="/login">
+                                                <Link href="/login" underline="none">
                                                     <Button variant="contained" sx={{borderRadius:'10px'}}>Log In</Button>
                                                 </Link>
                                             </Grid>
@@ -106,12 +106,12 @@ function Landing(props) {
 
                                         {props.isLoggedIn && <Grid container spacing={2}>
                                             <Grid item>
-                                                <Link href="/home">
+                                                <Link href="/home" underline="none">
                                                     <Button variant="contained" sx={{borderRadius:'10px'}}>Home</Button>
                                                 </Link>
                                             </Grid>
                                             <Grid item>
-                                                <Link href="/profile">
+                                                <Link href="/profile" underline="none">
                                                     <Button variant="contained" sx={{borderRadius:'10px'}}>Profile</Button>
                                                 </Link>
                                             </Grid>

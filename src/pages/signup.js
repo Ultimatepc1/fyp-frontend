@@ -15,6 +15,7 @@ import MuiErrorModal from '../components/common/muiErrorModal';
 import { useHistory } from "react-router-dom";
 import Copyright from '../components/common/copyright';
 import ReactGA from 'react-ga';
+import isEmail from 'validator/lib/isEmail';
 
 const theme = createTheme();
 
@@ -24,6 +25,14 @@ export default function SignUp(props) {
     const [signup, setSignup] = React.useState({ email: "", password: "", name: "" });
     const [state, setState] = React.useState({ loading: false, error: false, success: false });
     const [error, setError] = React.useState();
+    const [validations, setValidations] = React.useState({
+        name: false,
+        nameText: "",
+        email: false,
+        emailText: "",
+        password: false,
+        passwordText: ""
+    })
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -40,6 +49,10 @@ export default function SignUp(props) {
         console.log(signup.email);
         console.log(signup.password);
         console.log(signup.name);
+
+        if (validations.email || validations.name || validations.password) {
+            return;
+        }
         setState(prevState => ({ ...prevState, loading: true }))
         var apiData = await signUp(signup.name, signup.email, signup.password)
         console.log(apiData)
@@ -87,7 +100,7 @@ export default function SignUp(props) {
             } else {
                 props.changeLogin(true)
                 history.replace({
-                    pathname: 'home'
+                    pathname: 'landing'
                 });;
             }
         } catch (e) {
@@ -103,14 +116,35 @@ export default function SignUp(props) {
 
     const handleEmailChange = (event) => {
         const data = event.target.value;
+        if (data == "" || data == undefined) {
+            setValidations(prevState => ({ ...prevState, email: true, emailText: "Required" }))
+        } else if (isEmail(data)) {
+            setValidations(prevState => ({ ...prevState, email: false, emailText: "" }))
+        } else {
+            setValidations(prevState => ({ ...prevState, email: true, emailText: "Enter a valid email" }))
+        }
         setSignup(prevState => ({ ...prevState, email: data }));
     };
     const handlePasswordChange = (event) => {
         const data = event.target.value;
+        if (data == "" || data == undefined) {
+            setValidations(prevState => ({ ...prevState, password: true, passwordText: "Required" }))
+        } else if (data.length < 5) {
+            setValidations(prevState => ({ ...prevState, password: true, passwordText: "Password should be atleast 5 characters" }))
+        } else {
+            setValidations(prevState => ({ ...prevState, password: false, passwordText: "" }))
+        }
         setSignup(prevState => ({ ...prevState, password: data }));
     };
     const handleNameChange = (event) => {
         const data = event.target.value;
+        if (data == "" || data == undefined) {
+            setValidations(prevState => ({ ...prevState, name: true, nameText: "Required" }))
+        } else if (data.length < 5) {
+            setValidations(prevState => ({ ...prevState, name: true, nameText: "Name should be atleast 5 characters" }))
+        } else {
+            setValidations(prevState => ({ ...prevState, name: false, nameText: "" }))
+        }
         setSignup(prevState => ({ ...prevState, name: data }));
     };
 
@@ -149,6 +183,8 @@ export default function SignUp(props) {
                                     autoFocus
                                     onChange={handleNameChange}
                                     value={signup.name}
+                                    error={validations.name}
+                                    helperText={validations.nameText}
                                 />
                                 <TextField
                                     margin="normal"
@@ -161,6 +197,8 @@ export default function SignUp(props) {
                                     autoFocus
                                     onChange={handleEmailChange}
                                     value={signup.email}
+                                    error={validations.email}
+                                    helperText={validations.emailText}
                                 />
                                 <TextField
                                     margin="normal"
@@ -173,6 +211,8 @@ export default function SignUp(props) {
                                     onChange={handlePasswordChange}
                                     value={signup.password}
                                     type={showPassword ? "text" : "password"}
+                                    error={validations.password}
+                                    helperText={validations.passwordText}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">

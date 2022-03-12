@@ -24,6 +24,14 @@ export default function EditPassword(props) {
     const [editPassword, setEditPassword] = React.useState({ oldPassword: "", newPassword: "", confirmPassword: "" });
     const [state, setState] = React.useState({ loading: false, error: false, success: false });
     const [error, setError] = React.useState();
+    const [validations, setValidations] = React.useState({
+        oldPassword: false,
+        oldPasswordText: "",
+        newPassword: false,
+        newPasswordText: "",
+        confirmPassword: false,
+        confirmPasswordText: ""
+    })
     const [showPassword, setShowPassword] = React.useState({ old: false, new: false, confirm: false });
 
     const handleClickShowPassword = (i) => {
@@ -60,7 +68,7 @@ export default function EditPassword(props) {
                 history.replace({
                     pathname: 'login'
                 });
-            }else{
+            } else {
                 props.changeLogin(true)
             }
         } catch (e) {
@@ -81,6 +89,19 @@ export default function EditPassword(props) {
         console.log(editPassword.oldPassword);
         console.log(editPassword.newPassword);
         console.log(editPassword.confirmPassword);
+
+        if (editPassword.newPassword != editPassword.confirmPassword) {
+            setValidations(prevState => ({
+                ...prevState,
+                confirmPassword: true,
+                confirmPasswordText: "Passwords must match"
+            }))
+            return;
+        }
+        if (validations.oldPassword || validations.newPassword || validations.confirmPassword) {
+            return;
+        }
+
         setState(prevState => ({ ...prevState, loading: true }))
         let temp = checkLogin();
         if (!temp) {
@@ -131,14 +152,59 @@ export default function EditPassword(props) {
     }
     const handleOldPasswordChange = (event) => {
         const data = event.target.value;
+        if (data == "" || data == undefined) {
+            setValidations(prevState => ({
+                ...prevState,
+                oldPassword: true,
+                oldPasswordText: "Required"
+            }))
+        } else if (data.length < 5) {
+            setValidations(prevState => ({
+                ...prevState,
+                oldPassword: true,
+                oldPasswordText: "Password should be atleast 5 characters"
+            }))
+        } else {
+            setValidations(prevState => ({ ...prevState, oldPassword: false, oldPasswordText: "" }))
+        }
         setEditPassword(prevState => ({ ...prevState, oldPassword: data }));
     };
     const handleNewPasswordChange = (event) => {
         const data = event.target.value;
+        if (data == "" || data == undefined) {
+            setValidations(prevState => ({
+                ...prevState,
+                newPassword: true,
+                newPasswordText: "Required"
+            }))
+        } else if (data.length < 5) {
+            setValidations(prevState => ({
+                ...prevState,
+                newPassword: true,
+                newPasswordText: "Password should be atleast 5 characters"
+            }))
+        } else {
+            setValidations(prevState => ({ ...prevState, newPassword: false, newPasswordText: "" }))
+        }
         setEditPassword(prevState => ({ ...prevState, newPassword: data }));
     };
     const handleConfirmPasswordChange = (event) => {
         const data = event.target.value;
+        if (data == "" || data == undefined) {
+            setValidations(prevState => ({
+                ...prevState,
+                confirmPassword: true,
+                confirmPasswordText: "Required"
+            }))
+        } else if (data.length < 5) {
+            setValidations(prevState => ({
+                ...prevState,
+                confirmPassword: true,
+                confirmPasswordText: "Password should be atleast 5 characters"
+            }))
+        } else {
+            setValidations(prevState => ({ ...prevState, confirmPassword: false, confirmPasswordText: "" }))
+        }
         setEditPassword(prevState => ({ ...prevState, confirmPassword: data }));
     };
 
@@ -187,6 +253,8 @@ export default function EditPassword(props) {
                                     autoComplete="current-password"
                                     onChange={handleOldPasswordChange}
                                     value={editPassword.oldPassword}
+                                    error={validations.oldPassword}
+                                    helperText={validations.oldPasswordText}
                                     type={showPassword.old ? "text" : "password"}
                                     InputProps={{ // <-- This is where the toggle button is added.
                                         endAdornment: (
@@ -212,6 +280,8 @@ export default function EditPassword(props) {
                                     autoComplete="new-password"
                                     onChange={handleNewPasswordChange}
                                     value={editPassword.newPassword}
+                                    error={validations.newPassword}
+                                    helperText={validations.newPasswordText}
                                     type={showPassword.new ? "text" : "password"}
                                     InputProps={{ // <-- This is where the toggle button is added.
                                         endAdornment: (
@@ -237,6 +307,8 @@ export default function EditPassword(props) {
                                     autoComplete="new-password"
                                     onChange={handleConfirmPasswordChange}
                                     value={editPassword.confirmPassword}
+                                    error={validations.confirmPassword}
+                                    helperText={validations.confirmPasswordText}
                                     type={showPassword.confirm ? "text" : "password"}
                                     InputProps={{ // <-- This is where the toggle button is added.
                                         endAdornment: (
@@ -257,7 +329,7 @@ export default function EditPassword(props) {
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
                                     type="submit"
-                                    // onClick={() => handleSubmit()}
+                                // onClick={() => handleSubmit()}
                                 >
                                     Change Password
                                 </Button>

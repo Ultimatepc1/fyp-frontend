@@ -19,6 +19,7 @@ import { checkLogin, loginApi } from "../api/auth";
 import Loader from '../components/common/loader';
 import MuiErrorModal from '../components/common/muiErrorModal';
 import ReactGA from 'react-ga';
+import isEmail from 'validator/lib/isEmail';
 
 import Copyright from '../components/common/copyright';
 
@@ -31,6 +32,12 @@ export default function SignIn(props) {
   const [login, setLogin] = React.useState({ email: "", password: "", remember: true });
   const [state, setState] = React.useState({ loading: false, error: false, success: false });
   const [error, setError] = React.useState();
+  const [validations, setValidations] = React.useState({
+    email: false,
+    emailText: "",
+    password: false,
+    passwordText: ""
+  })
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -44,6 +51,9 @@ export default function SignIn(props) {
     console.log('state -----')
     console.log(login.email);
     console.log(login.password);
+    if (validations.email || validations.password) {
+      return;
+    }
     setState(prevState => ({ ...prevState, loading: true }))
     var apiData = await loginApi(login.email, login.password, login.remember)
     console.log(apiData)
@@ -90,10 +100,24 @@ export default function SignIn(props) {
 
   const handleEmailChange = (event) => {
     const data = event.target.value;
+    if (data == "" || data == undefined) {
+      setValidations(prevState => ({ ...prevState, email: true, emailText: "Required" }))
+    } else if (isEmail(data)) {
+      setValidations(prevState => ({ ...prevState, email: false, emailText: "" }))
+    } else {
+      setValidations(prevState => ({ ...prevState, email: true, emailText: "Enter a valid email" }))
+    }
     setLogin(prevState => ({ ...prevState, email: data }));
   };
   const handlePasswordChange = (event) => {
     const data = event.target.value;
+    if (data == "" || data == undefined) {
+      setValidations(prevState => ({ ...prevState, password: true, passwordText: "Required" }))
+    } else if (data.length < 5) {
+      setValidations(prevState => ({ ...prevState, password: true, passwordText: "Password should be atleast 5 characters" }))
+    } else {
+      setValidations(prevState => ({ ...prevState, password: false, passwordText: "" }))
+    }
     setLogin(prevState => ({ ...prevState, password: data }));
   };
   const handleRememberChange = () => {
@@ -129,7 +153,7 @@ export default function SignIn(props) {
       } else {
         props.changeLogin(true)
         history.replace({
-          pathname: 'home'
+          pathname: 'landing'
         });;
       }
     } catch (e) {
@@ -139,7 +163,7 @@ export default function SignIn(props) {
     // do stuff here...
     setFromSignUp();
   }, [])
-  
+
   return (
     <div>
       {state.error &&
@@ -175,6 +199,8 @@ export default function SignIn(props) {
                   autoFocus
                   onChange={handleEmailChange}
                   value={login.email}
+                  error={validations.email}
+                  helperText={validations.emailText}
                 />
                 <TextField
                   margin="normal"
@@ -186,6 +212,8 @@ export default function SignIn(props) {
                   autoComplete="current-password"
                   onChange={handlePasswordChange}
                   value={login.password}
+                  error={validations.password}
+                  helperText={validations.passwordText}
                   type={showPassword ? "text" : "password"}
                   InputProps={{
                     endAdornment: (
