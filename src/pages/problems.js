@@ -10,8 +10,6 @@ import Fab from '@mui/material/Fab';
 import SaveIcon from '@mui/icons-material/Save';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { green } from '@mui/material/colors';
-
 
 import { getProblemData, saveSubmission } from '../api/problem'
 import MuiErrorModal from "../components/common/muiErrorModal";
@@ -26,13 +24,14 @@ import TabPanel from '@mui/lab/TabPanel';
 import Solution from "../components/solution";
 import Submission from "../components/submission";
 import { Zoom, Slide, Fade } from '@mui/material';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { checkLogin } from "../api/auth";
 import ReactGA from 'react-ga';
 
 export default function Problems(props) {
 
     const history = useHistory();
+    const location = useLocation();
     const [state, setState] = useState({
         loading: false,
         error: false,
@@ -53,6 +52,7 @@ export default function Problems(props) {
     const [question, setQuestion] = useState()
     const [ide, setIde] = useState({ open: false, vm: null, outputURL: "" })
     const [tab, setTab] = useState('question')
+    const [width, setWidth] = useState(document.body.clientWidth);
 
     const [error, setError] = useState();
 
@@ -97,7 +97,7 @@ export default function Problems(props) {
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
             await setQuestion(apiData.result);
-            setState(prevState => ({ ...prevState, loading: false, success: true }))
+            await setState(prevState => ({ ...prevState, loading: false, success: true }))
         }
     }
 
@@ -108,6 +108,8 @@ export default function Problems(props) {
             }
         });
         ReactGA.pageview(window.location.pathname + window.location.search);
+        const handleWindowResize = () => setWidth(document.body.clientWidth)
+        window.addEventListener("resize", handleWindowResize);
         try {
             let temp = checkLogin();
             if (!temp) {
@@ -120,11 +122,20 @@ export default function Problems(props) {
                 props.changeLogin(true)
                 let token = localStorage.getItem('token')
                 getProblemApiData(props.id, token);
+                if (location.state) {
+                    if (location.state.fromProfile) {
+                        handleTabChange(undefined, "submission")
+                    }
+                }
             }
+
         } catch (e) {
             console.log('problems page error in useffect')
             console.log(e)
         }
+
+        // Return a function from the effect that removes the event listener
+        return () => window.removeEventListener("resize", handleWindowResize);
     }, []);
 
     const embedIde = async (id) => {
@@ -212,7 +223,7 @@ export default function Problems(props) {
                 pathname: 'login'
             });
             return;
-        }else{
+        } else {
             props.changeLogin(true)
         }
 
@@ -367,7 +378,7 @@ export default function Problems(props) {
                                             {state.submitLoading && (
                                                 <CircularProgress
                                                     size={68}
-                                                    color = "secondary"
+                                                    color="secondary"
                                                     sx={{
                                                         // color: green[500],
                                                         position: 'absolute',
@@ -390,7 +401,7 @@ export default function Problems(props) {
                                             {state.submitLoading && (
                                                 <CircularProgress
                                                     size={24}
-                                                    color = "secondary"
+                                                    color="secondary"
                                                     sx={{
                                                         // color: green[500],
                                                         position: 'absolute',

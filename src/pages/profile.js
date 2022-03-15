@@ -5,7 +5,18 @@ import MuiErrorModal from "../components/common/muiErrorModal";
 import { useHistory } from "react-router-dom";
 import ReactGA from 'react-ga';
 import { checkLogin } from "../api/auth";
-import { Avatar, Paper, Grid, Divider, Typography, Card, CardContent } from "@mui/material";
+import {
+    Avatar,
+    Paper,
+    Grid,
+    Divider,
+    Typography,
+    Card,
+    CardActionArea,
+    CardContent,
+    Button,
+    Box
+} from "@mui/material";
 import moment from 'moment';
 
 export default function Profile(props) {
@@ -77,12 +88,12 @@ export default function Profile(props) {
 
     const getDateDiff = (createdAt) => {
 
-        var Difference_In_Time = (new Date(Date.now())).getTime()-(new Date(createdAt)).getTime();
+        var Difference_In_Time = (new Date(Date.now())).getTime() - (new Date(createdAt)).getTime();
         var Difference_In_Days = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
-        var Difference_In_Hours = Math.floor((Difference_In_Time /(1000 * 3600))/(24*Difference_In_Days));
+        var Difference_In_Hours = Math.floor((Difference_In_Time / (1000 * 3600)) / (24 * Difference_In_Days));
         return <>
-            {Difference_In_Days>0 && <h1>Last Submission made {Difference_In_Days} days {Difference_In_Hours} hours ago</h1>}
-            {Difference_In_Days==0 && <h1>Last Submission made {Math.floor(Difference_In_Time/(1000*3600))} hours ago</h1>}
+            {Difference_In_Days > 0 && <h1>Last Submission made {Difference_In_Days} days {Difference_In_Hours} hours ago</h1>}
+            {Difference_In_Days == 0 && <h1>Last Submission made {Math.floor(Difference_In_Time / (1000 * 3600))} hours ago</h1>}
         </>
     }
 
@@ -105,28 +116,61 @@ export default function Profile(props) {
                                 <h4>Name : {profileData.user.name}</h4>
                                 <h4>Email : <br />{profileData.user.email}</h4>
                                 <h4>Created At :<br />{moment((new Date(profileData.user.createdAt)).getTime()).format("DD-MM-YYYY h:mm:ss")}</h4>
+                                <br />
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        sx={{ borderRadius: '10px' }}
+                                        onClick={() => {
+                                            history.push('edit-password')
+                                        }}
+                                    >
+                                        Edit Password
+                                    </Button>
+                                </Box>
                             </Grid>
                             <Grid item xs={0} lg={1} md={1}>
                             </Grid>
                             <Divider orientation="vertical" flexItem>
                             </Divider>
-                            <Grid item xs={12} lg={8} md={6}>
+                            <Grid item xs={12} lg={8} md={6} sx={{
+                                paddingRight: "16px"
+                            }}>
                                 <h1>Total submissions : {profileData.submissions.length}</h1>
                                 {/* {profileData.submissions.length>0 && <h1>Last submission made {moment(Date.now()).format("YYYY")-moment(profileData.submissions[0].createdAt).format("YYYY")} years {moment(Date.now()).format("MM")-moment(profileData.submissions[0].createdAt).format("MM")} months {moment(Date.now()).format("DD")-moment(profileData.submissions[0].createdAt).format("DD")} days {moment(Date.now()).format("h")-moment(profileData.submissions[0].createdAt).format("h")} hours ago</h1>} */}
                                 {profileData.submissions.length > 0 && getDateDiff(profileData.submissions[0].createdAt)}
-                                <h1>All Submissions</h1>
+                                {profileData.submissions.length > 0 && <h1>All Submissions</h1>}
                                 {profileData.submissions.length > 0 && profileData.submissions.map((submission, index) => {
                                     var curSubmissionDate = new Date(submission.createdAt)
 
-                                    return <>
+                                    return <div key={submission._id}>
 
-                                        <Card style={{ backgroundColor: "#F3F7F7" }}>
-                                            <CardContent>
-                                                <h1>Problem ID : {submission.problem_id}</h1>
-                                                <h1>Submitted on : {moment(curSubmissionDate.getTime()).format("DD-MM-YYYY h:mm:ss")}</h1>
-                                            </CardContent>
+                                        <Card
+                                            style={{ backgroundColor: "#F3F7F7" }}
+                                            onClick={() => {
+                                                history.push({
+                                                    pathname: `problems/${submission.problem_id}`,
+                                                    state: {
+                                                        fromProfile: true,
+                                                        submissionId: submission._id
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            <CardActionArea>
+                                                <CardContent>
+                                                    <h1>Problem ID : {submission.problem_id}</h1>
+                                                    <h1>Submitted on : {moment(curSubmissionDate.getTime()).format("DD-MM-YYYY h:mm:ss")}</h1>
+                                                </CardContent>
+                                            </CardActionArea>
                                         </Card><br />
-                                    </>
+                                    </div>
                                 })}
                                 {profileData.submissions.length == 0 && <h1>No submissions found !</h1>}
                             </Grid>
