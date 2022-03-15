@@ -8,7 +8,7 @@ export default function CourseListItem (props) {
 
 
     useEffect(() => {
-        AOS.init();
+        AOS.init(); 
         AOS.refresh();
       }, []);
  

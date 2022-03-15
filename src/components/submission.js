@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { Button, Fade, Slide } from '@mui/material'
+import { Button, Fade, Paper, Slide } from '@mui/material'
 import { useHistory } from "react-router-dom";
 
 import { getSubmissions } from '../api/problem'
@@ -98,7 +98,7 @@ export default function Submission(props) {
                         (value, i) =>
 
                             <div key={value._id}>
-                                <Button onClick={() => {
+                                <Paper onClick={() => {
                                     setCurCode(submissions.length - i)
 
                                     ReactGA.event({
@@ -108,14 +108,15 @@ export default function Submission(props) {
                                     })
                                 }
                                 }
-                                    sx={{
-                                        display: 'flex',
-                                        width: '100%',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }}>
+                                    // sx={{
+                                    //     display: 'flex',
+                                    //     width: '100%',
+                                    //     alignItems: 'center',
+                                    //     justifyContent: 'center'
+                                    // }}
+                                    >
                                     <SubmissionComponent value={value} id={submissions.length - i} />
-                                </Button><br />
+                                </Paper><br />
                             </div>
                     )
                     }</div>

@@ -35,12 +35,11 @@ export default function Home(props){
         // Return a function from the effect that removes the event listener
         return () => window.removeEventListener("resize", handleWindowResize);
     }, []);
-    return(
+    return( 
         <main className="home">
           <div>
             {state.loading && <Loader/>}
             {courseList.map((value, index) => <CourseListItem value={value} key={index}/>)}
-            
           </div>
           
           

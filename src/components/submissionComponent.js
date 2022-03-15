@@ -11,7 +11,7 @@ const SubmissionComponent = (props) => {
     return (
         <div>
             <Card>
-                <CardContent >
+                <CardContent sx={{boxShadow:"0px"}}>
                     <h1>Submission {props.id} | Submitted on : {moment(curSubmissionDate.getTime()).format("DD-MM-YYYY h:mm:ss")}</h1>
                     {/* <h4>index.js</h4><br/> */}
                     {/* <SubSubmissionComponent data={props.value.data}/> */}

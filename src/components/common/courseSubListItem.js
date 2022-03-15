@@ -36,8 +36,8 @@ export default function CourseListSubItem(props) {
                 <div className="">
                     <div className="subTitle">
                         <h2 data-aos="fade-down" >{props.value.title}</h2>
-                    </div>
-
+                    </div><br/>
+ 
                     <Grid container spacing={2} sx={{
                         display: 'flex',
                         width: '100%',

@@ -75,6 +75,17 @@ export default function Profile(props) {
     }, []);
 
 
+    const getDateDiff = (createdAt) => {
+
+        var Difference_In_Time = (new Date(Date.now())).getTime()-(new Date(createdAt)).getTime();
+        var Difference_In_Days = Math.floor(Difference_In_Time / (1000 * 3600 * 24));
+        var Difference_In_Hours = Math.floor((Difference_In_Time /(1000 * 3600))/(24*Difference_In_Days));
+        return <>
+            {Difference_In_Days>0 && <h1>Last Submission made {Difference_In_Days} days {Difference_In_Hours} hours ago</h1>}
+            {Difference_In_Days==0 && <h1>Last Submission made {Math.floor(Difference_In_Time/(1000*3600))} hours ago</h1>}
+        </>
+    }
+
     return (
         <>
             {state.loading && <Loader />}
@@ -101,10 +112,11 @@ export default function Profile(props) {
                             </Divider>
                             <Grid item xs={12} lg={8} md={6}>
                                 <h1>Total submissions : {profileData.submissions.length}</h1>
-                                {profileData.submissions.length>0 && <h1>Last submission made {moment(Date.now()).format("YYYY")-moment(profileData.submissions[0].createdAt).format("YYYY")} years {moment(Date.now()).format("MM")-moment(profileData.submissions[0].createdAt).format("MM")} months {moment(Date.now()).format("DD")-moment(profileData.submissions[0].createdAt).format("DD")} days {moment(Date.now()).format("h")-moment(profileData.submissions[0].createdAt).format("h")} hours ago</h1>}
+                                {/* {profileData.submissions.length>0 && <h1>Last submission made {moment(Date.now()).format("YYYY")-moment(profileData.submissions[0].createdAt).format("YYYY")} years {moment(Date.now()).format("MM")-moment(profileData.submissions[0].createdAt).format("MM")} months {moment(Date.now()).format("DD")-moment(profileData.submissions[0].createdAt).format("DD")} days {moment(Date.now()).format("h")-moment(profileData.submissions[0].createdAt).format("h")} hours ago</h1>} */}
+                                {profileData.submissions.length > 0 && getDateDiff(profileData.submissions[0].createdAt)}
                                 <h1>All Submissions</h1>
                                 {profileData.submissions.length > 0 && profileData.submissions.map((submission, index) => {
-                                    var curSubmissionDate=new Date(submission.createdAt)
+                                    var curSubmissionDate = new Date(submission.createdAt)
 
                                     return <>
 
@@ -113,7 +125,7 @@ export default function Profile(props) {
                                                 <h1>Problem ID : {submission.problem_id}</h1>
                                                 <h1>Submitted on : {moment(curSubmissionDate.getTime()).format("DD-MM-YYYY h:mm:ss")}</h1>
                                             </CardContent>
-                                        </Card><br/>
+                                        </Card><br />
                                     </>
                                 })}
                                 {profileData.submissions.length == 0 && <h1>No submissions found !</h1>}
