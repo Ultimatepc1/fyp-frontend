@@ -36,14 +36,18 @@ export default function CourseListSubItem(props) {
                 <div className="">
                     <div className="subTitle">
                         <h2 data-aos="fade-down" >{props.value.title}</h2>
-                    </div><br/>
+                    </div><br/><br/>
  
-                    <Grid container spacing={2} sx={{
-                        display: 'flex',
-                        width: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
+                    <Grid container spacing={3} 
+                    // sx={{
+                    //     display: 'flex',
+                    //     width: '100%',
+                    //     alignItems: 'center',
+                    //     justifyContent: 'center'
+                    // }} 
+                    alignItems="center"
+                    justifyContent="center"
+                    >
 
                         <Grid item xs={12} md={4} lg={2} >
                             <Link to={`/supportive/${props.value.supportive}`}
@@ -56,7 +60,7 @@ export default function CourseListSubItem(props) {
                                     action: 'supportive button clicked',
                                     value:1
                                 })}
-
+ 
                             >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-right" >
                                     <CardActionArea>

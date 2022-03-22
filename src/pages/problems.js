@@ -145,6 +145,11 @@ export default function Problems(props) {
 
         }
         if (!ide.open) {
+            ReactGA.event({
+                category: 'User',
+                action: 'Code IDE button clicked',
+                value:1
+            });
             await setIde({ ...ide, open: true })
             try {
                 sdk.embedGithubProject(
@@ -227,6 +232,11 @@ export default function Problems(props) {
             props.changeLogin(true)
         }
 
+        ReactGA.event({
+            category: 'User',
+            action: 'Submit Code button clicked',
+            value:1
+        });
         let token = localStorage.getItem('token')
         var temp = await state.vm.getFsSnapshot();
         console.log(temp);
@@ -281,7 +291,7 @@ export default function Problems(props) {
             </Snackbar>
             {state.success &&
                 <div className="home">
-                    <Box sx={{ width: '100%', typography: 'body', padding: 2 }}>
+                    <Box sx={{ width: '100%' }}>
                         <TabContext value={tab}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
