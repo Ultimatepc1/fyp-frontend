@@ -55,11 +55,12 @@ export default function SignIn(props) {
       return;
     }
     setState(prevState => ({ ...prevState, loading: true }))
+    let userid = localStorage.getItem('userId');
     try {
       var apiData = await loginApi(login.email, login.password, login.remember)
       console.log(apiData)
       if (apiData.error) {
-        let userid = localStorage.getItem('userId');
+        
         // set Error
         console.log("----")
 

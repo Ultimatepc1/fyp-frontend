@@ -118,11 +118,12 @@ export default function EditPassword(props) {
             });
         }
         let token = localStorage.getItem('token')
+        let userid = localStorage.getItem('userId');
         try {
             var apiData = await editPasswordApi(editPassword.oldPassword, editPassword.newPassword, token);
             console.log(apiData)
             if (apiData.error) {
-                let userid = localStorage.getItem('userId');
+                
                 // set Error
                 console.log("----")
 

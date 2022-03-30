@@ -16,6 +16,7 @@ export default function Supportive(props) {
 
     const getSupportiveApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
+        let userid = localStorage.getItem('userId');
         try {
 
             var apiData = await getSupportiveData(id, token)

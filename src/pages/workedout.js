@@ -25,13 +25,14 @@ export default function WorkedOut(props) {
 
     const getWorkedOutApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
+        let userid = localStorage.getItem('userId');
         try {
             var apiData = await getWorkedOutData(id, token)
             console.log(apiData)
             if (apiData.error) {
                 // set Error
                 console.log("----")
-                let userid = localStorage.getItem('userId');
+                
                 if (apiData.error.response) {
                     if (apiData.error.response.data) {
                         await setError(apiData.error.response.data);
