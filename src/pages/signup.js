@@ -60,6 +60,7 @@ export default function SignUp(props) {
             value: 1
         });
         setState(prevState => ({ ...prevState, loading: true }))
+        let userid = localStorage.getItem('userId');
         try {
 
             var apiData = await signUp(signup.name, signup.email, signup.password)
@@ -67,7 +68,7 @@ export default function SignUp(props) {
             if (apiData.error) {
                 // set Error
                 console.log("----")
-                let userid = localStorage.getItem('userId');
+                
 
                 if (apiData.error.response) {
                     if (apiData.error.response.data) {
