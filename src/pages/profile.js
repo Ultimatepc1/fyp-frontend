@@ -82,6 +82,13 @@ export default function Profile(props) {
             }
         } catch (e) {
             console.log('profile page error in useffect')
+            let userid = localStorage.getItem('userId');
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Profile page useEffect error`,
+                value: 1
+            });
             console.log(e)
         }
     }, []);
