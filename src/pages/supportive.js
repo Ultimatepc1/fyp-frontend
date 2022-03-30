@@ -69,11 +69,11 @@ export default function Supportive(props) {
                     setState(prevState => ({ ...prevState, loading: false, success: true }))
                 } else {
                     // set Error no worked out examples for this
-                    await setError({ "message": "Not found", "data": "No worked out examples for this" });
+                    await setError({ "message": "Not found", "data": "No supportive examples for this" });
                     ReactGA.event({
                         category: 'Error',
                         label: `UserId ${userid}`,
-                        action: `Supportive/${props.id} page apiCall error`,
+                        action: `Supportive/${props.id} page error, no supportive documents exist`,
                         value: 1
                     });
                     setState(prevState => ({ ...prevState, loading: false, success: false, error: true }))
@@ -86,7 +86,7 @@ export default function Supportive(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Supportive page apiCall error ${e}`,
+                action: `Supportive/${props.id} page apiCall error ${e}`,
                 value: 1
             });
         }

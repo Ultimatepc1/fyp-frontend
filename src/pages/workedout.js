@@ -39,7 +39,7 @@ export default function WorkedOut(props) {
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Workedout page apiCall error ${apiData.error.response.data}`,
+                            action: `Workedout/${props.id} page apiCall error ${apiData.error.response.data}`,
                             value: 1
                         });
                     } else {
@@ -48,7 +48,7 @@ export default function WorkedOut(props) {
                             ReactGA.event({
                                 category: 'Error',
                                 label: `UserId ${userid}`,
-                                action: `Workedout page apiCall error ${apiData.error.message}`,
+                                action: `Workedout/${props.id} page apiCall error ${apiData.error.message}`,
                                 value: 1
                             });
                         }
@@ -58,7 +58,7 @@ export default function WorkedOut(props) {
                     ReactGA.event({
                         category: 'Error',
                         label: `UserId ${userid}`,
-                        action: `Workedout page apiCall error ${apiData.error.mesage}`,
+                        action: `Workedout/${props.id} page apiCall error ${apiData.error.mesage}`,
                         value: 1
                     });
                 } else {
@@ -66,7 +66,7 @@ export default function WorkedOut(props) {
                     ReactGA.event({
                         category: 'Error',
                         label: `UserId ${userid}`,
-                        action: `Workedout page apiCall error`,
+                        action: `Workedout/${props.id} page apiCall error`,
                         value: 1
                     });
                 }
@@ -81,7 +81,7 @@ export default function WorkedOut(props) {
                     ReactGA.event({
                         category: 'Error',
                         label: `UserId ${userid}`,
-                        action: `Supportive page : No worked out examples for this`,
+                        action: `Workedout/${props.id} page : No worked out examples for this`,
                         value: 1
                     });
 
@@ -90,6 +90,8 @@ export default function WorkedOut(props) {
             }
         } catch (e) {
             console.log(e);
+            await setError({ "message": "Some error occured", "data": "Error" });
+            await setState(prevState => ({ ...prevState, loading: false, error: true }))
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
