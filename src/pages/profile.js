@@ -62,9 +62,10 @@ export default function Profile(props) {
     useEffect(() => {
         ReactGA.initialize('UA-222140218-1', {
             debug: false, gaOptions: {
-                userId: localStorage.getItem('userId')
+                "userId": localStorage.getItem('userId')
             }
         });
+        ReactGA.set({ userId: localStorage.getItem('userId'), });
         ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             let temp = checkLogin();
@@ -154,6 +155,13 @@ export default function Profile(props) {
                                         <Card
                                             style={{ backgroundColor: "#F3F7F7" }}
                                             onClick={() => {
+
+                                                ReactGA.event({
+                                                    category: 'User',
+                                                    action: `Submission ${submission._id} clicked by user ${submission.user_id} of problem ${submission.problem_id} on profile page `,
+                                                    value: 1
+                                                });
+
                                                 history.push({
                                                     pathname: `problems/${submission.problem_id}`,
                                                     state: {
