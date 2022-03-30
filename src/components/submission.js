@@ -28,10 +28,11 @@ export default function Submission(props) {
 
     const getSubmissionsApiData = async (token) => {
         setState(prevState => ({ ...prevState, loading: true }))
+        let userid = localStorage.getItem('userId');
         try {
             var apiData = await getSubmissions(token, props.problem_id)
             console.log(apiData)
-            let userid = localStorage.getItem('userId');
+            
             if (apiData.error) {
                 // set Error
                 console.log("----")

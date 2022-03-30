@@ -72,13 +72,12 @@ export default function Problems(props) {
     };
     const getProblemApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
+        let userid = localStorage.getItem('userId');
         try {
             var apiData = await getProblemData(id, token)
             console.log(apiData)
             if (apiData.error) {
                 console.log("----")
-                let userid = localStorage.getItem('userId');
-
                 // console.log(apiData.error.response.data);
                 if (apiData.error.response) {
                     if (apiData.error.response.data) {

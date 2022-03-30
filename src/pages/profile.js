@@ -27,13 +27,13 @@ export default function Profile(props) {
 
     const getProfileApiData = async (token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await profileApi(token)
-        console.log("*****************");
-        console.log(apiData)
-        if (apiData.error) {
-            console.log("----")
-            let userid = localStorage.getItem('userId');
-            try {
+        let userid = localStorage.getItem('userId');
+        try {
+            var apiData = await profileApi(token)
+            console.log("*****************");
+            console.log(apiData)
+            if (apiData.error) {
+                console.log("----")
                 // console.log(apiData.error.response.data);
                 if (apiData.error.response) {
                     if (apiData.error.response.data) {
@@ -72,21 +72,21 @@ export default function Profile(props) {
                         value: 1
                     });
                 }
-
+                await setState(prevState => ({ ...prevState, loading: false, error: true }))
+            } else if (apiData.result) {
+                await setProfileData(apiData.result);
+                setState(prevState => ({ ...prevState, loading: false, success: true }))
             }
-            catch (e) {
-                await setError({ "message": "Some error occured", "data": "Error" });
-                ReactGA.event({
-                    category: 'Error',
-                    label: `UserId ${userid}`,
-                    action: `Profile page apiCall error ${e}`,
-                    value: 1
-                });
-            }
+        }
+        catch (e) {
+            await setError({ "message": "Some error occured", "data": "Error" });
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
-        } else if (apiData.result) {
-            await setProfileData(apiData.result);
-            setState(prevState => ({ ...prevState, loading: false, success: true }))
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Profile page apiCall error ${e}`,
+                value: 1
+            });
         }
     }
 
