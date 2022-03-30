@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Navigation from './components/navigation'
 import PageRenderer from './page-renderer'
 import PageRendererWithId from './page-renderer-with-id';
-import Dashboard from './pages/dashboard';
 import ReactGA from 'react-ga';
 // ReactGA.initialize('G-NPTP41JQB3',{
 //   debug: true,
