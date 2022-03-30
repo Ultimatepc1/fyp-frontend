@@ -32,25 +32,56 @@ export default function Profile(props) {
         console.log(apiData)
         if (apiData.error) {
             console.log("----")
+            let userid = localStorage.getItem('userId');
             try {
                 // console.log(apiData.error.response.data);
                 if (apiData.error.response) {
                     if (apiData.error.response.data) {
                         await setError(apiData.error.response.data);
+                        ReactGA.event({
+                            category: 'Error',
+                            label: `UserId ${userid}`,
+                            action: `Profile page apiCall error ${apiData.error.response.data}`,
+                            value: 1
+                        });
                     } else {
                         if (apiData.error.message) {
                             await setError({ "message": apiData.error.message, "data": "Error" });
+                            ReactGA.event({
+                                category: 'Error',
+                                label: `UserId ${userid}`,
+                                action: `Profile page apiCall error ${apiData.error.message}`,
+                                value: 1
+                            });
                         }
                     }
                 } else if (apiData.error.message) {
                     await setError({ "message": apiData.error.message, "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Profile page apiCall error ${apiData.error.mesage}`,
+                        value: 1
+                    });
                 } else {
                     await setError({ "message": "Some error occured", "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Profile page apiCall error`,
+                        value: 1
+                    });
                 }
 
             }
             catch (e) {
                 await setError({ "message": "Some error occured", "data": "Error" });
+                ReactGA.event({
+                    category: 'Error',
+                    label: `UserId ${userid}`,
+                    action: `Profile page apiCall error ${e}`,
+                    value: 1
+                });
             }
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
         } else if (apiData.result) {
@@ -86,7 +117,7 @@ export default function Profile(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Profile page useEffect error`,
+                action: `Profile page useEffect error ${e}`,
                 value: 1
             });
             console.log(e)
