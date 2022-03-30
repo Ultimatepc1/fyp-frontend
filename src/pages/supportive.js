@@ -71,6 +71,13 @@ export default function Supportive(props) {
                 getSupportiveApiData(props.id, token)
             }
         } catch (e) {
+            let userid = localStorage.getItem('userId');
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Supportive page useEffect error ${e}`,
+                value: 1
+            });
             console.log('supportive page error in useeffect')
             console.log(e)
         }

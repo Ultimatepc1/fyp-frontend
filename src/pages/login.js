@@ -157,6 +157,13 @@ export default function SignIn(props) {
         });;
       }
     } catch (e) {
+      let userid = localStorage.getItem('userId');
+      ReactGA.event({
+        category: 'Error',
+        label: `UserId ${userid}`,
+        action: `Login page useEffect error ${e}`,
+        value: 1
+      });
       console.log('login page error in useffect')
       console.log(e)
     }
