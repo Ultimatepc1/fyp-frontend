@@ -60,35 +60,73 @@ export default function SignUp(props) {
             value: 1
         });
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await signUp(signup.name, signup.email, signup.password)
-        console.log(apiData)
-        if (apiData.error) {
-            // set Error
-            console.log("----")
+        try {
 
-            if (apiData.error.response) {
-                if (apiData.error.response.data) {
-                    await setError(apiData.error.response.data);
-                } else {
-                    if (apiData.error.message) {
-                        await setError({ "message": apiData.error.message, "data": "Error" });
+            var apiData = await signUp(signup.name, signup.email, signup.password)
+            console.log(apiData)
+            if (apiData.error) {
+                // set Error
+                console.log("----")
+                let userid = localStorage.getItem('userId');
+
+                if (apiData.error.response) {
+                    if (apiData.error.response.data) {
+                        await setError(apiData.error.response.data);
+                        ReactGA.event({
+                            category: 'Error',
+                            label: `UserId ${userid}`,
+                            action: `Siignup page apiCall error ${apiData.error.response.data}`,
+                            value: 1
+                        });
+                    } else {
+                        if (apiData.error.message) {
+                            await setError({ "message": apiData.error.message, "data": "Error" });
+                            ReactGA.event({
+                                category: 'Error',
+                                label: `UserId ${userid}`,
+                                action: `Signup page apiCall error ${apiData.error.message}`,
+                                value: 1
+                            });
+                        }
                     }
+                } else if (apiData.error.message) {
+                    await setError({ "message": apiData.error.message, "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Signup page apiCall error ${apiData.error.mesage}`,
+                        value: 1
+                    });
+                } else {
+                    await setError({ "message": "Some error occured", "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Signup page apiCall error`,
+                        value: 1
+                    });
                 }
-            } else if (apiData.error.message) {
-                await setError({ "message": apiData.error.message, "data": "Error" });
-            } else {
-                await setError({ "message": "Some error occured", "data": "Error" });
+                await setState(prevState => ({ ...prevState, loading: false, error: true }))
+            } else if (apiData.userId) {
+                console.log(apiData.userId);
+                await setState(prevState => ({ ...prevState, loading: false, success: true }))
+                history.replace({
+                    pathname: 'login',
+                    state: {
+                        email: signup.email,
+                        password: signup.password
+                    }
+                });
             }
-            await setState(prevState => ({ ...prevState, loading: false, error: true }))
-        } else if (apiData.userId) {
-            console.log(apiData.userId);
-            await setState(prevState => ({ ...prevState, loading: false, success: true }))
-            history.replace({
-                pathname: 'login',
-                state: {
-                    email: signup.email,
-                    password: signup.password
-                }
+
+        } catch (e) {
+            await setError({ "message": "Some error occured", "data": "Error" });
+            await setState(prevState => ({ ...prevState, loading: false, error: true }));
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Signup page apiCall error ${e}`,
+                value: 1
             });
         }
     };
