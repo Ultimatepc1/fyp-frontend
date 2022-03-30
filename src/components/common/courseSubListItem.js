@@ -36,17 +36,17 @@ export default function CourseListSubItem(props) {
                 <div className="">
                     <div className="subTitle">
                         <h2 data-aos="fade-down" >{props.value.title}</h2>
-                    </div><br/><br/>
- 
-                    <Grid container spacing={3} 
-                    // sx={{
-                    //     display: 'flex',
-                    //     width: '100%',
-                    //     alignItems: 'center',
-                    //     justifyContent: 'center'
-                    // }} 
-                    alignItems="center"
-                    justifyContent="center"
+                    </div><br /><br />
+
+                    <Grid container spacing={3}
+                        // sx={{
+                        //     display: 'flex',
+                        //     width: '100%',
+                        //     alignItems: 'center',
+                        //     justifyContent: 'center'
+                        // }} 
+                        alignItems="center"
+                        justifyContent="center"
                     >
 
                         <Grid item xs={12} md={4} lg={2} >
@@ -54,13 +54,17 @@ export default function CourseListSubItem(props) {
                                 // onClick={() => gtag('event', 'supportive_clicked', {
                                 //     supportive: 'supportive clicked',
                                 // })}
-                                onClick={() => 
-                                ReactGA.event({
-                                    category: 'User',
-                                    action: 'supportive button clicked',
-                                    value:1
-                                })}
- 
+                                onClick={() => {
+                                    let userid = localStorage.getItem('userId');
+                                    ReactGA.event({
+                                        category: 'User',
+                                        label: `UserId ${userid}`,
+                                        action: 'supportive button clicked',
+                                        value: 1
+                                    })
+                                }
+                                }
+
                             >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-right" >
                                     <CardActionArea>
@@ -84,15 +88,19 @@ export default function CourseListSubItem(props) {
 
                         <Grid item xs={12} md={4} lg={2}>
                             <Link to={`/workedout/${props.value.workedout}`}
-                            // onClick={() => gtag('event', 'workedout_clicked', {
-                            //         workedout: 'workedout clicked',
-                            //     })}
-                            onClick={() => 
-                                ReactGA.event({
-                                    category: 'User',
-                                    action: 'workedout button clicked',
-                                    value:1
-                                })}
+                                // onClick={() => gtag('event', 'workedout_clicked', {
+                                //         workedout: 'workedout clicked',
+                                //     })}
+                                onClick={() => {
+                                    let userid = localStorage.getItem('userId');
+                                    ReactGA.event({
+                                        category: 'User',
+                                        label: `UserId ${userid}`,
+                                        action: 'workedout button clicked',
+                                        value: 1
+                                    })
+                                }
+                                }
                             >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-right">
                                     <CardActionArea>
@@ -116,12 +124,16 @@ export default function CourseListSubItem(props) {
 
                         <Grid item xs={12} md={4} lg={2}>
                             <Link to={`/problems/${props.value.completion_one}`}
-                            onClick={() => 
-                                ReactGA.event({
-                                    category: 'User',
-                                    action: 'completion one button clicked',
-                                    value:1
-                                })}
+                                onClick={() => {
+                                    let userid = localStorage.getItem('userId');
+                                    ReactGA.event({
+                                        category: 'User',
+                                        label: `UserId ${userid}`,
+                                        action: 'completion one button clicked',
+                                        value: 1
+                                    })
+                                }
+                                }
                             >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-out-up">
                                     <CardActionArea>
@@ -145,12 +157,16 @@ export default function CourseListSubItem(props) {
 
                         <Grid item xs={12} md={4} lg={2}>
                             <Link to={`/problems/${props.value.completion_two}`}
-                            onClick={() => 
-                                ReactGA.event({
-                                    category: 'User',
-                                    action: 'completion two button clicked',
-                                    value:1
-                                })}
+                                onClick={() => {
+                                    let userid = localStorage.getItem('userId');
+                                    ReactGA.event({
+                                        category: 'User',
+                                        label: `UserId ${userid}`,
+                                        action: 'completion two button clicked',
+                                        value: 1
+                                    })
+                                }
+                                }
 
                             >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-left">
@@ -175,13 +191,16 @@ export default function CourseListSubItem(props) {
 
                         <Grid item xs={12} md={4} lg={2}>
                             <Link to={`/problems/${props.value.conventional}`}
-                            onClick={() => 
-                                ReactGA.event({
-                                    category: 'User',
-                                    action: 'conventional button clicked',
-                                    value:1
-                                })}
-
+                                onClick={() => {
+                                    let userid = localStorage.getItem('userId');
+                                    ReactGA.event({
+                                        category: 'User',
+                                        label: `UserId ${userid}`,
+                                        action: 'conventional button clicked',
+                                        value: 1
+                                    })
+                                }
+                                }
                             >
                                 <Card sx={{ maxHeight: 150, maxWidth: 150 }} data-aos="zoom-in-left">
                                     <CardActionArea>

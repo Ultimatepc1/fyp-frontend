@@ -127,8 +127,10 @@ export default function Submission(props) {
                                         if (curCode.code != (submissions.length - i)) {
                                             setCurCode({ id: value._id, code: submissions.length - i })
 
+                                            let userid = localStorage.getItem('userId');
                                             ReactGA.event({
                                                 category: 'User',
+                                                label: `UserId ${userid}`,
                                                 action: `Submission ${value._id} clicked by user ${value.user_id} of problem ${value.problem_id}`,
                                                 value: 1
                                             })

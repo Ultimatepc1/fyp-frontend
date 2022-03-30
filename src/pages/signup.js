@@ -53,6 +53,12 @@ export default function SignUp(props) {
         if (validations.email || validations.name || validations.password) {
             return;
         }
+
+        ReactGA.event({
+            category: 'User',
+            action: `Signup button clicked`,
+            value: 1
+        });
         setState(prevState => ({ ...prevState, loading: true }))
         var apiData = await signUp(signup.name, signup.email, signup.password)
         console.log(apiData)
@@ -88,13 +94,13 @@ export default function SignUp(props) {
     };
 
     React.useEffect(() => {
-        ReactGA.initialize('UA-222140218-1', {
-            debug: true
-        });
-        ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             let temp = checkLogin();
             if (!temp) {
+                ReactGA.initialize('UA-222140218-1', {
+                    debug: true
+                });
+                ReactGA.pageview(window.location.pathname + window.location.search);
                 props.changeLogin(false)
                 localStorage.clear()
             } else {

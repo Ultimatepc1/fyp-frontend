@@ -58,9 +58,11 @@ export default function Problems(props) {
 
     const handleTabChange = async (event, newValue) => {
 
+        let userid = localStorage.getItem('userId');
         ReactGA.event({
             category: 'User',
-            action: `${newValue} component clicked`,
+            label: `UserId ${userid}`,
+            action: `${newValue} component clicked on problems/${props.id}`,
             value: 1
         })
         if (tab === 'question') {
@@ -145,10 +147,12 @@ export default function Problems(props) {
 
         }
         if (!ide.open) {
+            let userid = localStorage.getItem('userId');
             ReactGA.event({
                 category: 'User',
-                action: 'Code IDE button clicked',
-                value:1
+                label: `UserId ${userid}`,
+                action: `Code IDE button clicked on problems/${props.id}`,
+                value: 1
             });
             await setIde({ ...ide, open: true })
             try {
@@ -232,10 +236,12 @@ export default function Problems(props) {
             props.changeLogin(true)
         }
 
+        let userid = localStorage.getItem('userId');
         ReactGA.event({
             category: 'User',
-            action: 'Submit Code button clicked',
-            value:1
+            label: `UserId ${userid}`,
+            action: `Submit Code button clicked on problems/${props.id}`,
+            value: 1
         });
         let token = localStorage.getItem('token')
         var temp = await state.vm.getFsSnapshot();

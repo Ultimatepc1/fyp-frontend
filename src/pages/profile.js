@@ -156,8 +156,10 @@ export default function Profile(props) {
                                             style={{ backgroundColor: "#F3F7F7" }}
                                             onClick={() => {
 
+                                                let userid = localStorage.getItem('userId');
                                                 ReactGA.event({
                                                     category: 'User',
+                                                    label: `UserId ${userid}`,
                                                     action: `Submission ${submission._id} clicked by user ${submission.user_id} of problem ${submission.problem_id} on profile page `,
                                                     value: 1
                                                 });

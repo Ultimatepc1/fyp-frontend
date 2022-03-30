@@ -54,12 +54,6 @@ export default function EditPassword(props) {
     }
 
     useEffect(() => {
-        ReactGA.initialize('UA-222140218-1', {
-            debug: false, gaOptions: {
-                userId: localStorage.getItem('userId')
-            }
-        });
-        ReactGA.pageview(window.location.pathname + window.location.search);
         try {
             let temp = checkLogin();
             if (!temp) {
@@ -69,6 +63,12 @@ export default function EditPassword(props) {
                     pathname: 'login'
                 });
             } else {
+                ReactGA.initialize('UA-222140218-1', {
+                    debug: false, gaOptions: {
+                        userId: localStorage.getItem('userId')
+                    }
+                });
+                ReactGA.pageview(window.location.pathname + window.location.search);
                 props.changeLogin(true)
             }
         } catch (e) {

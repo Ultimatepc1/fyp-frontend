@@ -49,13 +49,6 @@ export default function Supportive(props) {
     }
 
     useEffect(() => {
-        ReactGA.initialize('UA-222140218-1', {
-            debug: false, gaOptions: {
-                userId: localStorage.getItem('userId')
-            }
-        });
-        ReactGA.pageview(window.location.pathname + window.location.search);
-
         try {
             console.log(props.id)
             // id=props.match.params.id;
@@ -68,6 +61,12 @@ export default function Supportive(props) {
                 });
             } else {
                 props.changeLogin(true)
+                ReactGA.initialize('UA-222140218-1', {
+                    debug: false, gaOptions: {
+                        userId: localStorage.getItem('userId')
+                    }
+                });
+                ReactGA.pageview(window.location.pathname + window.location.search);
                 let token = localStorage.getItem('token')
                 getSupportiveApiData(props.id, token)
             }
