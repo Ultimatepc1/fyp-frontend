@@ -55,45 +55,87 @@ export default function SignIn(props) {
       return;
     }
     setState(prevState => ({ ...prevState, loading: true }))
-    var apiData = await loginApi(login.email, login.password, login.remember)
-    console.log(apiData)
-    if (apiData.error) {
-      // set Error
-      console.log("----")
+    try {
+      var apiData = await loginApi(login.email, login.password, login.remember)
+      console.log(apiData)
+      if (apiData.error) {
+        let userid = localStorage.getItem('userId');
+        // set Error
+        console.log("----")
 
-      if (apiData.error.response) {
-        if (apiData.error.response.data) {
-          await setError(apiData.error.response.data);
-        } else {
-          if (apiData.error.message) {
-            await setError({ "message": apiData.error.message, "data": "Error" });
+        if (apiData.error.response) {
+          if (apiData.error.response.data) {
+            await setError(apiData.error.response.data);
+            ReactGA.event({
+              category: 'Error',
+              label: `UserId ${userid}`,
+              action: `Login page apiCall error ${apiData.error.response.data}`,
+              value: 1
+            });
+          } else {
+            if (apiData.error.message) {
+              await setError({ "message": apiData.error.message, "data": "Error" });
+              ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Login page apiCall error ${apiData.error.message}`,
+                value: 1
+              });
+            }
           }
+        } else if (apiData.error.message) {
+          await setError({ "message": apiData.error.message, "data": "Error" });
+          ReactGA.event({
+            category: 'Error',
+            label: `UserId ${userid}`,
+            action: `Login page apiCall error ${apiData.error.mesage}`,
+            value: 1
+          });
+        } else {
+          await setError({ "message": "Some error occured", "data": "Error" });
+          ReactGA.event({
+            category: 'Error',
+            label: `UserId ${userid}`,
+            action: `Login page page apiCall error`,
+            value: 1
+          });
         }
-      } else if (apiData.error.message) {
-        await setError({ "message": apiData.error.message, "data": "Error" });
-      } else {
-        await setError({ "message": "Some error occured", "data": "Error" });
+        await setState(prevState => ({ ...prevState, loading: false, error: true }))
+      } else if (apiData.result) {
+        console.log(apiData.result);
+        let result = apiData.result;
+        if (result.userId) {
+          localStorage.setItem('userId', result.userId);
+        }
+        if (result.token) {
+          localStorage.setItem('token', result.token)
+        }
+        if (result.userId && result.token) {
+          localStorage.setItem('isLoggedIn', true)
+          await setState(prevState => ({ ...prevState, loading: false, success: true }))
+          history.push({
+            pathname: '/'
+          })
+        } else {
+          await setError({ "message": "Some error occured", "data": "Error" });
+          ReactGA.event({
+            category: 'Error',
+            label: `UserId ${userid}`,
+            action: `Login page apiCall error : Token not found`,
+            value: 1
+          });
+          await setState(prevState => ({ ...prevState, loading: false, error: true }));
+        }
       }
-      await setState(prevState => ({ ...prevState, loading: false, error: true }))
-    } else if (apiData.result) {
-      console.log(apiData.result);
-      let result = apiData.result;
-      if (result.userId) {
-        localStorage.setItem('userId', result.userId);
-      }
-      if (result.token) {
-        localStorage.setItem('token', result.token)
-      }
-      if (result.userId && result.token) {
-        localStorage.setItem('isLoggedIn', true)
-        await setState(prevState => ({ ...prevState, loading: false, success: true }))
-        history.push({
-          pathname: '/'
-        })
-      } else {
-        await setError({ "message": "Some error occured", "data": "Error" });
-        await setState(prevState => ({ ...prevState, loading: false, error: true }));
-      }
+    } catch (e) {
+      await setError({ "message": "Some error occured", "data": "Error" });
+      await setState(prevState => ({ ...prevState, loading: false, error: true }));
+      ReactGA.event({
+        category: 'Error',
+        label: `UserId ${userid}`,
+        action: `Login page apiCall error ${e}`,
+        value: 1
+    });
     }
 
   };
