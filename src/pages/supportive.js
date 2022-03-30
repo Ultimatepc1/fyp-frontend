@@ -26,12 +26,12 @@ export default function Supportive(props) {
                 console.log("----")
 
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Supportive/${props.id} page apiCall error ${apiData.error.response.data}`,
+                            action: `Supportive/${props.id} page apiCall error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {
@@ -86,7 +86,7 @@ export default function Supportive(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Supportive/${props.id} page apiCall error ${e}`,
+                action: `Supportive/${props.id} page apiCall error ${e.message}`,
                 value: 1
             });
         }
@@ -119,7 +119,7 @@ export default function Supportive(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Supportive page useEffect error ${e}`,
+                action: `Supportive page useEffect error ${e.message}`,
                 value: 1
             });
             console.log('supportive page error in useeffect')

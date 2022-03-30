@@ -34,12 +34,12 @@ export default function WorkedOut(props) {
                 console.log("----")
                 
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Workedout/${props.id} page apiCall error ${apiData.error.response.data}`,
+                            action: `Workedout/${props.id} page apiCall error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {
@@ -95,7 +95,7 @@ export default function WorkedOut(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Supportive page apiCall error ${e}`,
+                action: `Supportive page apiCall error ${e.message}`,
                 value: 1
             });
         }
@@ -128,7 +128,7 @@ export default function WorkedOut(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Worekedout page useEffect error ${e}`,
+                action: `Worekedout page useEffect error ${e.message}`,
                 value: 1
             });
             console.log('workedout page error in useffect')

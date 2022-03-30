@@ -34,14 +34,14 @@ export default function Profile(props) {
             console.log(apiData)
             if (apiData.error) {
                 console.log("----")
-                // console.log(apiData.error.response.data);
+                // console.log(JSON.stringify(apiData.error.response.data));
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Profile page apiCall error ${apiData.error.response.data}`,
+                            action: `Profile page apiCall error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {

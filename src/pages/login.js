@@ -65,12 +65,12 @@ export default function SignIn(props) {
         console.log("----")
 
         if (apiData.error.response) {
-          if (apiData.error.response.data) {
-            await setError(apiData.error.response.data);
+          if (JSON.stringify(apiData.error.response.data)) {
+            await setError(JSON.stringify(apiData.error.response.data));
             ReactGA.event({
               category: 'Error',
               label: `UserId ${userid}`,
-              action: `Login page apiCall error ${apiData.error.response.data}`,
+              action: `Login page apiCall error ${JSON.stringify(apiData.error.response.data)}`,
               value: 1
             });
           } else {
@@ -134,7 +134,7 @@ export default function SignIn(props) {
       ReactGA.event({
         category: 'Error',
         label: `UserId ${userid}`,
-        action: `Login page apiCall error ${e}`,
+        action: `Login page apiCall error ${e.message}`,
         value: 1
     });
     }
@@ -204,7 +204,7 @@ export default function SignIn(props) {
       ReactGA.event({
         category: 'Error',
         label: `UserId ${userid}`,
-        action: `Login page useEffect error ${e}`,
+        action: `Login page useEffect error ${e.message}`,
         value: 1
       });
       console.log('login page error in useffect')

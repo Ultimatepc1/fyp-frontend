@@ -71,12 +71,12 @@ export default function SignUp(props) {
                 
 
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Siignup page apiCall error ${apiData.error.response.data}`,
+                            action: `Siignup page apiCall error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {
@@ -126,7 +126,7 @@ export default function SignUp(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Signup page apiCall error ${e}`,
+                action: `Signup page apiCall error ${e.message}`,
                 value: 1
             });
         }
@@ -153,7 +153,7 @@ export default function SignUp(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Signup page useEffect error ${e}`,
+                action: `Signup page useEffect error ${e.message}`,
                 value: 1
             });
             console.log('signup page error in useffect')

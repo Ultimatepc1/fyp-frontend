@@ -37,12 +37,12 @@ export default function Submission(props) {
                 // set Error
                 console.log("----")
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Problems/${props.problem_id} page submission component apiCall error ${apiData.error.response.data}`,
+                            action: `Problems/${props.problem_id} page submission component apiCall error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {
@@ -109,7 +109,7 @@ export default function Submission(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Problems/${props.problem_id} page submission component apiCall error ${e}`,
+                action: `Problems/${props.problem_id} page submission component apiCall error ${e.message}`,
                 value: 1
             });
         }
@@ -138,7 +138,7 @@ export default function Submission(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Problems/${props.problem_id} page submission component useEffect error ${e}`,
+                action: `Problems/${props.problem_id} page submission component useEffect error ${e.message}`,
                 value: 1
             });
             console.log(e)

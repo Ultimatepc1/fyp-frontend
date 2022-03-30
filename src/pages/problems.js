@@ -78,14 +78,14 @@ export default function Problems(props) {
             console.log(apiData)
             if (apiData.error) {
                 console.log("----")
-                // console.log(apiData.error.response.data);
+                // console.log(JSON.stringify(apiData.error.response.data));
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Problems/${props.id} page apiCall error ${apiData.error.response.data}`,
+                            action: `Problems/${props.id} page apiCall error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {
@@ -128,7 +128,7 @@ export default function Problems(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Problems/${props.id} page apiCall error ${e}`,
+                action: `Problems/${props.id} page apiCall error ${e.message}`,
                 value: 1
             });
         }
@@ -167,7 +167,7 @@ export default function Problems(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Problems/${props.id} page useEffect error ${e}`,
+                action: `Problems/${props.id} page useEffect error ${e.message}`,
                 value: 1
             });
             console.log('problems page error in useffect')
@@ -214,7 +214,7 @@ export default function Problems(props) {
                 ReactGA.event({
                     category: 'Error',
                     label: `UserId ${userid}`,
-                    action: `Problems/${props.id} page stackblitz embed error ${e}`,
+                    action: `Problems/${props.id} page stackblitz embed error ${e.message}`,
                     value: 1
                 });
             }
@@ -298,12 +298,12 @@ export default function Problems(props) {
             if (apiData.error) {
                 console.log("----")
                 if (apiData.error.response) {
-                    if (apiData.error.response.data) {
-                        await setError(apiData.error.response.data);
+                    if (JSON.stringify(apiData.error.response.data)) {
+                        await setError(JSON.stringify(apiData.error.response.data));
                         ReactGA.event({
                             category: 'Error',
                             label: `UserId ${userid}`,
-                            action: `Problems/${props.id} page submit code error ${apiData.error.response.data}`,
+                            action: `Problems/${props.id} page submit code error ${JSON.stringify(apiData.error.response.data)}`,
                             value: 1
                         });
                     } else {
@@ -345,7 +345,7 @@ export default function Problems(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Problems/${props.id} page submit code error ${e}`,
+                action: `Problems/${props.id} page submit code error ${e.message}`,
                 value: 1
             });
         }
