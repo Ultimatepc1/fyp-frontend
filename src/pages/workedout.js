@@ -80,6 +80,13 @@ export default function WorkedOut(props) {
                 getWorkedOutApiData(props.id, token);
             }
         } catch (e) {
+            let userid = localStorage.getItem('userId');
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Worekedout page useEffect error ${e}`,
+                value: 1
+            });
             console.log('workedout page error in useffect')
             console.log(e)
         }

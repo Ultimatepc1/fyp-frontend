@@ -110,6 +110,13 @@ export default function SignUp(props) {
                 });;
             }
         } catch (e) {
+            let userid = localStorage.getItem('userId');
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Signup page useEffect error ${e}`,
+                value: 1
+            });
             console.log('signup page error in useffect')
             console.log(e)
         }

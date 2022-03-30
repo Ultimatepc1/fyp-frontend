@@ -132,6 +132,13 @@ export default function Problems(props) {
             }
 
         } catch (e) {
+            let userid = localStorage.getItem('userId');
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Problems page useEffect error ${e}`,
+                value: 1
+            });
             console.log('problems page error in useffect')
             console.log(e)
         }

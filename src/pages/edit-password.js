@@ -72,6 +72,13 @@ export default function EditPassword(props) {
                 props.changeLogin(true)
             }
         } catch (e) {
+            let userid = localStorage.getItem('userId');
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Edit-password page useEffect error ${e}`,
+                value: 1
+            });
             console.log('edit password page error in useffect')
             console.log(e)
         }
