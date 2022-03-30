@@ -72,34 +72,66 @@ export default function Problems(props) {
     };
     const getProblemApiData = async (id, token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await getProblemData(id, token)
-        console.log(apiData)
-        if (apiData.error) {
-            console.log("----")
-            try {
+        try {
+            var apiData = await getProblemData(id, token)
+            console.log(apiData)
+            if (apiData.error) {
+                console.log("----")
+                let userid = localStorage.getItem('userId');
+
                 // console.log(apiData.error.response.data);
                 if (apiData.error.response) {
                     if (apiData.error.response.data) {
                         await setError(apiData.error.response.data);
+                        ReactGA.event({
+                            category: 'Error',
+                            label: `UserId ${userid}`,
+                            action: `Problems/${props.id} page apiCall error ${apiData.error.response.data}`,
+                            value: 1
+                        });
                     } else {
                         if (apiData.error.message) {
                             await setError({ "message": apiData.error.message, "data": "Error" });
+                            ReactGA.event({
+                                category: 'Error',
+                                label: `UserId ${userid}`,
+                                action: `Problems/${props.id} page apiCall error ${apiData.error.message}`,
+                                value: 1
+                            });
                         }
                     }
                 } else if (apiData.error.message) {
                     await setError({ "message": apiData.error.message, "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Problems/${props.id} page apiCall error ${apiData.error.message}`,
+                        value: 1
+                    });
                 } else {
                     await setError({ "message": "Some error occured", "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Problems/${props.id} page apiCall error`,
+                        value: 1
+                    });
                 }
-
+                await setState(prevState => ({ ...prevState, loading: false, error: true }))
+            } else if (apiData.result) {
+                await setQuestion(apiData.result);
+                await setState(prevState => ({ ...prevState, loading: false, success: true }))
             }
-            catch (e) {
-                await setError({ "message": "Some error occured", "data": "Error" });
-            }
+        }
+        catch (e) {
+            await setError({ "message": "Some error occured", "data": "Error" });
             await setState(prevState => ({ ...prevState, loading: false, error: true }))
-        } else if (apiData.result) {
-            await setQuestion(apiData.result);
-            await setState(prevState => ({ ...prevState, loading: false, success: true }))
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Problems/${props.id} page apiCall error ${e}`,
+                value: 1
+            });
         }
     }
 
@@ -136,7 +168,7 @@ export default function Problems(props) {
             ReactGA.event({
                 category: 'Error',
                 label: `UserId ${userid}`,
-                action: `Problems page useEffect error ${e}`,
+                action: `Problems/${props.id} page useEffect error ${e}`,
                 value: 1
             });
             console.log('problems page error in useffect')
@@ -180,6 +212,12 @@ export default function Problems(props) {
                 });
             } catch (e) {
                 console.log(e)
+                ReactGA.event({
+                    category: 'Error',
+                    label: `UserId ${userid}`,
+                    action: `Problems/${props.id} page stackblitz embed error ${e}`,
+                    value: 1
+                });
             }
         }
     }
@@ -255,26 +293,62 @@ export default function Problems(props) {
         console.log(temp);
 
         setState(prevState => ({ ...prevState, submitLoading: true }))
-        var apiData = await saveSubmission(props.id, token, temp)
-        console.log(apiData)
-        if (apiData.error) {
-            console.log("----")
-            if (apiData.error.response) {
-                if (apiData.error.response.data) {
-                    await setError(apiData.error.response.data);
-                } else {
-                    if (apiData.error.message) {
-                        await setError({ "message": apiData.error.message, "data": "Error" });
+        try {
+            var apiData = await saveSubmission(props.id, token, temp)
+            console.log(apiData)
+            if (apiData.error) {
+                console.log("----")
+                if (apiData.error.response) {
+                    if (apiData.error.response.data) {
+                        await setError(apiData.error.response.data);
+                        ReactGA.event({
+                            category: 'Error',
+                            label: `UserId ${userid}`,
+                            action: `Problems/${props.id} page submit code error ${apiData.error.response.data}`,
+                            value: 1
+                        });
+                    } else {
+                        if (apiData.error.message) {
+                            await setError({ "message": apiData.error.message, "data": "Error" });
+                            ReactGA.event({
+                                category: 'Error',
+                                label: `UserId ${userid}`,
+                                action: `Problems/${props.id} page submit code error ${apiData.error.message}`,
+                                value: 1
+                            });
+                        }
                     }
+                } else if (apiData.error.message) {
+                    await setError({ "message": apiData.error.message, "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Problems/${props.id} page submit code error ${apiData.error.message}`,
+                        value: 1
+                    });
+                } else {
+                    await setError({ "message": "Some error occured", "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Problems/${props.id} page submit code error`,
+                        value: 1
+                    });
                 }
-            } else if (apiData.error.message) {
-                await setError({ "message": apiData.error.message, "data": "Error" });
-            } else {
-                await setError({ "message": "Some error occured", "data": "Error" });
+                await setState(prevState => ({ ...prevState, submitLoading: false, submitError: true }))
+            } else if (apiData.result) {
+                setState(prevState => ({ ...prevState, submitLoading: false, submitSuccess: true }))
             }
+        } catch (e) {
+            console.log('Submit code error', e)
+            await setError({ "message": "Some error occured", "data": "Error" });
             await setState(prevState => ({ ...prevState, submitLoading: false, submitError: true }))
-        } else if (apiData.result) {
-            setState(prevState => ({ ...prevState, submitLoading: false, submitSuccess: true }))
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Problems/${props.id} page submit code error ${e}`,
+                value: 1
+            });
         }
     }
 

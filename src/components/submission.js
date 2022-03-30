@@ -28,55 +28,89 @@ export default function Submission(props) {
 
     const getSubmissionsApiData = async (token) => {
         setState(prevState => ({ ...prevState, loading: true }))
-        var apiData = await getSubmissions(token, props.problem_id)
-        console.log(apiData)
-        if (apiData.error) {
-            // set Error
-            console.log("----")
-            if (apiData.error.response) {
-                if (apiData.error.response.data) {
-                    await setError(apiData.error.response.data);
-                } else {
-                    if (apiData.error.message) {
-                        await setError({ "message": apiData.error.message, "data": "Error" });
-                    }
-                }
-            } else if (apiData.error.message) {
-                await setError({ "message": apiData.error.message, "data": "Error" });
-            } else {
-                await setError({ "message": "Some error occured", "data": "Error" });
-            }
-            await setState(prevState => ({ ...prevState, loading: false, error: true }))
-        } else if (apiData.result) {
-            console.log("-----------apiData.result--------------")
-            console.log(apiData.result);
-            await setSubmissions(apiData.result);
-            // array
-            // [] --> no submission
-            // 
-            console.log("-----------submissions--------------")
-            console.log(submissions);
-            // console.log(submissions[0]['data']);
-            await setState(prevState => ({ ...prevState, loading: false, success: true }))
-
-            if (location.state) {
-                if (location.state.submissionId && apiData.result.length > 0) {
-                    var count = 0;
-                    var submissionId = location.state.submissionId;
-                    console.log("submission id location", submissionId)
-                    console.log("submissions length", submissions.length)
-                    var submission = apiData.result
-                    for (count = 0; count < submission.length; count++) {
-                        console.log("submission id count " + submission[count]._id, count)
-                        if (submission[count]._id == submissionId) {
-                            console.log("breaking at", count)
-                            break;
+        try {
+            var apiData = await getSubmissions(token, props.problem_id)
+            console.log(apiData)
+            let userid = localStorage.getItem('userId');
+            if (apiData.error) {
+                // set Error
+                console.log("----")
+                if (apiData.error.response) {
+                    if (apiData.error.response.data) {
+                        await setError(apiData.error.response.data);
+                        ReactGA.event({
+                            category: 'Error',
+                            label: `UserId ${userid}`,
+                            action: `Problems/${props.problem_id} page submission component apiCall error ${apiData.error.response.data}`,
+                            value: 1
+                        });
+                    } else {
+                        if (apiData.error.message) {
+                            await setError({ "message": apiData.error.message, "data": "Error" });
+                            ReactGA.event({
+                                category: 'Error',
+                                label: `UserId ${userid}`,
+                                action: `Problems/${props.problem_id} page submission component apiCall error ${apiData.error.message}`,
+                                value: 1
+                            });
                         }
                     }
-                    console.log(submission.length - count)
-                    setCurCode({ id: submissionId, code: submission.length - count })
+                } else if (apiData.error.message) {
+                    await setError({ "message": apiData.error.message, "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Problems/${props.problem_id} page submission component apiCall error ${apiData.error.message}`,
+                        value: 1
+                    });
+                } else {
+                    await setError({ "message": "Some error occured", "data": "Error" });
+                    ReactGA.event({
+                        category: 'Error',
+                        label: `UserId ${userid}`,
+                        action: `Problems/${props.problem_id} page submission component apiCall error`,
+                        value: 1
+                    });
+                }
+                await setState(prevState => ({ ...prevState, loading: false, error: true }))
+            } else if (apiData.result) {
+                console.log("-----------apiData.result--------------")
+                console.log(apiData.result);
+                await setSubmissions(apiData.result);
+                // array
+                // [] --> no submission
+                // 
+                console.log("-----------submissions--------------")
+                console.log(submissions);
+                // console.log(submissions[0]['data']);
+                await setState(prevState => ({ ...prevState, loading: false, success: true }))
+
+                if (location.state) {
+                    if (location.state.submissionId && apiData.result.length > 0) {
+                        var count = 0;
+                        var submissionId = location.state.submissionId;
+                        console.log("submission id location", submissionId)
+                        console.log("submissions length", submissions.length)
+                        var submission = apiData.result
+                        for (count = 0; count < submission.length; count++) {
+                            console.log("submission id count " + submission[count]._id, count)
+                            if (submission[count]._id == submissionId) {
+                                console.log("breaking at", count)
+                                break;
+                            }
+                        }
+                        console.log(submission.length - count)
+                        setCurCode({ id: submissionId, code: submission.length - count })
+                    }
                 }
             }
+        } catch (e) {
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Problems/${props.problem_id} page submission component apiCall error ${e}`,
+                value: 1
+            });
         }
     }
 
@@ -99,6 +133,12 @@ export default function Submission(props) {
             getSubmissionsApiData(token);
         } catch (e) {
             console.log('problems page submission component error in useffect')
+            ReactGA.event({
+                category: 'Error',
+                label: `UserId ${userid}`,
+                action: `Problems/${props.problem_id} page submission component useEffect error ${e}`,
+                value: 1
+            });
             console.log(e)
         }
     }, []);
