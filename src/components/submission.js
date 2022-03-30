@@ -116,6 +116,7 @@ export default function Submission(props) {
     }
 
     React.useEffect(() => {
+        let userid = localStorage.getItem('userId');
         try {
             let temp = localStorage.getItem('isLoggedIn')
             let token = localStorage.getItem('token')
