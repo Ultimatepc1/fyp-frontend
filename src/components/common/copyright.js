@@ -6,8 +6,8 @@ function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                mywebfyp.com
+            <Link color="inherit" href="/landing">
+                teach-api-dev.herokuapp.com
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
